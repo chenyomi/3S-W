@@ -1,0 +1,57 @@
+// These are styles which are both common in layout w/ vertical nav & horizontal nav
+@use "@layouts/styles/rtl";
+@use "@layouts/styles/placeholders";
+@use "@layouts/styles/mixins";
+@use "@configured-variables" as variables;
+
+html,
+body {
+  overflow: hidden;
+  min-block-size: 100%;
+}
+
+.layout-page-content {
+  @include mixins.boxed-content(true);
+
+  flex-grow: 1;
+  block-size: 0;
+
+  // TODO: Use grid gutter variable here
+  padding-block: 0;
+}
+
+.layout-footer {
+  .footer-content-container {
+    backdrop-filter: blur(6px);
+    background-color: rgb(var(--v-theme-surface), 0.9);
+    block-size: variables.$layout-vertical-nav-navbar-height;
+    box-shadow: 0 1px 7px -2px var(--v-shadow-key-umbra-opacity), 0 3px 7px 1px var(--v-shadow-key-penumbra-opacity), 0 1px 4px 2px var(--v-shadow-key-ambient-opacity);
+    margin-block-end: 0.75rem;
+    margin-block-start: 0.75rem;
+    margin-inline-end: 4.5rem;
+  }
+
+  .layout-footer-sticky & {
+    position: sticky;
+    inset-block-end: 0;
+    will-change: transform;
+  }
+
+  .layout-footer-hidden & {
+    display: none;
+  }
+}
+
+.fadeIn {
+  animation: fade 0.3s linear;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
