@@ -36,6 +36,7 @@ export default defineConfig({
       vueTemplate: true,
     }),
   ],
+  base: './', // 将根路径换成相对路径
   define: { 'process.env': {} },
   resolve: {
     alias: {
