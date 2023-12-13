@@ -1,4 +1,4 @@
-name: Vue Deploy
+name: 3s-w
  
 on:
   push:
