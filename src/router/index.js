@@ -2,82 +2,111 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 export const constRouter =  [
   {
-    path: 'monitor',
+    path: '/monitor',
     meta: {
       name: '监控',
     },
     icon: 'bxl-deezer',
-    redirect: '/monitor/machine',
-    children: [
-      {
-        path: 'machine',
-        meta: {
-          name: '监控',
-        },
-        component: () => import('../pages/monitor-machine.vue'),
-      },
-    ],
+    component: () => import('../pages/monitor-machine.vue'),
   },
   {
-    path: 'tasklist',
+    path: '/tasklist',
     meta: {
       name: '任务列表',
     },
-    component: () => import('../pages/tasklist.vue'),
+    icon: 'bx-sidebar',
+    component: () => import('../pages/task-list.vue'),
   },
   {
-    path: 'task',
+    path: '/task',
     meta: {
       name: '任务',
     },
-    component: () => import('../pages/task.vue'),
+    icon: 'bxs-zap',
+    component: () => import('../pages/task-type.vue'),
   },
   {
-    path: 'drawer',
+    path: '/drawer',
     meta: {
       name: '储位',
     },
+    icon: 'bx-shape-square',
     component: () => import('../pages/drawer.vue'),
   },
   {
-    path: 'pallet',
+    path: '/pallet',
     meta: {
       name: '托盘',
     },
+    icon: 'bxs-hard-hat',
     component: () => import('../pages/pallet.vue'),
   },
 ]
-
-
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', redirect: '/monitor/machine' },
+    { path: '/', redirect: '/monitor' },
     {
       path: '/',
       component: () => import('../layouts/default.vue'),
       children: [
         ...constRouter,
-
         {
-          path: 'setting',
+          path: '/process',
           meta: {
-            name: '设置',
+            name: '加工',
+            menuActiveName: '任务',
           },
           children: [
             {
-              path: 'drawer',
+              path: 'product',
               meta: {
-                name: '储位',
+                name: '物料',
               },
-              component: () => import('../pages/setting-drawer.vue'),
+              component: () => import('../pages/task-product.vue'),
             },
             {
               path: 'eqpt',
               meta: {
                 name: '设备',
               },
+              component: () => import('../pages/task-eqpt.vue'),
+            },
+            {
+              path: 'frock',
+              meta: {
+                name: '工装',
+              },
+              component: () => import('../pages/task-frock.vue'),
+            },
+            {
+              path: 'drawer',
+              meta: {
+                name: '储位',
+              },
+              component: () => import('../pages/task-drawer.vue'),
+            },
+          ],
+        },
+        {
+          path: '/setting',
+          meta: {
+            name: '设置',
+          },
+          children: [
+            {
+              path: 'eqpt',
+              meta: {
+                name: '设备',
+              },
               component: () => import('../pages/setting-eqpt.vue'),
+            },
+            {
+              path: 'drawer',
+              meta: {
+                name: '储位',
+              },
+              component: () => import('../pages/setting-drawer.vue'),
             },
             {
               path: 'clamp',

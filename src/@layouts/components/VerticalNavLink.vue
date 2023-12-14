@@ -22,7 +22,7 @@ console.log(props.item.to, route.value.matched[1].path)
       :is="item.to ? 'RouterLink' : 'a'"
       :to="item.to"
       :href="item.href"
-      :class="props.item.to == route.matched[1].path ? 'router-link-exact-active':''"   
+      :class="(props.item.to == route.matched[1].path || props.item.title == route.matched[1].meta.menuActiveName) ? 'router-link-exact-active':''"   
     >
       <VIcon
         :icon="item.icon"

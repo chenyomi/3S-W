@@ -20,7 +20,7 @@
     <div class="d-flex gap-3 h-100 w-100">
       <div
         class="slot-box  h-100 w-100"
-        style="border-radius: 0.5rem;overflow-x: hidden;overflow-y: scroll;"
+        style="overflow: hidden;border-radius: 0.5rem;"
       >
         <RouterView :header="headerRef" />
       </div>
@@ -113,7 +113,9 @@ const subMain = computed(() => {
   padding-inline: 0.25rem;
 }
 
-.slot-box {
+.slot-box div {
+  user-select: none;
+
   &::-webkit-scrollbar {
     background: rgb(var(--v-theme-surface));
     block-size: 8px;

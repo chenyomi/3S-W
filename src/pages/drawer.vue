@@ -122,10 +122,10 @@ onMounted(() => {
     // const axesHelper = new THREE.AxesHelper(500)
 
     // scene.add(axesHelper)
-
+  
     const camera = new THREE.PerspectiveCamera(
       75,
-      window.innerWidth / window.innerHeight,
+      boxW / boxH,
       0.1,
       1000,
     )

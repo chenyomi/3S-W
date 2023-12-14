@@ -11,7 +11,7 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
   },
-  base: './', // 将根路径换成相对路径
+  publicPath: '/',
   plugins: [
     vue(),
     vueJsx(),
