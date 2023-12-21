@@ -1,5 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import taskTypeRetrieval from './task-type-retrieval.vue'
 
 const props = defineProps({
   header: { type: Object },
@@ -7,24 +8,45 @@ const props = defineProps({
 
 const active = ref(0)
 const router = useRouter()
+const btnList = inject('btnList')
 
 onMounted(() => {
   nextTick(() => {
-    props.header.setHeaderData([{
+    //warehousing
+    btnList.value = [{
       name: '创建',
       color: '#7986CB',
       size: 'large',
       width: 220,
+      formWidth: 600,
       mark: `是否创建任务？`,
-      fn: ({ close }) => {
+      hideDiaName: true,
+      slot: shallowRef(taskTypeRetrieval), 
+      fn: ({ close, diaFormRef }) => {
         close()
-        router.push({ path: '/process/product' })
+        switch (active.value) {
+        case 0:
+          router.push({ path: '/warehousing/outbound' })
+          break
+        case 1:
+          diaFormRef.submit().then(res => {
+            router.push({
+              path: '/retrieval', query: {
+                type: res,
+              } })
+          })
+          break
+        case 2:
+          router.push({ path: '/process/product' })
+          break
+        default:
+          break
+        }
+      
+        
       },
-    }])
+    }]
   })
-})
-onUnmounted(() => {
-  props.header.setHeaderData([])
 })
 </script>
 

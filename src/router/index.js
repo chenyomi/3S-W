@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 export const constRouter =  [
   {
@@ -28,7 +28,7 @@ export const constRouter =  [
   {
     path: '/drawer',
     meta: {
-      name: '储位',
+      name: '料盘',
     },
     icon: 'bx-shape-square',
     component: () => import('../pages/drawer.vue'),
@@ -43,7 +43,7 @@ export const constRouter =  [
   },
 ]
 export const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', redirect: '/monitor' },
     {
@@ -51,6 +51,41 @@ export const router = createRouter({
       component: () => import('../layouts/default.vue'),
       children: [
         ...constRouter,
+        {
+          path: '/warehousing',
+          meta: {
+            name: '入库',
+            menuActiveName: '任务',
+          },
+          children: [
+            {
+              path: 'outbound',
+              meta: {
+                name: '料箱',
+                disabled: true,
+                childrenTabIcon: 'bxs-downvote',
+              },
+              component: () => import('../pages/task-outbound.vue'),
+            },
+            {
+              path: 'product',
+              meta: {
+                name: '物料',
+                disabled: true,
+                childrenTabIcon: 'bxs-downvote',
+              },
+              component: () => import('../pages/task-product.vue'),
+            },
+          ],
+        },
+        {
+          path: '/retrieval',
+          meta: {
+            name: '出库',
+            menuActiveName: '任务',
+          },
+          component: () => import('../pages/task-outbound.vue'),
+        },
         {
           path: '/process',
           meta: {
@@ -62,6 +97,8 @@ export const router = createRouter({
               path: 'product',
               meta: {
                 name: '物料',
+                disabled: true,
+                childrenTabIcon: 'bxs-downvote',
               },
               component: () => import('../pages/task-product.vue'),
             },
@@ -69,6 +106,8 @@ export const router = createRouter({
               path: 'eqpt',
               meta: {
                 name: '设备',
+                disabled: true,
+                childrenTabIcon: 'bxs-downvote',
               },
               component: () => import('../pages/task-eqpt.vue'),
             },
@@ -76,13 +115,17 @@ export const router = createRouter({
               path: 'frock',
               meta: {
                 name: '工装',
+                disabled: true,
+                childrenTabIcon: 'bxs-downvote',
               },
               component: () => import('../pages/task-frock.vue'),
             },
             {
               path: 'drawer',
               meta: {
-                name: '储位',
+                name: '料盘',
+                disabled: true,
+                childrenTabIcon: 'bxs-downvote',
               },
               component: () => import('../pages/task-drawer.vue'),
             },
@@ -98,13 +141,15 @@ export const router = createRouter({
               path: 'eqpt',
               meta: {
                 name: '设备',
+                childrenTabIcon: 'bx-stop',
               },
               component: () => import('../pages/setting-eqpt.vue'),
             },
             {
               path: 'drawer',
               meta: {
-                name: '储位',
+                name: '网板',
+                childrenTabIcon: 'bx-stop',
               },
               component: () => import('../pages/setting-drawer.vue'),
             },
@@ -112,13 +157,15 @@ export const router = createRouter({
               path: 'clamp',
               meta: {
                 name: '夹具',
+                childrenTabIcon: 'bx-stop',
               },
               component: () => import('../pages/setting-clamp.vue'),
             },
             {
               path: 'pallet',
               meta: {
-                name: '托盘',
+                name: '托板',
+                childrenTabIcon: 'bx-stop',
               },
               component: () => import('../pages/setting-pallet.vue'),
             },
@@ -126,6 +173,7 @@ export const router = createRouter({
               path: 'secure',
               meta: {
                 name: '安全',
+                childrenTabIcon: 'bx-stop',
               },
               component: () => import('../pages/setting-secure.vue'),
             },

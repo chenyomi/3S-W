@@ -3,9 +3,9 @@
     <!-- 👉 navbar -->
     <template #navbar="{ toggleVerticalOverlayNavActive }">
       <Header
-        ref="headerRef"
         :fn="toggleVerticalOverlayNavActive"
         :matched="matched"
+        :list="btnList"
       />
     </template>
 
@@ -22,7 +22,7 @@
         class="slot-box  h-100 w-100"
         style="overflow: hidden;border-radius: 0.5rem;"
       >
-        <RouterView :header="headerRef" />
+        <RouterView />
       </div>
 
 
@@ -37,7 +37,7 @@
               rounded="0"
               block
               height="55"
-              :to="`${subMain}/${item.path}`"
+              :to="item.meta.disabled? null : `${subMain}/${item.path}`"
               :color="route.path == `${subMain}/${item.path}` ? 'primary' : ''"
             >
               {{ item.meta.name }}
@@ -47,7 +47,7 @@
               style="text-align: center;"
             >
               <VIcon
-                icon="bxs-downvote"
+                :icon="item.meta.childrenTabIcon"
                 size="16"
               />
             </div>
@@ -77,12 +77,14 @@ import Header from "@/layouts/components/Header.vue"
 import LeftMenu from "@/layouts/components/LeftMenu.vue"
 import LeftMenuBox from "@/layouts/components/LeftMenuBox.vue"
 import Setting from "@/layouts/components/Setting.vue"
-import { computed, ref } from "vue"
+import { computed, provide, ref } from "vue"
 import { useRoute } from "vue-router"
+import { useDisplay } from 'vuetify'
 
-const headerRef = ref()
-
+const { mdAndDown } = useDisplay()
 let route = useRoute()
+const btnList = ref([])
+const density = mdAndDown.value ? 'compact': 'comfortable'
 
 const matched = computed(() => {
   const b = []
@@ -99,8 +101,45 @@ const subNavList = computed(() => {
 })
 
 const subMain = computed(() => {
+  
   return route.matched[1].path
 })
+
+const currentPath = computed(() => {
+  return route.path
+})
+
+const next = computed(() => {
+  let str = null
+  if (subNavList.value.length) {
+    const index = subNavList.value.findIndex(e => currentPath.value.includes(e.path))
+    if (index !== -1) {
+      if (index < subNavList.value.length - 1) {
+        str = {
+          type: 'next',
+          nextPath: `${subMain.value}/${subNavList.value[index + 1].path}`,
+          name: '下一步',
+          intro: '是否完成进入下一步？',
+          loadtext: '正在保存中',
+        }
+      } else if (index == subNavList.value.length - 1) {
+        str = {
+          type: 'last',
+          name: '完成',
+          intro: '是否完成创建？',
+          loadtext: '正在创建中',
+        }
+      } 
+    }
+  }
+  
+  return str
+})
+
+provide('subMain', subMain)
+provide('next', next)
+provide('density', density)
+provide('btnList', btnList)
 </script>
 
 <style lang="scss" scoped>

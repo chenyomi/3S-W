@@ -9,8 +9,8 @@
       class="w-25"
       style="position: absolute;top: 1rem;left: 0.75rem;"
       :items="items"
-      density="compact"
-      label="当前储位"
+      :density="density"
+      label="当前料盘"
     />
     <div id="box" />
   </VCard>
@@ -27,14 +27,16 @@ const props = defineProps({
   header: { type: Object },
 })
 
+const density = inject('density')
+
 const items = [
-  { title: '储位-1', value: '0' },
-  { title: '储位-2', value: '1' },
-  { title: '储位-3', value: '2' },
-  { title: '储位-4', value: '3' },
+  { title: '料盘-1', value: '0' },
+  { title: '料盘-2', value: '1' },
+  { title: '料盘-3', value: '2' },
+  { title: '料盘-4', value: '3' },
 ]
 
-const select = ref({ title: '储位-1', value: '0' })
+const select = ref({ title: '料盘-1', value: '0' })
 
 const getOctreeCSG = (cube, cube1) => {
   const octree1 = OctreeCSG.fromMesh(cube)
@@ -87,10 +89,11 @@ const list = [
   [200, -80],
 ]
 
+const btnList = inject('btnList')
 
 onMounted(() => {
   nextTick(() => {
-    props.header.setHeaderData([{
+    btnList.value = [{
       name: '开始',
       color: '#D32F2F',
       icon: 'bxs-zap',
@@ -106,7 +109,7 @@ onMounted(() => {
           closeLoading()
         }, 2000)
       },
-    }])
+    }]
   })
   setTimeout(() => {
     const cardBox = document.querySelector('#card-box')
@@ -232,7 +235,6 @@ onMounted(() => {
 
 onUnmounted(() => {
   cancelAnimationFrame(animation)
-  props.header.setHeaderData([])
 })
 </script>
 

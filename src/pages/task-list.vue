@@ -3,10 +3,7 @@
 import { useRouter } from 'vue-router'
 import Draggable from 'vuedraggable'
 
-const propsData = defineProps({
-  header: { type: Object },
-})
-
+const btnList = inject('btnList')
 const router = useRouter()
 const checked = ref(null)
 const items = ref([])
@@ -50,7 +47,7 @@ const endEvent = e => {
 
 onMounted(() => {
   nextTick(() => {
-    propsData.header.setHeaderData([
+    btnList.value = [
       {
         name: '新建',
         color: '#42A5F5',
@@ -71,7 +68,7 @@ onMounted(() => {
         mark: '是否编辑选中任务？',
         fn: ({ close, openLoading, closeLoading }) => {
           close()
-          router.push({ path: '/process/product' })
+          router.push({ path: '/process/outbound' })
         },
       },
       {
@@ -123,11 +120,8 @@ onMounted(() => {
           }, 2000)
         },
       },
-    ])
+    ]
   })
-})
-onUnmounted(() => {
-  propsData.header.setHeaderData([])    
 })
 </script>
 
@@ -155,7 +149,7 @@ onUnmounted(() => {
           @click="checked = element.num"
         >
           <VCardSubtitle style="border-radius: 0.5rem 0.5rem 0 0;background: #111;color: #fff;line-height: 1.875rem;">
-            <span>{{ element.num + 1 }}</span><span class="mx-5">IN BEARBEIYUNG  </span> <span>1089</span>
+            <span>{{ element.num }}</span><span class="mx-5">IN BEARBEIYUNG  </span> <span>180{{ index + 1 }}</span>
           </VCardSubtitle>
           <VCardText class="py-2">
             <div class="d-flex align-center justify-space-between">
@@ -169,8 +163,8 @@ onUnmounted(() => {
                   variant="tonal"
                 />
                 <div>
-                  <h6>Mazak VARIAXIS C600 | 3001 - KSP - 160 -1</h6>
-                  <h6>002_DEMO_MAIN</h6>
+                  <h6>WELLLIH 3S-W | 90*90*90 - PL01 - J02 -{{ index }}</h6>
+                  <h6>001_DEMO_MAIN</h6>
                 </div>
               </div>
               <div class="d-flex gap-4 align-center">

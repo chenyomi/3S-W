@@ -13,7 +13,6 @@ export default defineComponent({
     syncRef(isOverlayNavActive, isLayoutOverlayVisible)
     
     return () => {
-      // 👉 Vertical nav
       const verticalNav = h(VerticalNav, { isOverlayNavActive: isOverlayNavActive.value, toggleIsOverlayNavActive }, {
         'nav-header': () => slots['vertical-nav-header']?.(),
         'before-nav-items': () => slots['before-vertical-nav-items']?.(),
@@ -71,7 +70,6 @@ export default defineComponent({
 @use "@layouts/styles/mixins";
 
 .layout-wrapper.layout-nav-type-vertical {
-  // TODO(v2): Check why we need height in vertical nav & min-height in horizontal nav
   block-size: 100%;
 
   .layout-content-wrapper {
@@ -114,12 +112,10 @@ export default defineComponent({
     @extend %layout-navbar-hidden;
   }
 
-  // 👉 Footer
   .layout-footer {
     @include mixins.boxed-content;
   }
 
-  // 👉 Layout overlay
   .layout-overlay {
     position: fixed;
     z-index: variables.$layout-overlay-z-index;
@@ -141,12 +137,10 @@ export default defineComponent({
     padding-inline-start: variables.$layout-vertical-nav-width;
   }
 
-  // Adjust right column pl when vertical nav is collapsed
   &.layout-vertical-nav-collapsed .layout-content-wrapper {
     padding-inline-start: variables.$layout-vertical-nav-collapsed-width;
   }
 
-  // 👉 Content height fixed
   &.layout-content-height-fixed {
     .layout-content-wrapper {
       max-block-size: calc(var(--vh) * 100);

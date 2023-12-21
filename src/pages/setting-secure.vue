@@ -1,7 +1,5 @@
 <script setup>
-const propsData = defineProps({
-  header: { type: Object },
-})
+const btnList = inject('btnList')
 
 const list = ['操作模式', '设置模式', '管理模式']
 const active = ref(0)
@@ -14,7 +12,7 @@ const items = [
 
 onMounted(() => {
   nextTick(() => {
-    propsData.header.setHeaderData([{
+    btnList.value =  [{
       name: '保存',
       color: '#66BB6A',
       icon: 'bx-cloud-upload',
@@ -27,11 +25,8 @@ onMounted(() => {
           closeLoading()
         }, 2000)
       },
-    }])
+    }]
   })
-})
-onUnmounted(() => {
-  propsData.header.setHeaderData([])
 })
 </script>
 

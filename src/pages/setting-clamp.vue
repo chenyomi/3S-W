@@ -1,18 +1,93 @@
 <script setup>
-const propsData = defineProps({
-  header: { type: Object },
-})
+import clampForm from './setting-clamp-form.vue'
+
+const density = inject('density')
+const expanded = ref()
+let expandedArr = []
+
+let desserts = [
+  {
+    id: 1,
+    name: '夹具1号',
+    code: 1601,
+    exmx1: 320,
+    exmx2: 160,
+    exmy1: 235,
+    exmy2: 170,
+  },
+  {
+    id: 2,
+    name: '夹具2号',
+    code: 1601,
+    exmx1: 320,
+    exmx2: 160,
+    exmy1: 235,
+    exmy2: 170,
+  },
+]
+
+const FakeAPI = {
+  async fetch ({ page, itemsPerPage, sortBy }) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const items = desserts
+
+        const paginated = items
+
+        resolve({ items: paginated })
+      }, 500)
+    })
+  },
+}
+
+const btnList = inject('btnList')
 
 onMounted(() => {
   nextTick(() => {
-    propsData.header.setHeaderData([{
+    btnList.value = [{
+      name: '新增',
+      color: '#42A5F5',
+      size: 'large',
+      width: 80,
+      formWidth: 800,
+      slot: shallowRef(clampForm),  
+      fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
+        openLoading({
+          text: '正在上传更新',
+        })
+        diaFormRef.submit().finally(() => {
+          close()
+          setTimeout(() => {
+            closeLoading()
+          }, 2000)
+        })
+      },
+    }, {
+      name: '编辑',
+      color: '#00ACC1',
+      size: 'large',
+      width: 80,
+      formWidth: 800,
+      slot: shallowRef(clampForm), 
+      fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
+        openLoading({
+          text: '正在上传更新',
+        })
+        diaFormRef.submit().finally(() => {
+          close()
+          setTimeout(() => {
+            closeLoading()
+          }, 2000)
+        })
+      },
+    }, {
       name: '保存',
       color: '#66BB6A',
       icon: 'bx-cloud-upload',
       size: 'large',
       width: 220,
       mark: '是否保存并上传更新数据？',
-      fn: ({ close, openLoading, closeLoading }) => {
+      fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
         })
@@ -21,115 +96,81 @@ onMounted(() => {
           closeLoading()
         }, 2000)
       },
-    }])
+    }]
   })
 })
-onUnmounted(() => {
-  propsData.header.setHeaderData([])
-})
 
-const formData = ref({
 
-  code: 1601,
-  exmx1: 320,
-  exmx2: 160,
-  exmy1: 235,
-  exmy2: 170,
+const headers = ref([
+  {
+    align: 'start',
+    sortable: false,
+    key: 'exclusive',
+    fixed: true,
+    minWidth: 70,
+  },
+  {
+    title: '夹具名称',
+    align: 'start',
+    sortable: false,
+    key: 'name',
+    minWidth: 90,
+  },
+  { title: '编号', key: 'code', align: 'center', sortable: false, minWidth: 90 },
+  { title: '尺寸（X）', key: 'exmx1', align: 'center', sortable: false, minWidth: 90 },
+  { title: '定位（X）', key: 'exmx2', align: 'center', sortable: false, minWidth: 90 },
+  { title: '尺寸（Y）', key: 'exmy1', align: 'center', sortable: false, minWidth: 90 },
+  { title: '定位（Y）', key: 'exmy2', align: 'center', sortable: false, minWidth: 90 },
   
-})
+])
 
-const items = [
-  { title: '夹具-1', value: '0' },
-  { title: '夹具-2', value: '1' },
-  { title: '夹具-3', value: '2' },
-  { title: '夹具-4', value: '3' },
-]
-
-const select = ref({ title: '夹具-1', value: '0' })
-import { ref } from 'vue'
+const serverItems = ref([])
+const loading = ref(true)
+function loadItems ({ page, itemsPerPage, sortBy }) {
+  loading.value = true
+  FakeAPI.fetch({ page, itemsPerPage, sortBy }).then(({ items, total }) => {
+    serverItems.value = items
+    loading.value = false
+    expanded.value = items[0].id
+    btnList.value[1].slotData = serverItems.value.filter(c => c.id == items[0].id)[0]
+  })
+}
 </script>
 
 <template>
-  <VCard class="h-100">
-    <VContainer>
-      <VRow>
-        <VCol
-          cols="6"
-          class="text-center"
-        >
-          <VSelect
-            v-model="select"
-            :items="items"
-            density="comfortable"
-            label="当前夹具"
-          />
-        </VCol>
-        <VCol
-          cols="6"
-          class="text-center"
-        >
-          <VTextField
-            v-model="formData.code"
-            label="编号："
-            density="comfortable"
-          />
-        </VCol>
-        <VCol
-          cols="6"
-          class="text-center"
-        >
-          <VChip
-            class="ma-1"
-            color="#FF9800"
-          >
-            X轴方向
-          </VChip>
-        </VCol>
-        <VCol
-          cols="6"
-          class="text-center"
-        >
-          <VChip
-            class="ma-1"
-            color="#4CAF50"
-          >
-            Y轴方向
-          </VChip>
-        </VCol>
-        
-        <VCol cols="6">
-          <VTextField
-            v-model="formData.exmx1"
-            label="尺寸："
-            density="comfortable"
-            suffix="mm"
-            class="mb-2"
-          />
-          <VTextField
-            v-model="formData.exmx2"
-            label="定位："
-            density="comfortable"
-            suffix="mm"
-            class="mb-2"
-          />
-        </VCol>
-        <VCol cols="6">
-          <VTextField
-            v-model="formData.exmy1"
-            label="尺寸："
-            density="comfortable"
-            suffix="mm"
-            class="mb-2"
-          />
-          <VTextField
-            v-model="formData.exmy2"
-            label="定位："
-            density="comfortable"
-            suffix="mm"
-            class="mb-2"
-          />
-        </VCol>
-      </VRow>
-    </VContainer>
-  </VCard>
+  <VDataTableVirtual
+    fixed-header
+    :headers="headers"
+    :items="serverItems"
+    :loading="loading"
+    loading-text=""
+    hover
+    height="calc(100vh - 175px)"
+    expand-on-click
+    :density="density"
+    @update:options="loadItems"
+    @update:expanded="(newVal) => {
+      newVal.map(e => {
+        if(!expandedArr.includes(e)) {
+          expanded = e
+          btnList[1].slotData = serverItems.filter(c => c.id == e)[0]
+        }
+      })
+      expandedArr.map(e => {
+        if(!newVal.includes(e)) {
+          expanded = e 
+          btnList[1].slotData = serverItems.filter(c => c.id == e)[0]
+        }
+      })
+      expandedArr = newVal
+    }"
+  >
+    <template #item.exclusive="{ item }">
+      <VCheckbox
+        :model-value="item.id == expanded"
+        readonly
+      />
+    </template>
+    <template #loading />
+  </VDataTableVirtual>
 </template>

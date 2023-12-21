@@ -1,29 +1,190 @@
 <script setup>
-import { nextTick, onUnmounted } from 'vue'
+import Modal from '@/layouts/components/modal.vue'
+import { inject, nextTick, ref } from 'vue'
+import drawerForm from './setting-drawer-form.vue'
+import drawerSvg from './setting-drawer-svg.vue'
 
-const propsData = defineProps({
-  header: { type: Object },
-})
+const density = inject('density')
+const serverItems = ref([])
+const loading = ref(true)
+const expanded = ref()
+let expandedArr = []
+const modal = ref()
 
-const items = [
-  { title: '储位-1', value: '0' },
-  { title: '储位-2', value: '1' },
-  { title: '储位-3', value: '2' },
-  { title: '储位-4', value: '3' },
+let desserts = [
+  {
+    id: 1,
+    distans: 8,
+    name: '800*400 1004792',
+    status: true,
+    type: 0,
+    exmx0: 800,
+    exmy0: 400,
+    exmx1: 20,
+    exmx2: 8,
+    exmx3: 83,
+    exmx4: 10,
+    exmy1: 20,
+    exmy2: 4,
+    exmy3: 83,
+    exmy4: 10,
+    raster: 10,
+  },
+  {
+    id: 2,
+    distans: 8,
+    name: '800*400 1004792',
+    status: true,
+    type: 0,
+    exmx0: 800,
+    exmy0: 400,
+    exmx1: 20,
+    exmx2: 10,
+    exmx3: 65,
+    exmx4: 10,
+    exmy1: 20,
+    exmy2: 5,
+    exmy3: 65,
+    exmy4: 10,
+    raster: 10,
+  },
+  {
+    id: 3,
+    distans: 8,
+    name: '800*400 1004792',
+    status: true,
+    type: 1,
+    exmx0: 800,
+    exmy0: 400,
+    exmx1: 20,
+    exmx2: 10,
+    exmx3: 65,
+    exmx4: 10,
+    exmy1: 20,
+    exmy2: 5,
+    exmy3: 65,
+    exmy4: 10,
+    raster: 10,
+  },
+  {
+    id: 4,
+    distans: 8,
+    name: '800*400 1004792',
+    status: true,
+    type: 1,
+    exmx0: 800,
+    exmy0: 400,
+    exmx1: 20,
+    exmx2: 8,
+    exmx3: 83,
+    exmx4: 10,
+    exmy1: 20,
+    exmy2: 4,
+    exmy3: 83,
+    exmy4: 10,
+    raster: 10,
+  },
+  {
+    id: 5,
+    distans: 8,
+    name: '800*400 1004792',
+    status: true,
+    type: 0,
+    exmx0: 800,
+    exmy0: 400,
+    exmx1: 20,
+    exmx2: 10,
+    exmx3: 65,
+    exmx4: 10,
+    exmy1: 20,
+    exmy2: 5,
+    exmy3: 65,
+    exmy4: 10,
+    raster: 10,
+  },
+  {
+    id: 6,
+    distans: 8,
+    name: '800*400 1004792',
+    status: true,
+    type: 0,
+    exmx0: 800,
+    exmy0: 400,
+    exmx1: 20,
+    exmx2: 10,
+    exmx3: 65,
+    exmx4: 10,
+    exmy1: 20,
+    exmy2: 5,
+    exmy3: 65,
+    exmy4: 10,
+    raster: 10,
+  },
 ]
 
-const select = ref({ title: '储位-1', value: '0' })
+const FakeAPI = {
+  async fetch ({ page, itemsPerPage, sortBy }) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const items = desserts
+
+        const paginated = items
+
+        resolve({ items: paginated })
+      }, 500)
+    })
+  },
+}
+
+const btnList = inject('btnList')
 
 onMounted(() => {
   nextTick(() => {
-    propsData.header.setHeaderData([{
+    btnList.value = [{
+      name: '新增',
+      color: '#42A5F5',
+      size: 'large',
+      width: 80,
+      formWidth: 800,
+      slot: shallowRef(drawerForm),  
+      fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
+        openLoading({
+          text: '正在上传更新',
+        })
+        diaFormRef.submit().finally(() => {
+          close()
+          setTimeout(() => {
+            closeLoading()
+          }, 2000)
+        })
+      },
+    }, {
+      name: '编辑',
+      color: '#00ACC1',
+      size: 'large',
+      width: 80,
+      formWidth: 800,
+      slot: shallowRef(drawerForm), 
+      slotData: serverItems.value.filter(c => c.id == expanded.value)[0], 
+      fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
+        openLoading({
+          text: '正在上传更新',
+        })
+        diaFormRef.submit().finally(() => {
+          close()
+          setTimeout(() => {
+            closeLoading()
+          }, 2000)
+        })
+      },
+    }, {
       name: '保存',
       color: '#66BB6A',
       icon: 'bx-cloud-upload',
       size: 'large',
       width: 220,
       mark: '是否保存并上传更新数据？',
-      fn: ({ close, openLoading, closeLoading }) => {
+      fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
         })
@@ -32,162 +193,119 @@ onMounted(() => {
           closeLoading()
         }, 2000)
       },
-    }])
+    }]
   })
 })
-onUnmounted(() => {
-  propsData.header.setHeaderData([])
-})
 
-const formData = ref({
-  distans: 11,
-  name: '128*108 1004792',
-  status: true,
-  exmx1: 84,
-  exmx2: 9,
-  exmx3: 128,
-  exmx4: 148,
-  exmy1: -30,
-  exmy2: 4,
-  exmy3: 105,
-  exmy4: 118,
-  raster: 118,
-  shift: 118,
-  
-})
+const headers = ref([
+  {
+    align: 'start',
+    sortable: false,
+    key: 'exclusive',
+    fixed: true,
+    minWidth: 70,
+  },
+  {
+    title: '网板名称',
+    align: 'start',
+    sortable: false,
+    key: 'name',
+    minWidth: 180,
+  },
+  { title: '安全距离', key: 'distans', align: 'center', sortable: false, minWidth: 90 },
+  { title: '厚度', key: 'raster', align: 'center', sortable: false, minWidth: 60 },
+  { title: '板（X）', key: 'exmx0', align: 'center', sortable: false, minWidth: 80 },
+  { title: '原点偏移（X）', key: 'exmx1', align: 'center', sortable: false, minWidth: 120 },
+  { title: '占位（X）', key: 'exmx2', align: 'center', sortable: false, minWidth: 90 },
+  { title: '占位单元尺寸（X）', key: 'exmx3', align: 'center', sortable: false, minWidth: 140 },
+  { title: '占位单元间距（X）', key: 'exmx4', align: 'center', sortable: false, minWidth: 140 },
+  { title: '板（Y）', key: 'exmy0', align: 'center', sortable: false, minWidth: 80 },
+  { title: '原点偏移（Y）', key: 'exmy1', align: 'center', sortable: false, minWidth: 120 },
+  { title: '占位（Y）', key: 'exmy2', align: 'center', sortable: false, minWidth: 90 },
+  { title: '占位单元尺寸（Y）', key: 'exmy3', align: 'center', sortable: false, minWidth: 140 },
+  { title: '占位单元间距（Y）', key: 'exmy4', align: 'center', sortable: false, minWidth: 140 },
+])
 
-const tab = 'one'
+
+function loadItems ({ page, itemsPerPage, sortBy }) {
+  loading.value = true
+  FakeAPI.fetch({ page, itemsPerPage, sortBy }).then(({ items, total }) => {
+    serverItems.value = items
+    loading.value = false
+    expanded.value = items[0].id
+    btnList.value[1].slotData = serverItems.value.filter(c => c.id == items[0].id)[0]
+  })
+}
+
+
+const openModal = () => {
+  modal.value.open({
+    formWidth: 854,
+    hideDiaName: true,
+    hideDiaOk: true,
+    hideDiaCanel: true,
+    slot: shallowRef(drawerSvg), 
+    slotData: serverItems.value.filter(c => c.id == expanded.value)[0], 
+    fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
+      openLoading({
+        text: '正在上传更新',
+      })
+      diaFormRef.submit().finally(() => {
+        close()
+        setTimeout(() => {
+          closeLoading()
+        }, 2000)
+      })
+    },
+  })
+}
 </script>
 
 <template>
-  <VCard class="h-100">
-    <VContainer>
-      <VRow>
-        <VCol cols="4">
-          <VSelect
-            v-model="select"
-            :items="items"
-            density="compact"
-            label="当前储位"
-          />
-        </VCol>
-        <VCol
-          cols="4"
-          class="text-center"
+  <VDataTableVirtual
+    fixed-header
+    :headers="headers"
+    :items="serverItems"
+    :loading="loading"
+    loading-text=""
+    hover
+    height="calc(100vh - 230px)"
+    expand-on-click
+    :density="density"
+    @update:options="loadItems"
+    @update:expanded="(newVal) => {
+      newVal.map(e => {
+        if(!expandedArr.includes(e)) {
+          expanded = e
+          btnList[1].slotData = serverItems.filter(c => c.id == e)[0]
+        }
+      })
+      expandedArr.map(e => {
+        if(!newVal.includes(e)) {
+          expanded = e 
+          btnList[1].slotData = serverItems.filter(c => c.id == e)[0]
+        }
+      })
+      expandedArr = newVal
+    }"
+  >
+    <template #item.exclusive="{ item }">
+      <VCheckbox
+        :model-value="item.id == expanded"
+        readonly
+      />
+    </template>
+    <template #loading />
+    <template #bottom>
+      <div style="text-align: end;">
+        <VBtn
+          class="ma-2 w-25"
+          @click="openModal"
         >
-          <VChip
-            class="ma-1"
-            color="#FF9800"
-          >
-            X轴方向
-          </VChip>
-        </VCol>
-        <VCol
-          cols="4"
-          class="text-center"
-        >
-          <VChip
-            class="ma-1"
-            color="#4CAF50"
-          >
-            Y轴方向
-          </VChip>
-        </VCol>
-        <VCol cols="4">
-          <VTextField
-            v-model="formData.distans"
-            label="安全距离"
-            density="comfortable"
-            class="mb-2"
-            suffix="mm"
-          />
-          <VTextField
-            v-model="formData.name"
-            label="名称："
-            density="comfortable"
-            class="mb-2"
-          />
-          
-          <VTextField
-            v-model="formData.raster"
-            label="Raster厚度："
-            density="comfortable"
-            suffix="mm"
-            class="mb-2"
-          />
-          <VTextField
-            v-model="formData.shift"
-            label="shift："
-            density="comfortable"
-            suffix="mm"
-            class="mb-2"
-          />
-          <VSwitch
-            v-model="formData.status"
-            color="primary"
-            class="mt-6"
-            label="启用/禁用"
-          />
-        </VCol>
-        <VCol cols="4">
-          <VTextField
-            v-model="formData.exmx1"
-            label="原点偏移："
-            density="comfortable"
-            suffix="mm"
-            class="mb-2"
-          />
-          <VTextField
-            v-model="formData.exmx2"
-            label="占位："
-            density="comfortable"
-            class="mb-2"
-          />
-          <VTextField
-            v-model="formData.exmx3"
-            label="占位单元尺寸："
-            density="comfortable"
-            suffix="mm"
-            class="mb-2"
-          />
-          <VTextField
-            v-model="formData.exmx4"
-            label="占位单元间距："
-            density="comfortable"
-            suffix="mm"
-            class="mb-2"
-          />
-        </VCol>
-        <VCol cols="4">
-          <VTextField
-            v-model="formData.exmy1"
-            label="原点偏移："
-            density="comfortable"
-            suffix="mm"
-            class="mb-2"
-          />
-          <VTextField
-            v-model="formData.exmy2"
-            label="占位："
-            density="comfortable"
-            class="mb-2"
-          />
-          <VTextField
-            v-model="formData.exmy3"
-            label="占位单元尺寸："
-            density="comfortable"
-            suffix="mm"
-            class="mb-2"
-          />
-          <VTextField
-            v-model="formData.exmy4"
-            label="占位单元间距："
-            density="comfortable"
-            suffix="mm"
-            class="mb-2"
-          />
-        </VCol>
-      </VRow>
-    </VContainer>
-  </VCard>
+          预览
+        </VBtn>
+      </div>
+    </template>
+  </VDataTableVirtual>
+  <Modal ref="modal" />
 </template>

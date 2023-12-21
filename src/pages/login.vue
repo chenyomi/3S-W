@@ -1,5 +1,5 @@
 <script setup>
-import logo from '@images/logo.svg?raw'
+import logo from '@images/logo.jpg'
 
 const form = ref({
   email: '',
@@ -19,12 +19,10 @@ const isPasswordVisible = ref(false)
     >
       <VCardItem class="justify-center">
         <template #prepend>
-          <div class="d-flex">
-            <div
-              class="d-flex text-primary"
-              v-html="logo"
-            />
-          </div>
+          <VImg
+            :src="logo"
+            style="width: 2rem;height: 2rem;border-radius: 3px;"
+          />
         </template>
 
         <VCardTitle class="text-2xl font-weight-bold">

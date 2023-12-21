@@ -5,7 +5,9 @@ const props = defineProps({
   header: { type: Object },
 })
 
+const density = inject('density')
 const router = useRouter()
+const next = inject('next')
 
 const frocks = [
   { title: '工装-1', value: '0' },
@@ -15,31 +17,33 @@ const frocks = [
 ]
 
 const select = ref({ title: '工装-1', value: '0' })
+const btnList = inject('btnList')
 
 onMounted(() => {
   nextTick(() => {
-    props.header.setHeaderData([{
-      name: '下一步',
+    btnList.value = [{
+      name: next.value.name,
       color: '#D32F2F',
       icon: 'bxs-zap',
       size: 'large',
       width: 220,
-      mark: '是否完成进入下一步？',
+      mark: next.value.intro,
       fn: ({ close, openLoading, closeLoading }) => {
         openLoading({
-          text: '正在保存中',
+          text: next.value.loadtext,
         })
         close()
         setTimeout(() => {
           closeLoading()
-          router.push({ path: '/process/drawer' })
-        }, 2000)
+          if (next.value.type == 'next') {
+            router.push({ path: next.value.nextPath })
+          } else if (next.value.type == 'last') {
+            router.push({ path: '/tasklist' })
+          }
+        }, 1000)
       },
-    }])
+    }]
   })
-})
-onUnmounted(() => {
-  props.header.setHeaderData([])
 })
 </script>
 
@@ -53,7 +57,7 @@ onUnmounted(() => {
       <VSelect
         v-model="select"
         :items="frocks"
-        density="compact"
+        :density="density"
         label="当前工装"
         class="mt-3 mb-5 w-25"
       />

@@ -1,0 +1,38 @@
+<svg id='svg' xmlns="http://www.w3.org/2000/svg" opacity="1" xmlns:xlink="http://www.w3.org/1999/xlink" width="850" height="448" fill="none">
+	<rect id="box" x="27" y="27" width="0" height="0" style="fill:#e8e8e8; opacity:1;" />
+	<g opacity="1" transform="translate(12.950666427612305 5)  rotate(0)">
+		<path style="fill:#A5D63F; opacity:1;" d="M203.376 8.10665C202.788 7.52232 201.839 7.52469 201.254 8.11194C200.67 8.69918 200.672 9.64892 201.26 10.2333L209.326 18.2591L12.9469 18.75L12.9544 21.75L209.333 21.259L201.307 29.3251C200.723 29.9123 200.725 30.8621 201.313 31.4464C201.9 32.0307 202.85 32.0283 203.434 31.4411L214.014 20.808C214.598 20.2208 214.596 19.271 214.009 18.6867L203.376 8.10665Z"></path>
+		<g opacity="1" transform="translate(87 -15)  rotate(0)">
+			<mask id="bg-mask-0" fill="white">
+				<use transform="translate(0 0)  rotate(0)" xlink:href="#path_0"></use>
+			</mask>
+			<g mask="url(#bg-mask-0)">
+				<g opacity="1" transform="translate(8 8)  rotate(0)">
+					<text>
+						<tspan x="0.12" y="20" font-size="16" line-height="24" fill="#A5D63F" opacity="1" font-family="SourceHanSansCN-Medium" font-weight="Medium" letter-spacing="0">X</tspan>
+					</text>
+				</g>
+			</g>
+		</g>
+	</g>
+	<g opacity="1" transform="translate(12 4.5)  rotate(0)">
+		<path id="item" style="fill:#FF5733; opacity:1;" d="M14.4507 19.7493L14.5479 216.128L22.5895 208.078C23.175 207.492 24.1247 207.492 24.7108 208.077C25.2969 208.662 25.2974 209.612 24.7119 210.198L14.1105 220.81C13.525 221.396 12.5753 221.397 11.9892 220.811L11.9834 220.805L1.37738 210.21C0.791304 209.624 0.790831 208.675 1.37633 208.089C1.96182 207.502 2.91157 207.502 3.49765 208.087L11.5479 216.13L11.4507 19.7507L14.4507 19.7493Z"></path>
+		<g opacity="1" transform="translate(-12.950666427612305 80)  rotate(0)">
+			<mask id="bg-mask-1" fill="white">
+				<use transform="translate(0 0)  rotate(0)" xlink:href="#path_1"></use>
+			</mask>
+			<g mask="url(#bg-mask-1)">
+				<g opacity="1" transform="translate(8 8)  rotate(0)">
+					<text>
+						<tspan x="0.12" y="20" font-size="16" line-height="24" fill="#FF5733" opacity="1" font-family="SourceHanSansCN-Medium" font-weight="Medium" letter-spacing="0">Y</tspan>
+					</text>
+				</g>
+			</g>
+		</g>
+	</g>
+	<circle cx="24.5" cy="24.5" fill="#2196F3" r="5" />
+	<defs>
+		<rect id="path_0" x="0" y="0" width="26" height="40" rx="0" ry="0" />
+		<rect id="path_1" x="0" y="0" width="26" height="40" rx="0" ry="0" />
+	</defs>
+</svg>

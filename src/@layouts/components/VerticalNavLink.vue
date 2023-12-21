@@ -9,8 +9,6 @@ const props = defineProps({
 import { useRoute } from 'vue-router'
 
 const route = ref(useRoute())
-
-console.log(props.item.to, route.value.matched[1].path)
 </script>
 
 <template>

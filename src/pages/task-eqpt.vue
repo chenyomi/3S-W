@@ -6,7 +6,9 @@ const props = defineProps({
   header: { type: Object },
 })
 
+const density = inject('density')
 const router = useRouter()
+const next = inject('next')
 
 const formData = ref({
   switch1: true,
@@ -26,31 +28,33 @@ const program = [
 ]
 
 const select = ref({ title: '程序-1', value: '0' })
+const btnList = inject('btnList')
 
 onMounted(() => {
   nextTick(() => {
-    props.header.setHeaderData([{
-      name: '下一步',
+    btnList.value = [{
+      name: next.value.name,
       color: '#D32F2F',
       icon: 'bxs-zap',
       size: 'large',
       width: 220,
-      mark: '是否完成进入下一步？',
+      mark: next.value.intro,
       fn: ({ close, openLoading, closeLoading }) => {
         openLoading({
-          text: '正在保存中',
+          text: next.value.loadtext,
         })
         close()
         setTimeout(() => {
           closeLoading()
-          router.push({ path: '/process/frock' })
-        }, 2000)
+          if (next.value.type == 'next') {
+            router.push({ path: next.value.nextPath })
+          } else if (next.value.type == 'last') {
+            router.push({ path: '/tasklist' })
+          }
+        }, 1000)
       },
-    }])
+    }]
   })
-})
-onUnmounted(() => {
-  props.header.setHeaderData([])
 })
 </script>
 
@@ -82,7 +86,7 @@ onUnmounted(() => {
       <VSelect
         v-model="select"
         :items="program"
-        density="compact"
+        :density="density"
         label="当前程序"
         class="my-3 w-25"
       />

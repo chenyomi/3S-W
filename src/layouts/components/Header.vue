@@ -18,12 +18,12 @@
     </VBreadcrumbs>  
     <div class="d-flex justify-end gap-2">
       <VBtn
-        v-for="item in btnList"
+        v-for="item in propsData.list"
         :key="item"
         :width="item.width"
         :color="item.color"
         :size="item.size"
-        @click="open(item)"
+        @click="openModal(item)"
       >
         <VIcon
           v-if="item.icon"
@@ -36,58 +36,13 @@
       </VBtn>
     </div>
    
-    
-    <VDialog
-      v-model="dialog"
-      transition="dialog-bottom-transition"
-      width="300"
-    >
-      <VCard title="提示">
-        <VCardText>
-          {{ selectRow.mark }}
-        </VCardText>
-
-        <VCardActions>
-          <VSpacer />
-          <VBtn
-            color="blue-darken-1"
-            variant="text"
-            @click="dialog = false"
-          >
-            我拒绝
-          </VBtn>
-          <VBtn
-            color="blue-darken-1"
-            variant="text"
-            @click="() => {selectRow.fn({close, openLoading ,closeLoading})}"
-          >
-            是的
-          </VBtn>
-        </VCardActions>
-      </VCard>
-    </VDialog>
+    <Modal ref="modal" />
   </div>
-  <VDialog
-    v-model="dialogLoading"
-    :scrim="false"
-    persistent
-    width="auto"
-  >
-    <VCard color="#000000">
-      <VCardText>
-        {{ dialogLoadingText }}
-        <VProgressLinear
-          indeterminate
-          color="white"
-          class="mb-0"
-        />
-      </VCardText>
-    </VCard>
-  </VDialog>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import Modal from './modal.vue'
 
 const propsData = defineProps({
   fn: {
@@ -100,39 +55,17 @@ const propsData = defineProps({
       return []
     },
   },
+  list: {
+    type: Array,
+    default: e => {
+      return []
+    },
+  },
 })
 
-const selectRow = ref()
-const dialog = ref(false)
-const dialogLoading = ref(false)
-const dialogLoadingText = ref('加载中...')
+const modal = ref()
 
-const close = () => {
-  dialog.value = false
+const openModal = item => {
+  modal.value.open(item)
 }
-
-const open = row => {
-  selectRow.value = row
-  dialog.value = true
-}
-
-const openLoading = op => {
-  if(op?.text) dialogLoadingText.value = op.text
-  dialogLoading.value = true
-}
-
-const closeLoading = () => {
-  dialogLoading.value = false
-}
-
-const btnList = ref([])
-
-const setHeaderData = op => {
-  btnList.value = op
-}
-
-
-defineExpose({
-  setHeaderData,
-})
 </script>
