@@ -1,13 +1,11 @@
 <script setup>
 import pos from '@images/svg/pos.svg'
 import { onMounted } from 'vue'
-import { useTheme } from 'vuetify'
 
 const propsData = defineProps({
   data: { type: Object },
 })
 
-const theme = useTheme()
 const formData = ref(propsData.data)
 
 const svgEmbed = ref(null)

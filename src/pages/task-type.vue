@@ -26,7 +26,13 @@ onMounted(() => {
         close()
         switch (active.value) {
         case 0:
-          router.push({ path: '/warehousing/outbound' })
+          diaFormRef.submit().then(res => {
+            router.push({
+              path: '/warehousing', query: {
+                type: res,
+              },
+            })
+          })
           break
         case 1:
           diaFormRef.submit().then(res => {

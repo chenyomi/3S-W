@@ -24,6 +24,24 @@ let desserts = [
     exmy1: 235,
     exmy2: 170,
   },
+  {
+    id: 3,
+    name: '夹具3号',
+    code: 1601,
+    exmx1: 320,
+    exmx2: 160,
+    exmy1: 235,
+    exmy2: 170,
+  },
+  {
+    id: 4,
+    name: '夹具4号',
+    code: 1601,
+    exmx1: 320,
+    exmx2: 160,
+    exmy1: 235,
+    exmy2: 170,
+  },
 ]
 
 const FakeAPI = {
@@ -117,10 +135,8 @@ const headers = ref([
     minWidth: 90,
   },
   { title: '编号', key: 'code', align: 'center', sortable: false, minWidth: 90 },
-  { title: '尺寸（X）', key: 'exmx1', align: 'center', sortable: false, minWidth: 90 },
-  { title: '定位（X）', key: 'exmx2', align: 'center', sortable: false, minWidth: 90 },
-  { title: '尺寸（Y）', key: 'exmy1', align: 'center', sortable: false, minWidth: 90 },
-  { title: '定位（Y）', key: 'exmy2', align: 'center', sortable: false, minWidth: 90 },
+  { title: '尺寸（X-Y）', key: 'exmx1', align: 'center', sortable: false, minWidth: 90 },
+  { title: '定位（X-Y）', key: 'exmx2', align: 'center', sortable: false, minWidth: 90 },
   
 ])
 
@@ -170,6 +186,12 @@ function loadItems ({ page, itemsPerPage, sortBy }) {
         :model-value="item.id == expanded"
         readonly
       />
+    </template>
+    <template #item.exmx1="{ item }">
+      {{ item.exmx1 }}-{{ item.exmy1 }}
+    </template>
+    <template #item.exmx2="{ item }">
+      {{ item.exmx2 }}-{{ item.exmy2 }}
     </template>
     <template #loading />
   </VDataTableVirtual>

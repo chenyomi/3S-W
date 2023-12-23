@@ -68,7 +68,7 @@ onMounted(() => {
         mark: '是否编辑选中任务？',
         fn: ({ close, openLoading, closeLoading }) => {
           close()
-          router.push({ path: '/process/outbound' })
+          router.push({ path: '/task' })
         },
       },
       {

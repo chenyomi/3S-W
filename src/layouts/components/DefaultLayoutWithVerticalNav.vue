@@ -27,7 +27,10 @@
 
 
       <VSlideXReverseTransition hide-on-leave>
-        <VCard v-if="subNavList.length">
+        <VCard
+          v-if="subNavList.length"
+          style="overflow-y: scroll;"
+        >
           <div
             v-for="(item, i) in subNavList"
             :key="item"
@@ -36,7 +39,7 @@
               variant="text"
               rounded="0"
               block
-              height="55"
+              height="50"
               :to="item.meta.disabled? null : `${subMain}/${item.path}`"
               :color="route.path == `${subMain}/${item.path}` ? 'primary' : ''"
             >
@@ -48,7 +51,7 @@
             >
               <VIcon
                 :icon="item.meta.childrenTabIcon"
-                size="16"
+                size="15"
               />
             </div>
           </div>

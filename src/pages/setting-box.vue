@@ -1,5 +1,5 @@
 <script setup>
-import palletForm from './setting-pallet-form.vue'
+import boxForm from './setting-box-form.vue'
 
 const density = inject('density')
 const expanded = ref()
@@ -8,30 +8,75 @@ let expandedArr = []
 let desserts = [
   {
     id: 1,
-    name: '托板A',
-    code: 1001,
-    deep: 5,
-    exmx1: 800,
+    name: '料箱1号',
+    code: 2001,
+    exmx1: 600,
     exmy1: 400,
-    num: 3,
+    exmz1: 150,
+    maxKg: 30,
   },
   {
     id: 2,
-    name: '托板B',
-    code: 1002,
-    deep: 5,
-    exmx1: 800,
+    name: '料箱2号',
+    code: 2002,
+    exmx1: 600,
     exmy1: 400,
-    num: 3,
+    exmz1: 150,
+    maxKg: 30,
   },
   {
     id: 3,
-    name: '托板C',
-    code: 1003,
-    deep: 5,
-    exmx1: 800,
+    name: '料箱3号',
+    code: 2003,
+    exmx1: 600,
     exmy1: 400,
-    num: 3,
+    exmz1: 150,
+    maxKg: 30,
+  },
+  {
+    id: 4,
+    name: '料箱4号',
+    code: 2003,
+    exmx1: 600,
+    exmy1: 400,
+    exmz1: 150,
+    maxKg: 30,
+  },
+  {
+    id: 5,
+    name: '料箱5号',
+    code: 2003,
+    exmx1: 600,
+    exmy1: 400,
+    exmz1: 150,
+    maxKg: 30,
+  },
+  {
+    id: 6,
+    name: '料箱6号',
+    code: 2003,
+    exmx1: 600,
+    exmy1: 400,
+    exmz1: 150,
+    maxKg: 30,
+  },
+  {
+    id: 7,
+    name: '料箱7号',
+    code: 2003,
+    exmx1: 600,
+    exmy1: 400,
+    exmz1: 150,
+    maxKg: 30,
+  },
+  {
+    id: 8,
+    name: '料箱8号',
+    code: 2003,
+    exmx1: 600,
+    exmy1: 400,
+    exmz1: 150,
+    maxKg: 30,
   },
 ]
 
@@ -59,7 +104,7 @@ onMounted(() => {
       size: 'large',
       width: 80,
       formWidth: 800,
-      slot: shallowRef(palletForm),  
+      slot: shallowRef(boxForm),  
       fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
@@ -77,7 +122,7 @@ onMounted(() => {
       size: 'large',
       width: 80,
       formWidth: 800,
-      slot: shallowRef(palletForm), 
+      slot: shallowRef(boxForm), 
       fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
@@ -126,9 +171,8 @@ const headers = ref([
     minWidth: 90,
   },
   { title: '编号', key: 'code', align: 'center', sortable: false, minWidth: 90 },
-  { title: '厚度', key: 'deep', align: 'center', sortable: false, minWidth: 90 },
-  { title: '数量', key: 'num', align: 'center', sortable: false, minWidth: 90 },
-  { title: '尺寸（X-Y）', key: 'exmx1', align: 'center', sortable: false, minWidth: 90 },
+  { title: '载重', key: 'maxKg', align: 'center', sortable: false, minWidth: 90 },
+  { title: '尺寸（X-Y-Z）', key: 'exmx1', align: 'center', sortable: false, minWidth: 90 },
   
 ])
 
@@ -180,7 +224,7 @@ function loadItems ({ page, itemsPerPage, sortBy }) {
       />
     </template>
     <template #item.exmx1="{ item }">
-      {{ item.exmx1 }}-{{ item.exmy1 }}  
+      {{ item.exmx1 }}-{{ item.exmy1 }}-{{ item.exmz1 }}  
     </template>
     <template #loading />
   </VDataTableVirtual>

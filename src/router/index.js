@@ -57,26 +57,7 @@ export const router = createRouter({
             name: '入库',
             menuActiveName: '任务',
           },
-          children: [
-            {
-              path: 'outbound',
-              meta: {
-                name: '料箱',
-                disabled: true,
-                childrenTabIcon: 'bxs-downvote',
-              },
-              component: () => import('../pages/task-outbound.vue'),
-            },
-            {
-              path: 'product',
-              meta: {
-                name: '物料',
-                disabled: true,
-                childrenTabIcon: 'bxs-downvote',
-              },
-              component: () => import('../pages/task-product.vue'),
-            },
-          ],
+          component: () => import('../pages/task-outbound.vue'),
         },
         {
           path: '/retrieval',
@@ -160,6 +141,14 @@ export const router = createRouter({
                 childrenTabIcon: 'bx-stop',
               },
               component: () => import('../pages/setting-clamp.vue'),
+            },
+            {
+              path: 'box',
+              meta: {
+                name: '料箱',
+                childrenTabIcon: 'bx-stop',
+              },
+              component: () => import('../pages/setting-box.vue'),
             },
             {
               path: 'pallet',

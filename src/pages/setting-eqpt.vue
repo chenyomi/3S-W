@@ -135,15 +135,9 @@ const headers = ref([
   { title: '生产延时', key: 'timer1', align: 'center', sortable: false, minWidth: 90 },
   { title: '切换延时', key: 'timer2', align: 'center', sortable: false, minWidth: 90 },
   { title: '启动延时', key: 'timer3', align: 'center', sortable: false, minWidth: 90 },
-  { title: '校准设定值（X）', key: 'exmx1', align: 'center', sortable: false, minWidth: 130 },
-  { title: '最小定位（X）', key: 'exmx2', align: 'center', sortable: false, minWidth: 130 },
-  { title: '最大定位（X）', key: 'exmx3', align: 'center', sortable: false, minWidth: 130 },
-  { title: '校准设定值（Y）', key: 'exmy1', align: 'center', sortable: false, minWidth: 130 },
-  { title: '最小定位（Y）', key: 'exmy2', align: 'center', sortable: false, minWidth: 130 },
-  { title: '最大定位（Y）', key: 'exmy3', align: 'center', sortable: false, minWidth: 130 },
-  { title: '校准设定值（Z）', key: 'exmz1', align: 'center', sortable: false, minWidth: 130 },
-  { title: '最小定位（Z）', key: 'exmz2', align: 'center', sortable: false, minWidth: 130 },
-  { title: '最大定位（Z）', key: 'exmz3', align: 'center', sortable: false, minWidth: 130 },
+  { title: '校准设定值（X-Y-Z）', key: 'exmx1', align: 'center', sortable: false, minWidth: 150 },
+  { title: '最小定位（X-Y-Z）', key: 'exmx2', align: 'center', sortable: false, minWidth: 140 },
+  { title: '最大定位（X-Y-Z）', key: 'exmx3', align: 'center', sortable: false, minWidth: 140 },
 ])
 
 const serverItems = ref([])
@@ -192,6 +186,15 @@ function loadItems ({ page, itemsPerPage, sortBy }) {
         :model-value="item.id == expanded"
         readonly
       />
+    </template>
+    <template #item.exmx1="{ item }">
+      {{ item.exmx1 }}-{{ item.exmy1 }}-{{ item.exmz1 }}
+    </template>
+    <template #item.exmx2="{ item }">
+      {{ item.exmx2 }}-{{ item.exmy2 }}-{{ item.exmz2 }}
+    </template>
+    <template #item.exmx3="{ item }">
+      {{ item.exmx3 }}-{{ item.exmy3 }}-{{ item.exmz3 }}
     </template>
     <template #loading />
   </VDataTableVirtual>

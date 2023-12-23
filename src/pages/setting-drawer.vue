@@ -28,7 +28,7 @@ let desserts = [
     exmy2: 4,
     exmy3: 83,
     exmy4: 10,
-    raster: 10,
+    raster: 3,
   },
   {
     id: 2,
@@ -46,7 +46,7 @@ let desserts = [
     exmy2: 5,
     exmy3: 65,
     exmy4: 10,
-    raster: 10,
+    raster: 3,
   },
   {
     id: 3,
@@ -64,7 +64,7 @@ let desserts = [
     exmy2: 5,
     exmy3: 65,
     exmy4: 10,
-    raster: 10,
+    raster: 3,
   },
   {
     id: 4,
@@ -82,7 +82,7 @@ let desserts = [
     exmy2: 4,
     exmy3: 83,
     exmy4: 10,
-    raster: 10,
+    raster: 3,
   },
   {
     id: 5,
@@ -100,7 +100,7 @@ let desserts = [
     exmy2: 5,
     exmy3: 65,
     exmy4: 10,
-    raster: 10,
+    raster: 3,
   },
   {
     id: 6,
@@ -118,7 +118,7 @@ let desserts = [
     exmy2: 5,
     exmy3: 65,
     exmy4: 10,
-    raster: 10,
+    raster: 3,
   },
 ]
 
@@ -214,16 +214,11 @@ const headers = ref([
   },
   { title: '安全距离', key: 'distans', align: 'center', sortable: false, minWidth: 90 },
   { title: '厚度', key: 'raster', align: 'center', sortable: false, minWidth: 60 },
-  { title: '板（X）', key: 'exmx0', align: 'center', sortable: false, minWidth: 80 },
-  { title: '原点偏移（X）', key: 'exmx1', align: 'center', sortable: false, minWidth: 120 },
-  { title: '占位（X）', key: 'exmx2', align: 'center', sortable: false, minWidth: 90 },
-  { title: '占位单元尺寸（X）', key: 'exmx3', align: 'center', sortable: false, minWidth: 140 },
-  { title: '占位单元间距（X）', key: 'exmx4', align: 'center', sortable: false, minWidth: 140 },
-  { title: '板（Y）', key: 'exmy0', align: 'center', sortable: false, minWidth: 80 },
-  { title: '原点偏移（Y）', key: 'exmy1', align: 'center', sortable: false, minWidth: 120 },
-  { title: '占位（Y）', key: 'exmy2', align: 'center', sortable: false, minWidth: 90 },
-  { title: '占位单元尺寸（Y）', key: 'exmy3', align: 'center', sortable: false, minWidth: 140 },
-  { title: '占位单元间距（Y）', key: 'exmy4', align: 'center', sortable: false, minWidth: 140 },
+  { title: '板（X-Y）', key: 'exmx0', align: 'center', sortable: false, minWidth: 90 },
+  { title: '原点偏移（X-Y）', key: 'exmx1', align: 'center', sortable: false, minWidth: 130 },
+  { title: '占位（X-Y）', key: 'exmx2', align: 'center', sortable: false, minWidth: 110 },
+  { title: '占位单元尺寸（X-Y）', key: 'exmx3', align: 'center', sortable: false, minWidth: 160 },
+  { title: '占位单元间距（X-Y）', key: 'exmx4', align: 'center', sortable: false, minWidth: 160 },
 ])
 
 
@@ -294,6 +289,21 @@ const openModal = () => {
         :model-value="item.id == expanded"
         readonly
       />
+    </template>
+    <template #item.exmx0="{ item }">
+      {{ item.exmx0 }}-{{ item.exmy0 }}
+    </template>
+    <template #item.exmx1="{ item }">
+      {{ item.exmx1 }}-{{ item.exmy1 }}
+    </template>
+    <template #item.exmx2="{ item }">
+      {{ item.exmx2 }}-{{ item.exmy2 }}
+    </template>
+    <template #item.exmx3="{ item }">
+      {{ item.exmx3 }}-{{ item.exmy3 }}
+    </template>
+    <template #item.exmx4="{ item }">
+      {{ item.exmx4 }}-{{ item.exmy4 }}
     </template>
     <template #loading />
     <template #bottom>
