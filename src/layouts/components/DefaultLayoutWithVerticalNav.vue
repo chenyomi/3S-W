@@ -17,9 +17,9 @@
       <!-- 👉 illustration -->
       <LeftMenuBox />
     </template>
-    <div class="d-flex gap-3 h-100 w-100">
+    <div class="d-flex gap-3 h-100 w-100 slot-box">
       <div
-        class="slot-box  h-100 w-100"
+        class="h-100 w-100"
         style="overflow: hidden;border-radius: 0.5rem;"
       >
         <RouterView />

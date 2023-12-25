@@ -78,7 +78,8 @@ export const router = createRouter({
               path: 'product',
               meta: {
                 name: '物料',
-                disabled: true,
+
+                // disabled: true,
                 childrenTabIcon: 'bxs-downvote',
               },
               component: () => import('../pages/task-product.vue'),
@@ -87,7 +88,8 @@ export const router = createRouter({
               path: 'eqpt',
               meta: {
                 name: '设备',
-                disabled: true,
+
+                // disabled: true,
                 childrenTabIcon: 'bxs-downvote',
               },
               component: () => import('../pages/task-eqpt.vue'),
@@ -96,7 +98,8 @@ export const router = createRouter({
               path: 'frock',
               meta: {
                 name: '工装',
-                disabled: true,
+
+                // disabled: true,
                 childrenTabIcon: 'bxs-downvote',
               },
               component: () => import('../pages/task-frock.vue'),
@@ -105,7 +108,8 @@ export const router = createRouter({
               path: 'drawer',
               meta: {
                 name: '料盘',
-                disabled: true,
+
+                // disabled: true,
                 childrenTabIcon: 'bxs-downvote',
               },
               component: () => import('../pages/task-drawer.vue'),

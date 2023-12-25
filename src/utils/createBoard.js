@@ -1,8 +1,6 @@
 import * as THREE from "three"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
-import { OctreeCSG } from "../three/OctreeCSG/OctreeCSG"
-
 export class createBoard {
   constructor(options) {
     this.options = {
@@ -61,16 +59,15 @@ export class createBoard {
     this.domBox.innerHTML = ''
     this.controls = null
     this.renderer.dispose()
-
-    // this.renderer.forceContextLoss()
+    this.renderer.forceContextLoss()
     this.renderer = null
     this.geos = []
     this.scene.clear()
   }
   updata(options) {
-    const axesHelper = new THREE.AxesHelper(500)
+    // const axesHelper = new THREE.AxesHelper(500)
 
-    this.scene.add(axesHelper)
+    // this.scene.add(axesHelper)
     this.options = Object.assign(this.options, options)
     
 
@@ -118,61 +115,46 @@ export class createBoard {
 
     this.scene.add(cube_)
 
-    // 动态插入物体
-    const mat = new THREE.MeshLambertMaterial({
-      color: 0x333333,
-    })
+    const squareShape = new THREE.Shape()
+      .moveTo( 0, 0 )
+      .lineTo( 0, this.options.exmy0 )
+      .lineTo( this.options.exmx0, this.options.exmy0 )
+      .lineTo( this.options.exmx0, 0 )
+      .lineTo(0, 0)
 
-    let box = null
-    
-    if (this.options.type == 0) {
-      box = new THREE.InstancedMesh(new THREE.BoxGeometry(this.options.exmx3, this.options.raster, this.options.exmy3), mat, this.options.exmy2 * this.options.exmx2)
-    } else {
-      box = new THREE.InstancedMesh(new THREE.CylinderGeometry(this.options.exmx3 / 2, this.options.exmx3 / 2, this.options.raster), mat, this.options.exmy2 * this.options.exmx2)
-    }
-    const matrix = new THREE.Matrix4()
-    let index = 0
     for (let colIndex = 0; colIndex < this.options.exmy2; colIndex++) {
       for (let rowIndex = 0; rowIndex < this.options.exmx2; rowIndex++) {
-        const row = this.options.exmx1 + (this.options.exmx3 + this.options.exmx4) * rowIndex - this.options.exmx0 / 2 + this.options.exmx3 / 2
-        const col = this.options.exmy1 + (this.options.exmy3 + this.options.exmy4) * colIndex - this.options.exmy0 / 2 + this.options.exmy3 / 2
+        const row_ = this.options.exmx1 + (this.options.exmx3 + this.options.exmx4) * rowIndex  + this.options.exmx3 / 2
+        const col_ = this.options.exmy1 + (this.options.exmy3 + this.options.exmy4) * colIndex  + this.options.exmy3 / 2
 
-        // if (this.options.type == 0) {
-        //   box = new THREE.Mesh(new THREE.BoxGeometry(this.options.exmx3, this.options.raster, this.options.exmy3), mat)
-        // } else {
-        //   box = new THREE.Mesh(new THREE.CylinderGeometry(this.options.exmx3 / 2, this.options.exmx3 / 2, this.options.raster), mat)
-        // }
-        // box.position.set(row, this.options.raster / 2, col)
-        // box.updateMatrix()
-        matrix.setPosition(row, (this.options.raster / 2) + 0.5, col)
-        box.setMatrixAt(index, matrix)
-        index = index + 1
+        const path = new THREE.Path()
+        if (this.options.type == 0) {
+          path.moveTo(row_ - this.options.exmx3 / 2, col_ - this.options.exmy3 / 2)
+          path.lineTo(row_ + this.options.exmx3 / 2, col_ - this.options.exmy3 / 2)
+          path.lineTo(row_ + this.options.exmx3 / 2, col_ + this.options.exmy3 / 2)
+          path.lineTo(row_ - this.options.exmx3 / 2, col_ + this.options.exmy3 / 2)
+          squareShape.holes.push(path)
+        } else {
+          
 
-        // this.geos.push(box.geometry.applyMatrix4(box.matrix))
+          path.absarc(row_, col_, this.options.exmx3 / 2, 0, Math.PI * 2, false)
+          squareShape.holes.push(path)
+        }
+       
+       
       }
     }
-    console.log(box, cube)
-    this.scene.add(box)
-    this.scene.add(cube)
-
-    // 合并模型
-    // let merged = mergeGeometries(this.geos)
 
 
-    // let mergeMesh = new THREE.Mesh(merged, mat)
-    // const resultGeom1 = this.getOctreeCSG(cube, mergeMesh)
-    const resultGeom1 = this.getOctreeCSG(cube, box)
+    let geometry = new THREE.ExtrudeGeometry( squareShape, { depth: this.options.raster, bevelEnabled: false, curveSegments: 50 } )
 
-
-    const subtract = new THREE.Mesh(
-      resultGeom1,
-      new THREE.MeshStandardMaterial({
-        color: 0xc3d6d3,
-        roughness: 0.3, // 设置粗糙度为0.3，使其表面具有一些纹理
-      }),
-    )
-
-    // this.scene.add(subtract)
+    let mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial({
+      color: 0xc3d6d3,
+      roughness: 0.3, // 设置粗糙度为0.3，使其表面具有一些纹理
+    }) )
+    mesh.position.set( -this.options.exmx0 / 2, this.options.raster, -this.options.exmy0 / 2)
+    mesh.rotation.set(Math.PI/2, 0, 0)
+    this.scene.add( mesh )
 
     // 渲染工件
     let job = null
@@ -202,17 +184,5 @@ export class createBoard {
     this.domBox.appendChild(this.renderer.domElement)
 
 
-  }
-  getOctreeCSG  (cube, cube1)  {
-    const octree1 = OctreeCSG.fromMesh(cube)
-    const octree2 = OctreeCSG.fromMesh(cube1)
-
-    const resultOctree = OctreeCSG["subtract"](
-      octree1.clone(),
-      octree2.clone(),
-      false,
-    )
-  
-    return OctreeCSG.toGeometry(resultOctree)
   }
 }

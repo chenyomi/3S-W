@@ -56,9 +56,9 @@ export class createMaterial {
     this.renderer.shadowMap.enabled = true
     this.scene = new THREE.Scene()
 
-    const axesHelper = new THREE.AxesHelper(500)
+    // const axesHelper = new THREE.AxesHelper(500)
 
-    this.scene.add(axesHelper)
+    // this.scene.add(axesHelper)
     this.v2 = new THREE.Vector2(this.cardBox.clientWidth, this.cardBox.clientHeight)
     this.camera = new THREE.PerspectiveCamera(
       75,
