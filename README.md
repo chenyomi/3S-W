@@ -1,19 +1,19 @@
 ## 预览
-proeview：
-https://chenyomi.github.io/yoomi
+🚀  https://chenyomi.github.io/yoomi
 
+### 安装
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### 运行服务
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### 打包发布
 
 ```sh
 npm run build
