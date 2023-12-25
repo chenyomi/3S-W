@@ -18,8 +18,11 @@ onMounted(() => {
       icon: 'bx-cloud-upload',
       size: 'large',
       width: 220,
+      mark: '是否保存并上传更新数据？',
       fn: ({ close, openLoading, closeLoading }) => {
-        openLoading()
+        openLoading({
+          text: '正在上传更新',
+        })
         close()
         setTimeout(() => {
           closeLoading()

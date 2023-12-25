@@ -1,7 +1,5 @@
 <script setup>
-const iconsList = [
-  'bx-abacus',
-]
+const iconsList = []
 </script>
 
 <template>

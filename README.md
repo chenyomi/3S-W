@@ -1,3 +1,7 @@
+## 预览
+proeview：
+https://chenyomi.github.io/yoomi
+
 
 ```sh
 npm install
