@@ -5,11 +5,10 @@ export class createBoard {
   constructor(options) {
     this.options = {
       container: '#box',   //容器id
-      pro: '0', //0立方体1圆柱
       distans: 8,
       name: '800*400 1004796 料盘6号',
       status: true,
-      type: 0,
+      type: 0, //0立方体 1圆柱
       exmx0: 800,
       exmy0: 400,
       exmx1: 20,
@@ -51,7 +50,6 @@ export class createBoard {
       0.1,
       1000,
     )
-    
   }
   disWebGl() {
     cancelAnimationFrame(this.animation)
@@ -158,31 +156,80 @@ export class createBoard {
 
     // 渲染工件
     let job = null
+    if (this.options.type == 0) {
+      const data = [
+        {
+          geo: [10, 20, 60],
+          pos: [this.options.exmx1 + 5 - this.options.exmx0 / 2, 10, this.options.exmy1 + 30 - this.options.exmy0 / 2],
+        },
+        {
+          geo: [10, 20, 60],
+          pos: [this.options.exmx1 + 25 - this.options.exmx0 / 2, 10, this.options.exmy1 + 30 - this.options.exmy0 / 2],
+        },
+        {
+          geo: [10, 20, 60],
+          pos: [this.options.exmx1 + 45 - this.options.exmx0 / 2, 10, this.options.exmy1 + 30 - this.options.exmy0 / 2],
+        },
 
-    // 渲染工件
-    job = new THREE.Mesh(
-      new THREE.BoxGeometry(10, 25, 60),
-      new THREE.MeshLambertMaterial({
-        color: 0x97b2c8,
-      }),
-    )
+      ]
 
-    job.position.set(-220, 92.5, 30)
+      data.forEach(item => {
+        job = new THREE.Mesh(
+          new THREE.BoxGeometry(...item.geo),
+          new THREE.MeshLambertMaterial({
+            color: 0x97b2c8,
+          }),
+        )
 
-    // this.scene.add(job)
+        job.position.set(...item.pos)
+
+        this.scene.add(job)
+      })
+     
+    } else {
+      const data = [
+        {
+          geo: [20, 20, 50],
+          pos: [this.options.exmx1 + 20  - this.options.exmx0 / 2, 25, this.options.exmy1 + 30 - this.options.exmy0 / 2],
+        },
+        {
+          geo: [20, 20, 50],
+          pos: [this.options.exmx1 + 20 - this.options.exmx0 / 2, 25, this.options.exmy1 + 30 - this.options.exmy0 / 2 + (this.options.exmy3 + this.options.exmy4)],
+        },
+        {
+          geo: [20, 20, 50],
+          pos: [this.options.exmx1 + 20 - this.options.exmx0 / 2, 25, this.options.exmy1 + 30 - this.options.exmy0 / 2 + (this.options.exmy3 + this.options.exmy4) * 2],
+        },
+
+      ]
+
+      data.forEach(item => {
+        job = new THREE.Mesh(
+          new THREE.CylinderGeometry(...item.geo),
+          new THREE.MeshLambertMaterial({
+            color: 0x97b2c8,
+          }),
+        )
+
+        job.position.set(...item.pos)
+        this.scene.add(job)
+      })
+    }
+
+   
+
     const animate = () => {
-      this.animation =  requestAnimationFrame(animate) //向浏览器发起一个执行某函数的请求， 什么时候会执行由浏览器决定，一般默认保持60FPS的频率
+      this.animation = requestAnimationFrame(animate) //向浏览器发起一个执行某函数的请求， 什么时候会执行由浏览器决定，一般默认保持60FPS的频率
       this.renderer.render(this.scene, this.camera) //每次渲染出一幅图像
     }
 
-    animate()
+    
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
 
     //domElement canvas对象
     this.domBox = document.querySelector('#box')
     this.renderer.domElement.setAttribute('class', 'fadeIn')
     this.domBox.appendChild(this.renderer.domElement)
-
-
+    animate()
   }
 }

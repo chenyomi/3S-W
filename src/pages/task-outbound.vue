@@ -135,7 +135,7 @@ onMounted(() => {
           @click="showDetail({
             name: (index + 1) + (route.query.type == '0' ? '号料箱' : '号料盘'),
             code: index + 1,
-            mNum: 10,
+            mNum: route.query.type == '0' ? 0 : 10,
             num: 32,
             mName: '80*80*80 物料A' + '-' + (index + 1),
             pro: index%2 ==0 ?'0': '1',

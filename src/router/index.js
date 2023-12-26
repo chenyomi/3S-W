@@ -75,6 +75,16 @@ export const router = createRouter({
           },
           children: [
             {
+              path: 'drawer',
+              meta: {
+                name: '料盘',
+
+                // disabled: true,
+                childrenTabIcon: 'bxs-downvote',
+              },
+              component: () => import('../pages/task-drawer.vue'),
+            },
+            {
               path: 'product',
               meta: {
                 name: '物料',
@@ -104,16 +114,7 @@ export const router = createRouter({
               },
               component: () => import('../pages/task-frock.vue'),
             },
-            {
-              path: 'drawer',
-              meta: {
-                name: '料盘',
-
-                // disabled: true,
-                childrenTabIcon: 'bxs-downvote',
-              },
-              component: () => import('../pages/task-drawer.vue'),
-            },
+           
           ],
         },
         {

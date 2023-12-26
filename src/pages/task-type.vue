@@ -31,7 +31,7 @@ onMounted(() => {
           dialog.value = true
           break
         case 2:
-          router.push({ path: '/process/product' })
+          router.push({ path: '/process/drawer' })
           break
         default:
           message.value.open({
@@ -78,7 +78,6 @@ onMounted(() => {
           })
           break
         case 2:
-          router.push({ path: '/process/product' })
           break
         default:
           break

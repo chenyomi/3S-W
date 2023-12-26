@@ -21,7 +21,7 @@ const formData = ref({
   clientZ: 80,
   clientR: 10,
   shift: 118,
-  mNum: 1,
+  mNum: 0,
   mName: '80*80*80 D01',
 })
 

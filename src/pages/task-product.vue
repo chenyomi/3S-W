@@ -389,6 +389,7 @@ onUnmounted(() => {
           v-model="pro"
           :items="proType"
           :density="density"
+          disabled
           class="mb-2"
           label="物料形状"
         />
@@ -396,6 +397,7 @@ onUnmounted(() => {
           v-model="formData.clientX"
           label="X轴长度："
           :density="density"
+          disabled
           class="mb-2"
           suffix="mm"
         />
@@ -403,6 +405,7 @@ onUnmounted(() => {
           v-model="formData.clientY"
           label="Y轴长度："
           :density="density"
+          disabled
           class="mb-2"
           suffix="mm"
         />
@@ -411,13 +414,8 @@ onUnmounted(() => {
           v-model="formData.clientZ"
           label="Z轴长度："
           :density="density"
+          disabled
           suffix="mm"
-          class="mb-2"
-        />
-        <VTextField
-          v-model="formData.shift"
-          label="机器速度限制："
-          :density="density"
           class="mb-2"
         />
         <!--
