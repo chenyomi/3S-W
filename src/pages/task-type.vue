@@ -1,17 +1,18 @@
 <script setup>
+import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 import taskTypeRetrieval from './task-type-retrieval.vue'
 
-const props = defineProps({
-  header: { type: Object },
-})
 
-const active = ref(0)
+const active = ref(null)
 const router = useRouter()
 const btnList = inject('btnList')
+const message = inject('message')
+
 
 onMounted(() => {
   nextTick(() => {
+
     //warehousing
     btnList.value = [{
       name: '创建',
@@ -21,12 +22,38 @@ onMounted(() => {
       formWidth: 600,
       mark: `是否创建任务？`,
       hideDiaName: true,
+      before: ({ dialog, openLoading, close, dialogLoading, closeLoading, dialogLoadingText }) => {
+        switch (active.value) {
+        case 0:
+          dialog.value = true
+          break
+        case 1:
+          dialog.value = true
+          break
+        case 2:
+          router.push({ path: '/process/product' })
+          break
+        default:
+          message.value.open({
+            text: '请选择类型',
+          })
+          break
+        }
+      },
       slot: shallowRef(taskTypeRetrieval), 
       fn: ({ close, diaFormRef }) => {
-        close()
+        
         switch (active.value) {
         case 0:
           diaFormRef.submit().then(res => {
+            if (res == -1) {
+              message.value.open({
+                text: '请选择一项',
+              })
+              
+              return
+            }
+            close()
             router.push({
               path: '/warehousing', query: {
                 type: res,
@@ -36,6 +63,14 @@ onMounted(() => {
           break
         case 1:
           diaFormRef.submit().then(res => {
+            if (res == -1) {
+              message.value.open({
+                text: '请选择一项',
+              })
+              
+              return
+            }
+            close()
             router.push({
               path: '/retrieval', query: {
                 type: res,

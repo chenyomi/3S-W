@@ -5,7 +5,12 @@ const selectRow = ref()
 
 const open = row => {
   selectRow.value = row
-  dialog.value = true
+  if (row.before) {
+    row.before({ dialog, openLoading, close, dialogLoading, closeLoading, dialogLoadingText })
+  } else {
+    dialog.value = true
+  }
+  
 }
 
 const close = () => {

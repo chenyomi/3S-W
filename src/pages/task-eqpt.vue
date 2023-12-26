@@ -2,9 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-const props = defineProps({
-  header: { type: Object },
-})
+
 
 const density = inject('density')
 const router = useRouter()

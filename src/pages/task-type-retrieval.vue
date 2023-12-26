@@ -1,18 +1,15 @@
 <script setup>
-const propsData = defineProps({
-  data: { type: Object },
-})
-
-
-const formData = ref(propsData.data)
+const active = ref(-1)
 
 const submit = () => {
   return new Promise(resolve => {
+
     resolve(active.value)
+    
   })
 }
 
-const active = ref(0)
+
 
 defineExpose({
   submit,

@@ -68,6 +68,7 @@
       <Setting />
     </template>
   </VerticalNavLayout>
+  <Message ref="message" />
 </template>
 
 <script setup>
@@ -79,6 +80,7 @@ import Footer from "@/layouts/components/Footer.vue"
 import Header from "@/layouts/components/Header.vue"
 import LeftMenu from "@/layouts/components/LeftMenu.vue"
 import LeftMenuBox from "@/layouts/components/LeftMenuBox.vue"
+import Message from "@/layouts/components/Message.vue"
 import Setting from "@/layouts/components/Setting.vue"
 import { computed, provide, ref } from "vue"
 import { useRoute } from "vue-router"
@@ -88,6 +90,7 @@ const { mdAndDown } = useDisplay()
 let route = useRoute()
 const btnList = ref([])
 const density = mdAndDown.value ? 'compact': 'comfortable'
+const message = ref()
 
 const matched = computed(() => {
   const b = []
@@ -139,6 +142,7 @@ const next = computed(() => {
   return str
 })
 
+provide('message', message)
 provide('subMain', subMain)
 provide('next', next)
 provide('density', density)

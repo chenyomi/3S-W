@@ -4,10 +4,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { useDisplay } from 'vuetify'
 import OutboundForm from './task-outbound-form.vue'
 
-const props = defineProps({
-  header: { type: Object },
-})
-
 const { mdAndDown } = useDisplay()
 const route = useRoute()
 const router = useRouter()

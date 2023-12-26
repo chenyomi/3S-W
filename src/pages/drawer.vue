@@ -26,9 +26,6 @@
 import { createBoard } from '@/utils/createBoard'
 import { onMounted, ref } from "vue"
 
-const props = defineProps({
-  header: { type: Object },
-})
 
 const density = inject('density')
 const btnList = inject('btnList')
