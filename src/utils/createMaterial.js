@@ -35,10 +35,10 @@ export class createMaterial {
     cancelAnimationFrame(this.animation)
     this.animation = null
     this.domBox.innerHTML = ''
-    this.renderer.dispose()
     this.scene.clear()
     this.cardBox = null
     this.renderer.forceContextLoss()
+    this.renderer.dispose()
     this.renderer = null
     this.camera = null
     this.composer = null

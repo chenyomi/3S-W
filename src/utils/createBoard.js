@@ -58,8 +58,8 @@ export class createBoard {
     this.animation = null
     this.domBox.innerHTML = ''
     this.controls = null
-    this.renderer.dispose()
     this.renderer.forceContextLoss()
+    this.renderer.dispose()
     this.renderer = null
     this.geos = []
     this.scene.clear()
