@@ -27,7 +27,13 @@ const color =  {
   },
 }
 
-const box = ref(new Array(route.query.type == '0' ? 8: 40))
+let num = 0
+if (route.query.type == '0' && route.query.process == 'in') num = 3
+if (route.query.type == '0' && route.query.process !== 'in') num = 5
+if (route.query.type == '1' && route.query.process == 'in') num = 5
+if (route.query.type == '1' && route.query.process !== 'in') num =35
+
+const box = ref(new Array(num))
 
 
 const btnList = inject('btnList')

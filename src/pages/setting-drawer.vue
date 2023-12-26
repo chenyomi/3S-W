@@ -238,7 +238,7 @@ const openModal = () => {
     formWidth: 854,
     hideDiaName: true,
     hideDiaOk: true,
-    hideDiaCanel: true,
+    hideDiaCancel: true,
     slot: shallowRef(drawerSvg), 
     slotData: serverItems.value.filter(c => c.id == expanded.value)[0], 
     fn: ({ close, openLoading, closeLoading, diaFormRef }) => {

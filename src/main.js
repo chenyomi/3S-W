@@ -9,6 +9,7 @@ import '@styles/styles.scss'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
+//icon https://boxicons.com 
 
 // Create vue app
 const app = createApp(App)

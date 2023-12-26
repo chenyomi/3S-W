@@ -39,9 +39,6 @@ const mainData = {
 
 const items = ref([
   { title: '物料-1', value: '0', data: cloneDeep(mainData) },
-  { title: '物料-2', value: '1', data: cloneDeep(mainData) },
-  { title: '物料-3', value: '2', data: cloneDeep(mainData) },
-  { title: '物料-4', value: '3', data: cloneDeep(mainData) },
 ])
 
 const tools = [

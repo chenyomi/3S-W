@@ -57,6 +57,7 @@ onMounted(() => {
             router.push({
               path: '/warehousing', query: {
                 type: res,
+                process: 'in',
               },
             })
           })
@@ -74,6 +75,7 @@ onMounted(() => {
             router.push({
               path: '/retrieval', query: {
                 type: res,
+                process: 'out',
               } })
           })
           break

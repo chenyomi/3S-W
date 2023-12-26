@@ -140,20 +140,20 @@ export const router = createRouter({
               component: () => import('../pages/setting-drawer.vue'),
             },
             {
-              path: 'clamp',
-              meta: {
-                name: '夹具',
-                childrenTabIcon: 'bx-stop',
-              },
-              component: () => import('../pages/setting-clamp.vue'),
-            },
-            {
               path: 'box',
               meta: {
                 name: '料箱',
                 childrenTabIcon: 'bx-stop',
               },
               component: () => import('../pages/setting-box.vue'),
+            },
+            {
+              path: 'clamp',
+              meta: {
+                name: '夹具',
+                childrenTabIcon: 'bx-stop',
+              },
+              component: () => import('../pages/setting-clamp.vue'),
             },
             {
               path: 'pallet',

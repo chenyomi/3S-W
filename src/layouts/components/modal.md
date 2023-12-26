@@ -13,7 +13,7 @@ const openModal = () => {
     formWidth: 800,  // 弹窗宽度
     hideDiaName: true, // 隐藏弹窗标题
     hideDiaOk: true, // 隐藏提交按钮
-    hideDiaCane: false, // 隐藏取消按钮
+    hideDiaCancel: false, // 隐藏取消按钮
     mark:'intro', // 介绍
     slot: shallowRef(drawerSvg),  // 引入表单模板 非必填
     slotData: serverItems.value.filter(c => c.id == expanded.value)[0], // 引入模板模板Data

@@ -6,7 +6,7 @@ const selectRow = ref()
 const open = row => {
   selectRow.value = row
   if (row.before) {
-    row.before({ dialog, openLoading, close, dialogLoading, closeLoading, dialogLoadingText })
+    row.before({ dialog, openLoading, close, dialogLoading, closeLoading, dialogLoadingText, selectRow })
   } else {
     dialog.value = true
   }
@@ -50,10 +50,10 @@ defineExpose({
         ref="diaFormRef"
         :data="selectRow.slotData || {}"
       />
-      <VCardActions v-if="!selectRow.hideDiaCanel && !selectRow.hideDiaOk">
+      <VCardActions v-if="!selectRow.hideDiaCancel && !selectRow.hideDiaOk">
         <VSpacer />
         <VBtn
-          v-if="!selectRow.hideDiaCanel "
+          v-if="!selectRow.hideDiaCancel "
           color="blue-darken-1"
           variant="text"
           @click="dialog = false"
