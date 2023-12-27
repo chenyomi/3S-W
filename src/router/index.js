@@ -41,6 +41,14 @@ export const constRouter =  [
     icon: 'bxs-hard-hat',
     component: () => import('../pages/pallet.vue'),
   },
+  {
+    path: '/worklog',
+    meta: {
+      name: '日志',
+    },
+    icon: 'bx-code-alt',
+    component: () => import('../pages/worklog.vue'),
+  },
 ]
 export const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
