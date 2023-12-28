@@ -95,7 +95,8 @@ onMounted(() => {
 <template>
   <div class="d-flex justify-center gap-8 align-center h-100 text-center">
     <VCard
-      class="px-13 py-15"
+      class="py-15"
+      width="160"
       border
       :color="active === 0 ? '#7986CB' :''"
       @click="() => {active = 0}"
@@ -107,11 +108,12 @@ onMounted(() => {
         variant="tonal"
       />
       <div class="mt-2">
-        入库
+        {{ $t('入库') }}
       </div>
     </VCard>
     <VCard
-      class="px-13 py-15"
+      class="py-15"
+      width="160"
       border
       :color="active === 1 ? '#7986CB' :''"
       @click="() => {active = 1}"
@@ -122,12 +124,13 @@ onMounted(() => {
         rounded
       />
       <div class="mt-2">
-        出库
+        {{ $t('出库') }}
       </div>
     </VCard>
     <VCard
       variant="flat"
-      class="px-13 py-15"
+      class="py-15"
+      width="160"
       border
       :color="active === 2 ? '#7986CB' :''"
       @click="() => {active = 2}"
@@ -139,7 +142,7 @@ onMounted(() => {
         variant="tonal"
       />
       <div class="mt-2">
-        加工
+        {{ $t('加工') }}
       </div>
     </VCard>
   </div>

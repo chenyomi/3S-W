@@ -22,7 +22,7 @@
         class="h-100 w-100"
         style="overflow: hidden;border-radius: 0.5rem;"
       >
-        <RouterView />
+        <RouterView v-if="view" />
       </div>
 
 
@@ -40,10 +40,12 @@
               rounded="0"
               block
               height="50"
+              width="60"
+              style="padding: 0;"
               :to="item.meta.disabled? null : `${subMain}/${item.path}`"
               :color="route.path == `${subMain}/${item.path}` ? 'primary' : ''"
             >
-              {{ item.meta.name }}
+              {{ $t(item.meta.name) }}
             </VBtn>
             <div
               v-if="i < subNavList.length - 1"
@@ -82,21 +84,27 @@ import LeftMenu from "@/layouts/components/LeftMenu.vue"
 import LeftMenuBox from "@/layouts/components/LeftMenuBox.vue"
 import Message from "@/layouts/components/Message.vue"
 import Setting from "@/layouts/components/Setting.vue"
+import { useStore } from "@/pinia"
 import { computed, provide, ref } from "vue"
 import { useRoute } from "vue-router"
-import { useDisplay } from 'vuetify'
+import { useDisplay, useLocale } from 'vuetify'
+
+const store = useStore()
+const { view } = storeToRefs(store)
 
 const { mdAndDown } = useDisplay()
 let route = useRoute()
 const btnList = ref([])
 const density = mdAndDown.value ? 'compact': 'comfortable'
 const message = ref()
+const { t } = useLocale()
 
 const matched = computed(() => {
   const b = []
 
+  
   route.matched.forEach((e, i) => {
-    i !== 0 && b.push({ title: e.meta.name })
+    i !== 0 && b.push({ title: t(e.meta.name) })
   })
   
   return b

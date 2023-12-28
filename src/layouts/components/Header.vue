@@ -33,10 +33,7 @@
             v-if="item.icon"
             :icon="item.icon"
           />
-          <span
-            class="d-none d-sm-block"
-            style="padding-left: 8px;letter-spacing: 8px;"
-          >{{ item.name }}</span>
+          <span class="d-none d-sm-block">{{ $t(item.name) }}</span>
         </VBtn>
       </div>
     </div>

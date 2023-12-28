@@ -20,7 +20,8 @@ defineExpose({
   <VContainer>
     <div class="d-flex justify-center py-10 gap-8 align-center h-100 text-center">
       <VCard
-        class="px-13 py-15"
+        class="py-15"
+        width="160"
         border
         :color="active === 0 ? '#7986CB' :''"
         @click="() => {active = 0}"
@@ -32,11 +33,12 @@ defineExpose({
           variant="tonal"
         />
         <div class="mt-2">
-          料箱
+          {{ $t('料箱') }}
         </div>
       </VCard>
       <VCard
-        class="px-13 py-15"
+        class="py-15"
+        width="160"
         border
         :color="active === 1 ? '#7986CB' :''"
         @click="() => {active = 1}"
@@ -47,7 +49,7 @@ defineExpose({
           rounded
         />
         <div class="mt-2">
-          料盘
+          {{ $t('料盘') }}
         </div>
       </VCard>
     </div>

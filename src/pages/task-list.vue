@@ -1,13 +1,15 @@
 
 <script setup>
+import Modal from '@/layouts/components/modal.vue'
 import { useRouter } from 'vue-router'
 import Draggable from 'vuedraggable'
+import taskListCut from './task-list-cut.vue'
 
 const btnList = inject('btnList')
 const router = useRouter()
 const checked = ref(null)
 const items = ref([])
-
+const modal = ref()
 
 
 const load = ({ done }) => {
@@ -45,7 +47,31 @@ const endEvent = e => {
   )
 }
 
+const clickCut = () => {
+  modal.value.open({
+    formWidth: 300,
+    mark: '拆分任务', // 介绍
+    slot: shallowRef(taskListCut),  // 引入表单模板 非必填
+    // slotData: serverItems.value.filter(c => c.id == expanded.value)[0], // 引入模板模板Data
+    // 弹窗表单提交事件 { close, openLoading, closeLoading, diaFormRef }
+    fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
+      openLoading({
+        text: '正在上传更新',
+      })
+
+      // 模板的submit 需要暴露 submit 事件
+      diaFormRef.submit().finally(() => {
+        // 关闭弹窗
+        close()
+        setTimeout(() => {
+          closeLoading()
+        }, 2000)
+      })
+    } })
+}
+
 onMounted(() => {
+  
   nextTick(() => {
     btnList.value = [
       {
@@ -145,17 +171,29 @@ onMounted(() => {
         <VCard
           class="d-flex flex-column mb-3"
           style="overflow: unset;"
-          :variant="checked === element.num ? 'outlined': 'flat'"
           @click="checked = element.num"
         >
-          <VCardSubtitle style="border-radius: 0.5rem 0.5rem 0 0;background: #111;color: #fff;line-height: 1.875rem;">
-            <span>{{ element.num }}</span><span class="mx-5">IN BEARBEIYUNG  </span> <span>180{{ index + 1 }}</span>
+          <VCardSubtitle
+            class="d-flex align-center justify-space-between"
+            style="border-radius: 0.5rem 0.5rem 0 0;color: #fff;line-height: 1.875rem;"
+            :style="checked === element.num ? 'background: rgb(121, 134, 203);': 'background: #111'"
+          >
+            <div><span>{{ element.num }}</span><span class="mx-5">IN BEARBEIYUNG  </span> <span>180{{ index + 1 }}</span></div>
+            <VBtn
+              v-if="index!==0"
+              size="mini"
+              class="px-1"
+              color="#ffffff"
+              @click.stop="clickCut"
+            >
+              <VIcon icon="bx-grid" />
+            </VBtn>
           </VCardSubtitle>
           <VCardText class="py-2">
             <div class="d-flex align-center justify-space-between">
               <div class="d-flex gap-3 align-center">
                 <VAvatar
-                  class="move"
+                  :class="index>0?'move':''"
                   :icon="icons[element.num%3]"
                   color="#7986CB"
                   size="50"
@@ -174,8 +212,8 @@ onMounted(() => {
                   :size="70"
                   :width="6"
                   :model-value="20"
-                  :color="index<=1? '#66BB6A': 'teal'"
-                  :indeterminate="index<=1"
+                  :color="index==0? '#66BB6A': 'teal'"
+                  :indeterminate="index==0"
                 >
                   <template #default>
                     <h6>5/25</h6>
@@ -198,6 +236,7 @@ onMounted(() => {
       </template>
     </Draggable>
   </VInfiniteScroll>
+  <Modal ref="modal" />
 </template>
  
 <style lang="scss">

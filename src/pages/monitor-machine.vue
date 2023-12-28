@@ -1,10 +1,14 @@
 <script setup>
-import illustrationJohnDark from '@images/cards/illustration-john-dark.png'
-import illustrationJohnLight from '@images/cards/illustration-john-light.png'
-import { useTheme } from 'vuetify'
+const btnList = inject('btnList')
 
-const { global } = useTheme()
-const illustrationJohn = computed(() => global.name.value === 'dark' ? illustrationJohnDark : illustrationJohnLight)
+
+onMounted(() => {
+  nextTick(() => {
+
+    //warehousing
+    btnList.value = []
+  })
+})
 </script>
 
 <template>

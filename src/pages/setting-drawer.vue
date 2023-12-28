@@ -312,7 +312,7 @@ const openModal = () => {
           class="ma-2 w-25"
           @click="openModal"
         >
-          预览
+          {{ $t('预览') }}
         </VBtn>
       </div>
     </template>

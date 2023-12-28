@@ -1,7 +1,6 @@
-/* eslint-disable import/order */
 import '@/@iconify/icons-bundle'
 import App from '@/App.vue'
-import vuetify from '@/plugins/vuetify'
+import { i18n, vuetify } from '@/plugins/vuetify'
 import { router } from '@/router'
 import '@core/scss/template/index.scss'
 import '@layouts/styles/index.scss'
@@ -11,15 +10,13 @@ import { createApp } from 'vue'
 
 //icon https://boxicons.com 
 
-// Create vue app
+
+const pinia = createPinia()
+
 const app = createApp(App)
 
-
-// Use plugins
 app.use(vuetify)
-app.use(createPinia())
+app.use(i18n)
+app.use(pinia)
 app.use(router)
-
-
-// Mount vue app
 app.mount('#app')

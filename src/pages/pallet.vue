@@ -100,11 +100,11 @@ const pallets = ref([
           class="mt-2"
           style="color: #fff;"
         >
-          {{ item.name }}
+          {{ $t(item.name) }}
         </div>
       </div>
       <div style=" width: 15.625rem;background: #78909c; color: #fff; line-height: 2rem;">
-        托板
+        {{ $t('托板') }}
       </div>
     </VCard>
   </div>

@@ -2,7 +2,9 @@
 const density = inject('density')
 const expanded = ref()
 let expandedArr = []
+import { useLocale } from 'vuetify'
 
+const { t } = useLocale()
 let desserts = [
   {
     id: 1,
@@ -174,7 +176,13 @@ const FakeAPI = {
 
 const btnList = inject('btnList')
 
+
 onMounted(() => {
+  nextTick(() => {
+
+    //warehousing
+    btnList.value = []
+  })
 })
 
 
@@ -187,7 +195,7 @@ const headers = ref([
   //   width: 70,
   // },
   {
-    title: '状态',
+    title: t('状态'),
     align: 'center',
     sortable: false,
     key: 'status',
@@ -195,20 +203,20 @@ const headers = ref([
   },
   
   {
-    title: '内容',
+    title: t('内容'),
     align: 'start',
     sortable: false,
     key: 'content',
   },
   {
-    title: '类型',
+    title: t('类型'),
     align: 'center',
     sortable: false,
     key: 'type',
     width: 100,
   },
   {
-    title: '时间',
+    title: t('时间'),
     align: 'end',
     sortable: false,
     key: 'time',
@@ -224,7 +232,6 @@ function loadItems ({ page, itemsPerPage, sortBy }) {
     serverItems.value = items
     loading.value = false
     expanded.value = items[0].id
-    btnList.value[1].slotData = serverItems.value.filter(c => c.id == items[0].id)[0]
   })
 }
 </script>
@@ -245,13 +252,11 @@ function loadItems ({ page, itemsPerPage, sortBy }) {
       newVal.map(e => {
         if(!expandedArr.includes(e)) {
           expanded = e
-          btnList[1].slotData = serverItems.filter(c => c.id == e)[0]
         }
       })
       expandedArr.map(e => {
         if(!newVal.includes(e)) {
           expanded = e 
-          btnList[1].slotData = serverItems.filter(c => c.id == e)[0]
         }
       })
       expandedArr = newVal

@@ -58,7 +58,7 @@ defineExpose({
           variant="text"
           @click="dialog = false"
         >
-          关闭
+          {{ $t('关闭') }}
         </VBtn>
         <VBtn
           v-if="!selectRow.hideDiaOk"
@@ -66,7 +66,7 @@ defineExpose({
           variant="text"
           @click="() => {selectRow.fn({close, openLoading ,closeLoading, diaFormRef})}"
         >
-          是的
+          {{ $t('是的') }}
         </VBtn>
       </VCardActions>
     </VCard>

@@ -28,7 +28,7 @@ const route = ref(useRoute())
       />
       <!-- 👉 Title -->
       <span class="nav-item-title">
-        {{ item.title }}
+        {{ $t(item.title) }}
       </span>
     </Component>
   </li>
