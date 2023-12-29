@@ -62,7 +62,7 @@ export default {
   生产延时: 'Production Delay',
   切换延时: 'Handover Delay',
   启动延时: 'Start Delay',
-  校准设置值: 'Calibration',
+  校准设定值: 'Calibration',
   最小定位: 'Min Position',
   最大定位: 'Max Position',
 }
