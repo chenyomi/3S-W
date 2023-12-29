@@ -20,11 +20,11 @@ defineExpose({
 <template>
   <VContainer>
     <h4 class="mb-4">
-      拆分
+      {{ $t('拆分') }}
     </h4>
     <VTextField
       v-model="formData.num"
-      label="数量"
+      :label="$t('数量')"
       :density="density"
       type="number"
     />

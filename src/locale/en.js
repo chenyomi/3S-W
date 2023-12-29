@@ -65,4 +65,8 @@ export default {
   校准设定值: 'Calibration',
   最小定位: 'Min Position',
   最大定位: 'Max Position',
+  设置: 'Setting',
+  帮助中心: 'Help',
+  退出登录: 'Login Out',
+  拆分: 'Split',
 }

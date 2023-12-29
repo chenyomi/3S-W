@@ -64,7 +64,7 @@ import avatar1 from '@images/av.png'
               />
             </template>
 
-            <VListItemTitle>设置</VListItemTitle>
+            <VListItemTitle>{{ $t('设置') }}</VListItemTitle>
           </VListItem>
          
           <!-- 👉 FAQ -->
@@ -77,7 +77,7 @@ import avatar1 from '@images/av.png'
               />
             </template>
 
-            <VListItemTitle>帮助中心</VListItemTitle>
+            <VListItemTitle>{{ $t('帮助中心') }}</VListItemTitle>
           </VListItem>
 
           <!-- Divider -->
@@ -93,7 +93,7 @@ import avatar1 from '@images/av.png'
               />
             </template>
 
-            <VListItemTitle>退出登录</VListItemTitle>
+            <VListItemTitle>{{ $t('退出登录') }}</VListItemTitle>
           </VListItem>
         </VList>
       </VMenu>
