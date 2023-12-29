@@ -1,4 +1,7 @@
 <script setup>
+import { useLocale } from 'vuetify'
+
+const { t } = useLocale()
 const density = inject('density')
 const expanded = ref()
 let expandedArr = []
@@ -93,13 +96,13 @@ const headers = ref([
   //   minWidth: 70,
   // },
   {
-    title: '网板名称',
+    title: t('名称'),
     align: 'center',
     sortable: false,
     key: 'name',
     minWidth: 90,
   },
-  { title: '托板', key: 'borad', align: 'center', sortable: false, minWidth: 100 },
+  { title: t('托板'), key: 'borad', align: 'center', sortable: false, minWidth: 100 },
   
 ])
 

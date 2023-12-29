@@ -34,36 +34,38 @@ onMounted(() => {
 </script>
 
 <template>
-  <VItemGroup selected-class="bg-primary">
-    <VRow>
-      <VCol
-        v-for="(n, i) in list"
-        :key="n"
-        cols="12"
-        md="4"
-      >
-        <VItem>
+  <div
+    class="h-100"
+    style="overflow-y: scroll;"
+  >
+    <VItemGroup selected-class="bg-primary">
+      <div class="d-flex w-100 gap-3">
+        <VItem
+          v-for="(n, i) in list"
+          :key="n"
+        >
           <VCard
             class="d-flex align-center"
             :color="active == i ? 'primary':''"
             height="60"
+            style="flex: 1;"
             @click="active = i"
           >
             <div class="flex-grow-1 text-center">
-              {{ n }}
+              {{ $t(n) }}
             </div>
           </VCard>
         </VItem>
-      </VCol>
-    </VRow>
-  </VItemGroup>
-  <VCard class="mt-3 w-50">
-    <VContainer>
-      <VSelect
-        v-model="select"
-        :items="items"
-        label="请选择语言"
-      />
-    </VContainer>
-  </VCard>
+      </div>
+    </VItemGroup>
+    <VCard class="mt-3 w-50">
+      <VContainer>
+        <VSelect
+          v-model="select"
+          :items="items"
+          :label="$t('语言')"
+        />
+      </VContainer>
+    </VCard>
+  </div>
 </template>

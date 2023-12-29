@@ -5,7 +5,7 @@
       <VBtn
         size="40"
         rounded
-        class="pa-2"
+        class="pa-2 mx-3"
         color="none"
         @click="changeLoc"
       >

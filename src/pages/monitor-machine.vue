@@ -18,7 +18,7 @@ onMounted(() => {
   >
     <VCard class="pt-2 pb-2">
       <h4 class="mx-3 mb-1">
-        设备：
+        {{ $t('设备') }}：
       </h4>
       <div class="d-flex align-center gap-y-4 flex-wrap px-3">
         <div
@@ -34,7 +34,7 @@ onMounted(() => {
           />
 
           <div class="text-start">
-            <span class="text-sm"> 状态：</span>
+            <span class="text-sm"> {{ $t('状态') }}：</span>
             <h6 class="text-base font-weight-medium">
               INAKTIV
             </h6>
@@ -53,7 +53,7 @@ onMounted(() => {
           />
 
           <div class="text-start">
-            <span class="text-sm"> 出口状态：</span>
+            <span class="text-sm"> {{ $t('出口状态') }}：</span>
             <h6 class="text-base font-weight-medium">
               IDLE
             </h6>
@@ -74,7 +74,7 @@ onMounted(() => {
           />
 
           <div class="text-start">
-            <span class="text-sm"> 循环时间：</span>
+            <span class="text-sm"> {{ $t('循环时间') }}：</span>
             <h6 class="text-base font-weight-medium">
               0:30:00
             </h6>
@@ -93,7 +93,7 @@ onMounted(() => {
           />
 
           <div class="text-start">
-            <span class="text-sm"> 处理时间：</span>
+            <span class="text-sm"> {{ $t('处理时间') }}：</span>
             <h6 class="text-base font-weight-medium">
               0:30:00
             </h6>
@@ -112,7 +112,7 @@ onMounted(() => {
           />
 
           <div class="text-start">
-            <span class="text-sm"> 编辑时间：</span>
+            <span class="text-sm"> {{ $t('编辑时间') }}：</span>
             <h6 class="text-base font-weight-medium">
               0:30:00
             </h6>
@@ -122,7 +122,7 @@ onMounted(() => {
     </VCard>
     <VCard class="pt-2 pb-2 mt-3">
       <h4 class="mx-3 mb-1">
-        连接：
+        {{ $t('连接') }}：
       </h4>
       <div class="d-flex align-center gap-y-4 flex-wrap px-3">
         <div
@@ -138,7 +138,7 @@ onMounted(() => {
           />
 
           <div class="text-start">
-            <span class="text-sm"> 在线：</span>
+            <span class="text-sm"> {{ $t('在线') }}：</span>
             <h6
               class="text-base font-weight-medium "
               style="color: #43a047;"
@@ -182,7 +182,7 @@ onMounted(() => {
           />
 
           <div class="text-start">
-            <span class="text-sm">NC准备：</span>
+            <span class="text-sm">{{ $t('NC准备') }}：</span>
             <h6 class="text-base font-weight-medium">
               -
             </h6>
@@ -201,7 +201,7 @@ onMounted(() => {
           />
 
           <div class="text-start">
-            <span class="text-sm">连接：</span>
+            <span class="text-sm">{{ $t('连接') }}：</span>
             <h6 class="text-base font-weight-medium">
               -
             </h6>
@@ -221,7 +221,7 @@ onMounted(() => {
             variant="tonal"
           />
           <div class="text-start">
-            <span class="text-sm"> 循环中：</span>
+            <span class="text-sm"> {{ $t('循环中') }}：</span>
             <h6 class="text-base font-weight-medium">
               -
             </h6>
@@ -239,7 +239,7 @@ onMounted(() => {
             variant="tonal"
           />
           <div class="text-start">
-            <span class="text-sm"> 准备加载：</span>
+            <span class="text-sm"> {{ $t('准备加载') }}：</span>
             <h6 class="text-base font-weight-medium">
               -
             </h6>
@@ -258,7 +258,7 @@ onMounted(() => {
           />
 
           <div class="text-start">
-            <span class="text-sm"> 程序：</span>
+            <span class="text-sm"> {{ $t('程序') }}：</span>
             <h6
               class="text-base font-weight-medium "
               style="color: #43a047;"

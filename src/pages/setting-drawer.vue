@@ -1,8 +1,11 @@
 <script setup>
 import Modal from '@/layouts/components/modal.vue'
 import { inject, nextTick, ref } from 'vue'
+import { useLocale } from 'vuetify'
 import drawerForm from './setting-drawer-form.vue'
 import drawerSvg from './setting-drawer-svg.vue'
+
+const { t } = useLocale()
 
 const density = inject('density')
 const serverItems = ref([])
@@ -206,19 +209,19 @@ const headers = ref([
     minWidth: 70,
   },
   {
-    title: '网板名称',
+    title: t('名称'),
     align: 'start',
     sortable: false,
     key: 'name',
     minWidth: 180,
   },
-  { title: '安全距离', key: 'distans', align: 'center', sortable: false, minWidth: 90 },
-  { title: '厚度', key: 'raster', align: 'center', sortable: false, minWidth: 60 },
-  { title: '板（X-Y）', key: 'exmx0', align: 'center', sortable: false, minWidth: 90 },
-  { title: '原点偏移（X-Y）', key: 'exmx1', align: 'center', sortable: false, minWidth: 130 },
-  { title: '占位（X-Y）', key: 'exmx2', align: 'center', sortable: false, minWidth: 110 },
-  { title: '占位单元尺寸（X-Y）', key: 'exmx3', align: 'center', sortable: false, minWidth: 160 },
-  { title: '占位单元间距（X-Y）', key: 'exmx4', align: 'center', sortable: false, minWidth: 160 },
+  { title: t('安全距离'), key: 'distans', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('厚度'), key: 'raster', align: 'center', sortable: false, minWidth: 60 },
+  { title: t('板') + '（X-Y）', key: 'exmx0', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('原点偏移') + '（X-Y）', key: 'exmx1', align: 'center', sortable: false, minWidth: 130 },
+  { title: t('占位') + '（X-Y）', key: 'exmx2', align: 'center', sortable: false, minWidth: 110 },
+  { title: t('占位单元尺寸') + '（X-Y）', key: 'exmx3', align: 'center', sortable: false, minWidth: 160 },
+  { title: t('占位单元间距') + '（X-Y）', key: 'exmx4', align: 'center', sortable: false, minWidth: 160 },
 ])
 
 

@@ -1,5 +1,8 @@
 <script setup>
+import { useLocale } from 'vuetify'
 import eqptForm from './setting-eqpt-form.vue'
+
+const { t } = useLocale()
 
 const density = inject('density')
 const expanded = ref()
@@ -126,18 +129,18 @@ const headers = ref([
     minWidth: 70,
   },
   {
-    title: '设备名称',
+    title: t('名称'),
     align: 'start',
     sortable: false,
     key: 'name',
     minWidth: 120,
   },
-  { title: '生产延时', key: 'timer1', align: 'center', sortable: false, minWidth: 90 },
-  { title: '切换延时', key: 'timer2', align: 'center', sortable: false, minWidth: 90 },
-  { title: '启动延时', key: 'timer3', align: 'center', sortable: false, minWidth: 90 },
-  { title: '校准设定值（X-Y-Z）', key: 'exmx1', align: 'center', sortable: false, minWidth: 150 },
-  { title: '最小定位（X-Y-Z）', key: 'exmx2', align: 'center', sortable: false, minWidth: 140 },
-  { title: '最大定位（X-Y-Z）', key: 'exmx3', align: 'center', sortable: false, minWidth: 140 },
+  { title: t('生产延时'), key: 'timer1', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('切换延时'), key: 'timer2', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('启动延时'), key: 'timer3', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('校准设定值') + '（X-Y-Z）', key: 'exmx1', align: 'center', sortable: false, minWidth: 150 },
+  { title: t('最小定位') + '（X-Y-Z）', key: 'exmx2', align: 'center', sortable: false, minWidth: 140 },
+  { title: t('最大定位') + '（X-Y-Z）', key: 'exmx3', align: 'center', sortable: false, minWidth: 140 },
 ])
 
 const serverItems = ref([])

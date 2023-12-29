@@ -10,7 +10,7 @@
       style="position: absolute;top: 1rem;left: 0.75rem;"
       :items="desserts"
       :density="density"
-      label="当前料盘"
+      :label="t('料盘')"
       item-title="name"
       item-value="id"
       @update:model-value="onChange"
@@ -25,7 +25,9 @@
 <script setup>
 import { createBoard } from '@/utils/createBoard'
 import { onMounted, ref } from "vue"
+import { useLocale } from 'vuetify'
 
+const { t } = useLocale()
 
 const density = inject('density')
 const btnList = inject('btnList')

@@ -11,13 +11,15 @@ const checked = ref(null)
 const items = ref([])
 const modal = ref()
 
+let page = 0
 
 const load = ({ done }) => {
   if (items.value.length >= 30) {
     done('empty')
   } else {
-    const arr = Array.from({ length: 10 }, (k, v) => v + 1)
+    const arr = Array.from({ length: 10 }, (k, v) => page * 10 +  v + 1)
 
+    page = page + 1
     done('loading')
     setTimeout(() => {
       arr.forEach(e => {

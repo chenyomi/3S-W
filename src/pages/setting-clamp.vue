@@ -1,10 +1,11 @@
 <script setup>
+import { useLocale } from 'vuetify'
 import clampForm from './setting-clamp-form.vue'
 
 const density = inject('density')
 const expanded = ref()
 let expandedArr = []
-
+const { t } = useLocale()
 let desserts = [
   {
     id: 1,
@@ -128,15 +129,15 @@ const headers = ref([
     minWidth: 70,
   },
   {
-    title: '夹具名称',
+    title: t('名称'),
     align: 'start',
     sortable: false,
     key: 'name',
     minWidth: 90,
   },
-  { title: '编号', key: 'code', align: 'center', sortable: false, minWidth: 90 },
-  { title: '尺寸（X-Y）', key: 'exmx1', align: 'center', sortable: false, minWidth: 90 },
-  { title: '定位（X-Y）', key: 'exmx2', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('编号'), key: 'code', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('尺寸') + '（X-Y）', key: 'exmx1', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('定位') + '（X-Y）', key: 'exmx2', align: 'center', sortable: false, minWidth: 90 },
   
 ])
 

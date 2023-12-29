@@ -1,5 +1,8 @@
 <script setup>
+import { useLocale } from 'vuetify'
 import boxForm from './setting-box-form.vue'
+
+const { t } = useLocale()
 
 const density = inject('density')
 const expanded = ref()
@@ -164,15 +167,15 @@ const headers = ref([
     minWidth: 70,
   },
   {
-    title: '托板名称',
+    title: t('名称'),
     align: 'start',
     sortable: false,
     key: 'name',
     minWidth: 90,
   },
-  { title: '编号', key: 'code', align: 'center', sortable: false, minWidth: 90 },
-  { title: '载重', key: 'maxKg', align: 'center', sortable: false, minWidth: 90 },
-  { title: '尺寸（X-Y-Z）', key: 'exmx1', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('编号'), key: 'code', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('载重'), key: 'maxKg', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('尺寸') + '（X-Y-Z）', key: 'exmx1', align: 'center', sortable: false, minWidth: 90 },
   
 ])
 
