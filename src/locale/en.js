@@ -69,4 +69,6 @@ export default {
   帮助中心: 'Help',
   退出登录: 'Login Out',
   拆分: 'Split',
+  物料: 'Material',
+  工装: 'Frock',
 }

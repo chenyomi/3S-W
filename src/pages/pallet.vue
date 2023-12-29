@@ -83,6 +83,8 @@ const pallets = ref([
       :key="index"
       :color="active === index ? 'rgba(121, 134, 203, .2)' :'rgba(121, 134, 203, .0)'"
       class="px-4 py-8"
+      elevation="0"
+      style="max-width: 18rem;flex: 1;"
       @click="() => {active = index}"
     >
       <div
@@ -103,7 +105,7 @@ const pallets = ref([
           {{ $t(item.name) }}
         </div>
       </div>
-      <div style=" width: 15.625rem;background: #78909c; color: #fff; line-height: 2rem;">
+      <div style="width: 100%;background: #78909c; color: #fff; line-height: 2rem;">
         {{ $t('托板') }}
       </div>
     </VCard>

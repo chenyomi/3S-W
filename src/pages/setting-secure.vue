@@ -1,14 +1,25 @@
 <script setup>
+import { useLocale } from 'vuetify'
+
 const btnList = inject('btnList')
 
 const list = ['操作模式', '设置模式', '管理模式']
 const active = ref(0)
-const select = ref({ title: '简体中文', value: '0' })
+const select = ref('0')
+const lang = localStorage.getItem('lang')
+if (lang == 'en') {
+  select.value = '1'
+} else {
+  select.value = '0'
+}
 
 const items = [
   { title: '简体中文', value: '0' },
   { title: 'English', value: '1' },
 ]
+
+const { current } = useLocale()
+
 
 onMounted(() => {
   nextTick(() => {
@@ -25,6 +36,13 @@ onMounted(() => {
         })
         close()
         setTimeout(() => {
+          if (select.value === '0') {
+            localStorage.setItem('lang', 'zh-Hans')
+            current.value = 'zh-Hans'
+          } else {
+            localStorage.setItem('lang', 'en')
+            current.value = 'en'
+          }
           closeLoading()
         }, 2000)
       },

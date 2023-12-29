@@ -8,6 +8,7 @@ export const messages = {
     ...en_es,
     $vuetify: {
       badge: 'badge',
+      open: 'open',
     },
   },
   'zh-Hans': {
@@ -15,6 +16,7 @@ export const messages = {
     ...zhHans_es,
     $vuetify: {
       badge: '徽章',
+      open: '打开',
     },
   },
 }
