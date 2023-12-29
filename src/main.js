@@ -5,7 +5,6 @@ import { router } from '@/router'
 import '@core/scss/template/index.scss'
 import '@layouts/styles/index.scss'
 import '@styles/styles.scss'
-import 'default-passive-events'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
