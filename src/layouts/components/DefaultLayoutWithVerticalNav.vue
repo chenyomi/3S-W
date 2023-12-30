@@ -92,10 +92,10 @@ import { useDisplay, useLocale } from 'vuetify'
 const store = useStore()
 const { view } = storeToRefs(store)
 
-const { mdAndDown } = useDisplay()
+const { lgAndDown } = useDisplay()
 let route = useRoute()
 const btnList = ref([])
-const density = mdAndDown.value ? 'compact': 'comfortable'
+const density = lgAndDown.value ? 'compact': 'comfortable'
 const message = ref()
 const { t } = useLocale()
 
