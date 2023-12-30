@@ -262,7 +262,6 @@ onMounted(() => {
     }, {
       name: next.value.name,
       color: '#D32F2F',
-      icon: 'bxs-zap',
       size: 'large',
       width: 220,
       mark: next.value.intro,
