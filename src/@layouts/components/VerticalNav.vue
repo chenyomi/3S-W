@@ -76,7 +76,7 @@ const handleNavScroll = evt => {
       :update-is-vertical-nav-scrolled="updateIsVerticalNavScrolled"
     >
       <ul
-        class="nav-items"
+        class="nav-items scroll-css"
         style="overflow-y: scroll;"
       >
         <slot />
@@ -150,6 +150,33 @@ const handleNavScroll = evt => {
         transform: translateX(variables.$layout-vertical-nav-width);
       }
     }
+  }
+}
+
+.scroll-css {
+  user-select: none;
+
+  &::-webkit-scrollbar {
+    background: rgb(var(--v-theme-surface));
+    block-size: 8px;
+    border-end-end-radius: 14px;
+    border-start-end-radius: 14px;
+    inline-size: 0;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: rgb(var(--v-theme-perfect-scrollbar-thumb));
+    inline-size: 4;
+  }
+
+  &::-webkit-scrollbar-corner {
+    display: none;
   }
 }
 </style>
