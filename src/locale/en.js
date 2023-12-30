@@ -70,5 +70,6 @@ export default {
   退出登录: 'Login Out',
   拆分: 'Split',
   物料: 'Material',
-  工装: 'Frock',
+  夹具: 'Frock',
+  下一步: 'Next',
 }

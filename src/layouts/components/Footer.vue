@@ -28,7 +28,10 @@ timer = setInterval(() => {
         height="8"
         striped
       />
-      <IconBtn class="ms-2">
+      <IconBtn
+        class="ms-2"
+        to="/worklog"
+      >
         <VAvatar
           color="rgb(var(--v-theme-background))"
           icon="bx-bell"

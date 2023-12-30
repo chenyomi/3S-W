@@ -42,10 +42,10 @@ const items = ref([
 ])
 
 const tools = [
-  { title: '夹具-1', value: '0' },
-  { title: '夹具-2', value: '1' },
-  { title: '夹具-3', value: '2' },
-  { title: '夹具-4', value: '3' },
+  { title: '手爪-1', value: '0' },
+  { title: '手爪-2', value: '1' },
+  { title: '手爪-3', value: '2' },
+  { title: '手爪-4', value: '3' },
 ]
 
 const proType = [

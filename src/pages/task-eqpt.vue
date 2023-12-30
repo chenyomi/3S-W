@@ -69,11 +69,11 @@ onMounted(() => {
       />
       <VSwitch
         v-model="formData.switch2"
-        label="完成后清洗工装"
+        label="完成后清洗夹具"
       />
       <VSwitch
         v-model="formData.switch3"
-        label="工装更换前清洗"
+        label="夹具更换前清洗"
       />
     </div>
     <h4 class="mx-3 mb-1 px-3">
@@ -91,14 +91,14 @@ onMounted(() => {
       <p>程序同步时间：  0：00：00  （未知）</p>
     </div>
     <h4 class="mx-3 mb-1 px-3">
-      工具寿命管理：
+      刀具寿命管理：
     </h4>
     <VDivider />
     <div class="pt-3 px-6 pb-4">
       <div class="d-flex align-center">
         <VSwitch
           v-model="formData.switch4"
-          label="工具损坏时卸载产品"
+          label="刀具损坏时卸载产品"
         />
         <VRadioGroup
           v-if="formData.switch4"
@@ -119,7 +119,7 @@ onMounted(() => {
       <div class="d-flex align-center">
         <VSwitch
           v-model="formData.switch5"
-          label="工具损坏时卸载工装"
+          label="刀具损坏时卸载夹具"
         />
         <VRadioGroup
           v-if="formData.switch5"

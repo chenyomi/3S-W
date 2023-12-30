@@ -26,7 +26,10 @@
 import { createBoard } from '@/utils/createBoard'
 import { onMounted, ref } from "vue"
 
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
+const next = inject('next')
 
 const density = inject('density')
 const btnList = inject('btnList')
@@ -176,20 +179,24 @@ let webGL = null
 onMounted(() => {
   nextTick(() => {
     btnList.value = [{
-      name: '开始',
+      name: next.value.name,
       color: '#D32F2F',
-      icon: 'bxs-zap',
       size: 'large',
       width: 220,
-      mark: '是否开始任务？',
+      mark: next.value.intro,
       fn: ({ close, openLoading, closeLoading }) => {
         openLoading({
-          text: '正在启动中',
+          text: next.value.loadtext,
         })
         close()
         setTimeout(() => {
           closeLoading()
-        }, 2000)
+          if (next.value.type == 'next') {
+            router.push({ path: next.value.nextPath })
+          } else if (next.value.type == 'last') {
+            router.push({ path: '/tasklist' })
+          }
+        }, 1000)
       },
     }]
     

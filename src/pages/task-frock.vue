@@ -7,13 +7,13 @@ const router = useRouter()
 const next = inject('next')
 
 const frocks = [
-  { title: '工装-1', value: '0' },
-  { title: '工装-2', value: '1' },
-  { title: '工装-3', value: '2' },
-  { title: '工装-4', value: '3' },
+  { title: '夹具-1', value: '0' },
+  { title: '夹具-2', value: '1' },
+  { title: '夹具-3', value: '2' },
+  { title: '夹具-4', value: '3' },
 ]
 
-const select = ref({ title: '工装-1', value: '0' })
+const select = ref({ title: '夹具-1', value: '0' })
 const btnList = inject('btnList')
 
 onMounted(() => {
@@ -47,7 +47,7 @@ onMounted(() => {
 <template>
   <VCard class="pt-2 pb-2">
     <h4 class="mx-3 mb-1 px-3">
-      工装：
+      夹具：
     </h4>
     <VDivider />
     <div class="pt-3 px-6 pb-4">
@@ -55,14 +55,13 @@ onMounted(() => {
         v-model="select"
         :items="frocks"
         :density="density"
-        label="当前工装"
+        label="当前夹具"
         class="mt-3 mb-5 w-25"
       />
       <p>列高：46.500mm</p>
       <p>钳高：46.500mm</p>
       <p>X：0mm</p>
       <p>Y：0mm</p>
-      <p>Z：0mm</p>
     </div>
   </VCard>
 </template>

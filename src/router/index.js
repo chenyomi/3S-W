@@ -115,7 +115,7 @@ export const router = createRouter({
             {
               path: 'frock',
               meta: {
-                name: '工装',
+                name: '夹具',
 
                 // disabled: true,
                 childrenTabIcon: 'bxs-downvote',
