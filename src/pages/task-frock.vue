@@ -46,7 +46,7 @@ onMounted(() => {
 
 <template>
   <VCard
-    class="pt-2 pb-2"
+    class="pt-2 pb-2 h-100"
     style="overflow-y: scroll;"
   >
     <h4 class="mx-3 mb-1 px-3">
