@@ -1,6 +1,5 @@
 <script setup>
 import logo from '@images/logo.jpg'
-import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useDisplay } from 'vuetify'
 
 const props = defineProps({
@@ -76,14 +75,12 @@ const handleNavScroll = evt => {
       name="nav-items"
       :update-is-vertical-nav-scrolled="updateIsVerticalNavScrolled"
     >
-      <PerfectScrollbar
-        tag="ul"
+      <ul
         class="nav-items"
-        :options="{ wheelPropagation: false }"
-        @ps-scroll-y="handleNavScroll"
+        style="overflow-y: scroll;"
       >
         <slot />
-      </PerfectScrollbar>
+      </ul>
     </slot>
 
     <slot name="after-nav-items" />

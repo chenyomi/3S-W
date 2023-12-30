@@ -32,7 +32,7 @@ onMounted(() => {
   nextTick(() => {
     btnList.value = [{
       name: next.value.name,
-      color: '#D32F2F',
+      color: '#D32F2F',  
       size: 'large',
       width: 220,
       mark: next.value.intro,
