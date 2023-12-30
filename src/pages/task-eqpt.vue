@@ -56,7 +56,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <VCard class="pt-2 pb-2">
+  <VCard
+    class="pt-2 pb-2"
+    style="overflow-y: scroll;"
+  >
     <h4 class="mx-3 mb-1 px-3">
       参数设置：
     </h4>

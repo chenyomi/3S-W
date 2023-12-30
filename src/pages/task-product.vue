@@ -291,7 +291,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <VCard class="h-100 px-3">
+  <VCard
+    class="h-100 px-3"
+    style="overflow-y: scroll;"
+  >
     <div
       class="d-flex gap-3 align-center w-75"
       :style="!mdAndDown?'position:absolute;top: 1.25rem;left: 1.25rem;':'margin-top:1.25rem' "
