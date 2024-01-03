@@ -1,92 +1,67 @@
 <script setup>
 import { useLocale } from 'vuetify'
-import palletForm from './setting-pallet-form.vue'
+import gripperForm from './setting-gripper-form.vue'
 
 const density = inject('density')
 const expanded = ref()
 let expandedArr = []
-
+const { t } = useLocale()
 let desserts = [
   {
     id: 1,
-    name: '托板A',
-    code: 1001,
-    deep: 5,
-    exmx1: 800,
-    exmy1: 400,
-    num: 3,
+    name: '手爪-1',
+    code: 1601,
+    exmx1: 320,
+    exmx2: 160,
+    exmy1: 320,
+    exmy2: 160,
+    glength: 30,
+    gwidth: 30,
+    type: '气动',
+    gnum: '2',
+    deep: 8,
   },
   {
     id: 2,
-    name: '托板B',
-    code: 1002,
-    deep: 5,
-    exmx1: 800,
-    exmy1: 400,
-    num: 3,
+    name: '手爪-2',
+    code: 1601,
+    exmx1: 320,
+    exmx2: 160,
+    exmy1: 320,
+    exmy2: 160,
+    glength: 30,
+    gwidth: 30,
+    type: '气动',
+    gnum: '2',
+    deep: 8,
   },
   {
     id: 3,
-    name: '托板C',
-    code: 1003,
-    deep: 5,
-    exmx1: 800,
-    exmy1: 400,
-    num: 3,
+    name: '手爪-3',
+    code: 1601,
+    exmx1: 320,
+    exmx2: 160,
+    exmy1: 320,
+    exmy2: 160,
+    glength: 30,
+    gwidth: 30,
+    type: '气动',
+    gnum: '3',
+    deep: 8,
   },
   {
     id: 4,
-    name: '托板D',
-    code: 1004,
-    deep: 5,
-    exmx1: 800,
-    exmy1: 400,
-    num: 3,
-  },
-  {
-    id: 5,
-    name: '托板E',
-    code: 1005,
-    deep: 5,
-    exmx1: 800,
-    exmy1: 400,
-    num: 3,
-  },
-  {
-    id: 6,
-    name: '托板F',
-    code: 1006,
-    deep: 5,
-    exmx1: 800,
-    exmy1: 400,
-    num: 3,
-  },
-  {
-    id: 7,
-    name: '托板G',
-    code: 1007,
-    deep: 5,
-    exmx1: 800,
-    exmy1: 400,
-    num: 3,
-  },
-  {
-    id: 8,
-    name: '托板H',
-    code: 1007,
-    deep: 5,
-    exmx1: 800,
-    exmy1: 400,
-    num: 3,
-  },
-  {
-    id: 9,
-    name: '托板I',
-    code: 1007,
-    deep: 5,
-    exmx1: 800,
-    exmy1: 400,
-    num: 3,
+    name: '手爪-4',
+    code: 1601,
+    exmx1: 320,
+    exmx2: 160,
+    exmy1: 320,
+    exmy2: 160,
+    glength: 30,
+    gwidth: 30,
+    type: '电动',
+    gnum: '2',
+    deep: 8,
   },
 ]
 
@@ -114,7 +89,7 @@ onMounted(() => {
       size: 'large',
       width: 80,
       formWidth: 800,
-      slot: shallowRef(palletForm),  
+      slot: shallowRef(gripperForm),  
       fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
@@ -132,7 +107,7 @@ onMounted(() => {
       size: 'large',
       width: 80,
       formWidth: 800,
-      slot: shallowRef(palletForm), 
+      slot: shallowRef(gripperForm), 
       fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
@@ -164,7 +139,6 @@ onMounted(() => {
   })
 })
 
-const { t } = useLocale()
 
 const headers = ref([
   {
@@ -182,8 +156,13 @@ const headers = ref([
     minWidth: 90,
   },
   { title: t('编号'), key: 'code', align: 'center', sortable: false, minWidth: 90 },
-  { title: t('厚度'), key: 'deep', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('类型'), key: 'type', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('指数量'), key: 'gnum', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('指长'), key: 'glength', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('指宽'), key: 'gwidth', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('夹深'), key: 'deep', align: 'center', sortable: false, minWidth: 90 },
   { title: t('尺寸') + '（X-Y）', key: 'exmx1', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('定位') + '（X-Y）', key: 'exmx2', align: 'center', sortable: false, minWidth: 90 },
   
 ])
 
@@ -235,7 +214,10 @@ function loadItems ({ page, itemsPerPage, sortBy }) {
       />
     </template>
     <template #item.exmx1="{ item }">
-      {{ item.exmx1 }}-{{ item.exmy1 }}  
+      {{ item.exmx1 }}-{{ item.exmy1 }}
+    </template>
+    <template #item.exmx2="{ item }">
+      {{ item.exmx2 }}-{{ item.exmy2 }}
     </template>
     <template #loading />
   </VDataTableVirtual>

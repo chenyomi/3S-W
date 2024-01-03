@@ -5,7 +5,6 @@ export class createBoard {
   constructor(options) {
     this.options = {
       container: '#box',   //容器id
-      distans: 8,
       name: '800*400 1004796 料盘6号',
       status: true,
       type: 0, //0立方体 1圆柱
@@ -63,9 +62,14 @@ export class createBoard {
     this.scene.clear()
   }
   updata(options) {
-    // const axesHelper = new THREE.AxesHelper(500)
+    const axesHelper = new THREE.AxesHelper(200)
 
-    // this.scene.add(axesHelper)
+    this.scene.add(axesHelper)
+    axesHelper.position.x = -this.options.exmx0 / 2 - 10
+    axesHelper.position.z = -this.options.exmy0 / 2 - 10
+    axesHelper.position.y = this.options.raster
+
+
     this.options = Object.assign(this.options, options)
     
 
@@ -156,6 +160,8 @@ export class createBoard {
 
     // 渲染工件
     let job = null
+
+    // 静态数据 立方体
     if (this.options.type == 0) {
       const data = [
         {
@@ -190,15 +196,15 @@ export class createBoard {
       const data = [
         {
           geo: [20, 20, 50],
-          pos: [this.options.exmx1 + 20  - this.options.exmx0 / 2, 25, this.options.exmy1 + 30 - this.options.exmy0 / 2],
+          pos: [this.options.exmx1 + this.options.exmx3 / 2 - this.options.exmx0 / 2, 25, this.options.exmy1  + this.options.exmy3 / 2 - this.options.exmy0 / 2],
         },
         {
           geo: [20, 20, 50],
-          pos: [this.options.exmx1 + 20 - this.options.exmx0 / 2, 25, this.options.exmy1 + 30 - this.options.exmy0 / 2 + (this.options.exmy3 + this.options.exmy4)],
+          pos: [this.options.exmx1 + this.options.exmx3 / 2 - this.options.exmx0 / 2, 25, this.options.exmy1  + this.options.exmy3 / 2 - this.options.exmy0 / 2 + (this.options.exmy3 + this.options.exmy4)],
         },
         {
           geo: [20, 20, 50],
-          pos: [this.options.exmx1 + 20 - this.options.exmx0 / 2, 25, this.options.exmy1 + 30 - this.options.exmy0 / 2 + (this.options.exmy3 + this.options.exmy4) * 2],
+          pos: [this.options.exmx1 + this.options.exmx3 / 2 - this.options.exmx0 / 2, 25, this.options.exmy1  + this.options.exmy3 / 2 - this.options.exmy0 / 2 + (this.options.exmy3 + this.options.exmy4) * 2],
         },
 
       ]

@@ -61,7 +61,7 @@ onMounted(() => {
         label="当前夹具"
         class="mt-3 mb-5 w-25"
       />
-      <p>列高：46.500mm</p>
+      <p>夹深：30.000mm</p>
       <p>钳高：46.500mm</p>
       <p>X：0mm</p>
       <p>Y：0mm</p>

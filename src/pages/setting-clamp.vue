@@ -15,6 +15,9 @@ let desserts = [
     exmx2: 160,
     exmy1: 235,
     exmy2: 170,
+    deep: 8,
+    height: 20,
+    type: '虎钳',
   },
   {
     id: 2,
@@ -24,6 +27,9 @@ let desserts = [
     exmx2: 160,
     exmy1: 235,
     exmy2: 170,
+    deep: 8,
+    height: 20,
+    type: '卡盘',
   },
   {
     id: 3,
@@ -33,6 +39,9 @@ let desserts = [
     exmx2: 160,
     exmy1: 235,
     exmy2: 170,
+    deep: 8,
+    height: 20,
+    type: '零点',
   },
   {
     id: 4,
@@ -42,6 +51,9 @@ let desserts = [
     exmx2: 160,
     exmy1: 235,
     exmy2: 170,
+    deep: 8,
+    height: 20,
+    type: '虎钳',
   },
 ]
 
@@ -136,6 +148,9 @@ const headers = ref([
     minWidth: 90,
   },
   { title: t('编号'), key: 'code', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('类型'), key: 'type', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('钳高'), key: 'height', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('夹深'), key: 'deep', align: 'center', sortable: false, minWidth: 90 },
   { title: t('尺寸') + '（X-Y）', key: 'exmx1', align: 'center', sortable: false, minWidth: 90 },
   { title: t('定位') + '（X-Y）', key: 'exmx2', align: 'center', sortable: false, minWidth: 90 },
   

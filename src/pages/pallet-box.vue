@@ -15,7 +15,7 @@ let desserts = [
     exmy1: 400,
     exmz1: 150,
     maxKg: 30,
-    borad: '托板B',
+    group: '料箱-1 + 托板D',
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ let desserts = [
     exmy1: 400,
     exmz1: 150,
     maxKg: 30,
-    borad: '托板B',
+    group: '料箱-1 + 托板E',
   },
   {
     id: 3,
@@ -35,7 +35,7 @@ let desserts = [
     exmy1: 400,
     exmz1: 150,
     maxKg: 30,
-    borad: '托板B',
+    group: '料箱-1 + 托板F',
   },
   {
     id: 4,
@@ -45,7 +45,7 @@ let desserts = [
     exmy1: 400,
     exmz1: 150,
     maxKg: 30,
-    borad: null,
+    group: '-',
   },
   {
     id: 5,
@@ -55,7 +55,7 @@ let desserts = [
     exmy1: 400,
     exmz1: 150,
     maxKg: 30,
-    borad: null,
+    group: '-',
   },
   {
     id: 6,
@@ -65,7 +65,7 @@ let desserts = [
     exmy1: 400,
     exmz1: 150,
     maxKg: 30,
-    borad: null,
+    group: '-',
   },
   {
     id: 7,
@@ -75,7 +75,7 @@ let desserts = [
     exmy1: 400,
     exmz1: 150,
     maxKg: 30,
-    borad: null,
+    group: '-',
   },
   {
     id: 8,
@@ -85,7 +85,7 @@ let desserts = [
     exmy1: 400,
     exmz1: 150,
     maxKg: 30,
-    borad: null,
+    group: '-',
   },
 ]
 
@@ -122,7 +122,7 @@ const headers = ref([
     key: 'name',
     minWidth: 90,
   },
-  { title: t('托板'), key: 'borad', align: 'center', sortable: false, minWidth: 100 },
+  { title: t('组'), key: 'group', align: 'center', sortable: false, minWidth: 100 },
   
 ])
 

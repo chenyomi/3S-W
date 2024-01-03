@@ -54,11 +54,17 @@ export class createMaterial {
     this.renderer.setClearColor(0x000000, 0)
     this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.shadowMap.enabled = true
+    
     this.scene = new THREE.Scene()
 
-    // const axesHelper = new THREE.AxesHelper(500)
+    const axesHelper = new THREE.AxesHelper(200)
 
-    // this.scene.add(axesHelper)
+    this.scene.add(axesHelper)
+    axesHelper.position.x = -this.options.clientX / 2 - 10
+    axesHelper.position.z = -this.options.clientZ / 2 - 10
+    axesHelper.position.y = -this.options.clientY / 2 - 10
+
+    
     this.v2 = new THREE.Vector2(this.cardBox.clientWidth, this.cardBox.clientHeight)
     this.camera = new THREE.PerspectiveCamera(
       75,

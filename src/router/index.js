@@ -164,6 +164,14 @@ export const router = createRouter({
               component: () => import('../pages/setting-clamp.vue'),
             },
             {
+              path: 'gripper',
+              meta: {
+                name: '手爪',
+                childrenTabIcon: 'bx-stop',
+              },
+              component: () => import('../pages/setting-gripper.vue'),
+            },
+            {
               path: 'pallet',
               meta: {
                 name: '托板',

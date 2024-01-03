@@ -1,10 +1,6 @@
 <script setup>
+import { createMaterial } from '@/utils/createMaterial'
 import { cloneDeep } from 'lodash'
-import * as THREE from "three"
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
-import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass'
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { nextTick, onMounted, onUnmounted, ref, watch } from "vue"
 import { useRouter } from 'vue-router'
 import { useDisplay } from 'vuetify'
@@ -61,156 +57,34 @@ watch(select, newVal => {
   formData.value = items.value[newVal].data
 }, { immediate: true })
 
-
-
-
-let animation = null
-
-const list = [
-  [-200, 80],
-  [-200, 0],
-  [-200, -80],
-  [-120, 80],
-  [-120, 0],
-  [-120, -80],
-  [-40, 80],
-  [-40, 0],
-  [-40, -80],
-  [40, 80],
-  [40, 0],
-  [40, -80],
-  [120, 80],
-  [120, 0],
-  [120, -80],
-  [200, 80],
-  [200, 0],
-  [200, -80],
-]
-
 watch(() => [formData.value.clientX, formData.value.clientY, formData.value.clientZ], () => {
   if (!mdAndDown.value) {
-    const domBox = document.querySelector('#box')
-
-    cancelAnimationFrame(animation)
-    domBox.innerHTML = ''
-    getThree()
+    webGL.disWebGl()
+    setTimeout(() => {
+      webGL.updata(formData.value)
+    }, 0)
   }
   
 })
 watch(() => dialog.value, newVal => {
   nextTick(() => {
     if (newVal) {
-      getThree()
+      if (webGL) {
+        webGL.updata(formData.value)
+      } else {
+        webGL = new createMaterial(formData.value)
+      }
+      
+     
     } else {
-      const domBox = document.querySelector('#box')
-
-      cancelAnimationFrame(animation)
-      domBox.innerHTML = ''
+      webGL.disWebGl()
     }
     
   })
 })
 
-const getThree = () => {
-  const cardBox = document.querySelector('#box')
-  const boxH = cardBox.clientHeight
-  const boxW = cardBox.clientWidth
 
-  const scene = new THREE.Scene()
-
-
-
-  // 获取mesh的世界坐标，你会发现mesh的世界坐标受到父对象group的.position影响
-  // const worldPosition = new THREE.Vector3()
-  // scene.getWorldPosition(worldPosition)
-
-  // const axesHelper = new THREE.AxesHelper(100)
-
-  // scene.add(axesHelper)
-
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    boxW / boxH,
-    0.1,
-    1000,
-  )
-
-
-
-  camera.position.set(formData.value.clientX, formData.value.clientY, formData.value.clientZ)
-
-  const renderer = new THREE.WebGLRenderer({ antialias: true })
-
-  renderer.setSize(boxW, boxH)
-  renderer.setClearColor(0x000000, 0)
-  renderer.setPixelRatio(window.devicePixelRatio)
-
-  // 开启阴影渲染
-  renderer.shadowMap.enabled = true
-
-
-  const light1 = new THREE.DirectionalLight(0xeeeeee, 1)
-
-
-  // 设置光源位置
-  light1.position.set(300, 300, 300)
-  scene.add(light1)
-
-  const light2 = new THREE.DirectionalLight(0xeeeeee, 1)
-
-
-  // 设置光源位置
-  light2.position.set(-300, 300, 400)
-  scene.add(light2)
-  
-  const ambientLight = new THREE.AmbientLight(0xaaaaaa, 2)
-
-  scene.add(ambientLight)
-
-  // 渲染工件
-  const job = new THREE.Mesh(
-    new THREE.BoxGeometry(formData.value.clientX, formData.value.clientY, formData.value.clientZ),
-    new THREE.MeshLambertMaterial({
-      color: 0x9ed2ff,
-    }),
-  )
-
-  job.position.set(0, 0, 0)
-  scene.add(job)
-
-  // 创建后处理对象EffectComposer，WebGL渲染器作为参数
-  const composer = new EffectComposer(renderer)
-  const renderPass = new RenderPass(scene, camera)
-
-  composer.addPass(renderPass)
-
-  const v2 = new THREE.Vector2(boxW, boxH)
-  const outlinePass = new OutlinePass(v2, scene, camera)
-
-  outlinePass.selectedObjects = [job]
-  composer.addPass(outlinePass)
-
-  function animate() {
-    composer.render()
-    animation =  requestAnimationFrame(animate) //向浏览器发起一个执行某函数的请求， 什么时候会执行由浏览器决定，一般默认保持60FPS的频率
-    // renderer.render(scene, camera) //每次渲染出一幅图像
-    
-  }
-  animate()
-
-  const controls = new OrbitControls(camera, renderer.domElement)
-
-  // controls.target.set(80, 80, 80)
-
-
-  //domElement canvas对象
-  const domBox = document.querySelector('#box')
-
-  renderer.domElement.setAttribute('class', 'fadeIn')
-  domBox.appendChild(renderer.domElement)
-}
-
-
+let webGL = null
 
 onMounted(() => {
   nextTick(() => {
@@ -282,11 +156,13 @@ onMounted(() => {
     }]
   })
   setTimeout(() => {
-    !mdAndDown.value && getThree()
+    if (!mdAndDown.value) {
+      webGL = new createMaterial()
+    }
   }, 0)
 })
 onUnmounted(() => {
-  cancelAnimationFrame(animation)
+  webGL.disWebGl()
 })
 </script>
 
@@ -297,20 +173,24 @@ onUnmounted(() => {
   >
     <div
       class="d-flex gap-3 align-center w-75"
-      :style="!mdAndDown?'position:absolute;top: 1.25rem;left: 1.25rem;':'margin-top:1.25rem' "
+      :style="!mdAndDown?'position:absolute;top: 1rem;left: 0.75rem;':'margin-top:1.25rem' "
     >
       <VSelect
         v-model="select"
         :items="items"
         :density="density"
-        class="flex-none w-25"
+        class="flex-none"
         label="当前物料"
       />
       <VTextField
         v-model="formData.num"
         label="数量"
         :density="density"
-        class="w-25"
+      />
+      <VTextField
+        v-model="formData.finallyName"
+        label="成品名称："
+        :density="density"
       />
       <VDialog
         v-if="mdAndDown"
@@ -340,14 +220,33 @@ onUnmounted(() => {
 
     <div
       v-if="!mdAndDown"
-      class="d-flex h-50"
+      class="d-flex"
+      style="height: calc(100% / 2 - 30px);"
     >
       <div style="flex: 1;" />
       <div
         id="box"
         class="h-100"
         style="flex: 1;"
-      />
+      >
+        <div
+          v-if="!mdAndDown"
+          class="pix"
+        >
+          <div>
+            <span style="background: #ffa726;" />
+            <span>X</span>
+          </div>
+          <div>
+            <span style="background: #039be5;" />
+            <span>Y</span>
+          </div>
+          <div>
+            <span style="background: #b2ff59;" />
+            <span>Z</span>
+          </div>
+        </div>
+      </div>
     </div>
     <VRow>
       <VCol
@@ -426,12 +325,15 @@ onUnmounted(() => {
           /> 
         -->
       </VCol>
-      <VCol cols="4">
+      <VCol
+        cols="4"
+        :style="!mdAndDown ? 'height: calc(50vh - 130px); overflow-y: scroll;' : ''"
+      >
         <VSelect
           v-model="formData.jia1"
           :items="tools"
           :density="density"
-          label="当前夹具"
+          label="手爪"
           class="mb-2"
         />
         <VTextField
@@ -440,19 +342,22 @@ onUnmounted(() => {
           :density="density"
           suffix="mm"
           class="mb-2"
+          disabled
         />
         <VTextField
           v-model="formData.exmx2"
           label="夹深："
           :density="density"
           class="mb-2"
+          disabled
         />
         <VTextField
           v-model="formData.exmx3"
-          label="Grip width："
+          label="指宽："
           :density="density"
           suffix="mm"
           class="mb-2"
+          disabled
         />
         <VTextField
           v-model="formData.exmx4"
@@ -460,6 +365,7 @@ onUnmounted(() => {
           :density="density"
           suffix="mm"
           class="mb-2"
+          disabled
         />
         <VTextField
           v-model="formData.exmx5"
@@ -467,14 +373,18 @@ onUnmounted(() => {
           :density="density"
           suffix="mm"
           class="mb-2"
+          disabled
         />
       </VCol>
-      <VCol cols="4">
+      <VCol
+        cols="4"
+        :style="!mdAndDown ? 'height: calc(50vh - 130px); overflow-y: scroll;' : ''"
+      >
         <VSelect
           v-model="formData.jia2"
           :items="tools"
           :density="density"
-          label="当前夹具"
+          label="手爪"
           class="mb-2"
         />
         <VTextField
@@ -483,19 +393,22 @@ onUnmounted(() => {
           :density="density"
           suffix="mm"
           class="mb-2"
+          disabled
         />
         <VTextField
           v-model="formData.exmy2"
           label="夹深："
           :density="density"
           class="mb-2"
+          disabled
         />
         <VTextField
           v-model="formData.exmy3"
-          label="Grip width："
+          label="指宽："
           :density="density"
           suffix="mm"
           class="mb-2"
+          disabled
         />
         <VTextField
           v-model="formData.exmy4"
@@ -503,6 +416,7 @@ onUnmounted(() => {
           :density="density"
           suffix="mm"
           class="mb-2"
+          disabled
         />
         <VTextField
           v-model="formData.exmy5"
@@ -510,8 +424,34 @@ onUnmounted(() => {
           :density="density"
           suffix="mm"
           class="mb-2"
+          disabled
         />
       </VCol>
     </VRow>
   </VCard>
 </template>
+
+<style lang="scss">
+.pix {
+  position: absolute;
+  inset-block-start: 60px;
+  inset-inline-end: 15px;
+
+  div {
+    margin-block-end: 5px;
+
+    span {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    span:first-child {
+      border-radius: 3px;
+      background: #333;
+      block-size: 20px;
+      inline-size: 20px;
+      margin-inline-end: 10px;
+    }
+  }
+}
+</style>

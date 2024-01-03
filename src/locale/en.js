@@ -72,4 +72,10 @@ export default {
   物料: 'Material',
   夹具: 'Frock',
   下一步: 'Next',
+  夹深: 'Deep',
+  手爪: 'Grip',
+  指长: 'GripLength',
+  指宽: 'GripWidth',
+  组: 'group',
+  指数量: 'Number',
 }

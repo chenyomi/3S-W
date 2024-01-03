@@ -15,6 +15,20 @@
       item-value="id"
       @update:model-value="onChange"
     />
+    <div class="pix">
+      <div>
+        <span style="background: #ffa726;" />
+        <span>X</span>
+      </div>
+      <div>
+        <span style="background: #039be5;" />
+        <span>Y</span>
+      </div>
+      <div>
+        <span style="background: #b2ff59;" />
+        <span>Z</span>
+      </div>
+    </div>
     <div
       id="box"
       class="h-100"
@@ -36,11 +50,9 @@ const select = ref(1)
 const modalData = ref()
 
 const onChange = () => {
-  setTimeout(() => {
-    modalData.value =  desserts.filter(e => e.id ==select.value)[0]
-    webGL.disWebGl()
-    webGL.updata(modalData.value)
-  }, 500)
+  modalData.value =  desserts.filter(e => e.id ==select.value)[0]
+  webGL.disWebGl()
+  webGL.updata(modalData.value)
 }
 
 
@@ -193,12 +205,10 @@ onMounted(() => {
         }, 2000)
       },
     }]
-    
-  })
-  setTimeout(() => {
     modalData.value =  desserts.filter(e => e.id ==select.value)[0]
     webGL = new createBoard(modalData.value)
-  }, 0)
+  })
+ 
 })
 
 onUnmounted(() => {
@@ -206,4 +216,28 @@ onUnmounted(() => {
 })
 </script>
 
+<style lang="scss">
+.pix {
+  position: absolute;
+  inset-block-start: 70px;
+  inset-inline-start: 20px;
+
+  div {
+    margin-block-end: 5px;
+
+    span {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    span:first-child {
+      border-radius: 3px;
+      background: #333;
+      block-size: 20px;
+      inline-size: 20px;
+      margin-inline-end: 10px;
+    }
+  }
+}
+</style>
 

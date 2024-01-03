@@ -15,6 +15,20 @@
       item-value="id"
       @update:model-value="onChange"
     />
+    <div class="pix">
+      <div>
+        <span style="background: #ffa726;" />
+        <span>X</span>
+      </div>
+      <div>
+        <span style="background: #039be5;" />
+        <span>Y</span>
+      </div>
+      <div>
+        <span style="background: #b2ff59;" />
+        <span>Z</span>
+      </div>
+    </div>
     <div
       id="box"
       class="h-100"
@@ -213,3 +227,27 @@ onUnmounted(() => {
 </script>
 
 
+<style lang="scss">
+.pix {
+  position: absolute;
+  inset-block-start: 70px;
+  inset-inline-start: 20px;
+
+  div {
+    margin-block-end: 5px;
+
+    span {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    span:first-child {
+      border-radius: 3px;
+      background: #333;
+      block-size: 20px;
+      inline-size: 20px;
+      margin-inline-end: 10px;
+    }
+  }
+}
+</style>

@@ -27,7 +27,7 @@ defineExpose({
       >
         <VTextField
           v-model="formData.name"
-          label="夹具名称："
+          label="名称："
           :density="density"
         />
       </VCol>
@@ -56,8 +56,29 @@ defineExpose({
         class="text-center"
       >
         <VTextField
-          v-model="formData.height"
-          label="钳高："
+          v-model="formData.gnum"
+          label="指数量："
+          :density="density"
+        />
+      </VCol>
+      <VCol
+        cols="6"
+        class="text-center"
+      >
+        <VTextField
+          v-model="formData.glength"
+          label="指长："
+          :density="density"
+        />
+      </VCol>
+      
+      <VCol
+        cols="6"
+        class="text-center"
+      >
+        <VTextField
+          v-model="formData.gwidth"
+          label="指宽："
           :density="density"
         />
       </VCol>

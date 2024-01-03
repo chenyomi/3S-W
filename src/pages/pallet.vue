@@ -70,7 +70,7 @@ onMounted(() => {
 })
 
 const pallets = ref([
-  { icon: 'bx-selection', name: '网板', color: "#8BC34A" },
+  { icon: 'bx-selection', name: '料板', color: "#8BC34A" },
   { icon: 'bx-package', name: '料箱', color: "#0288D1" },
   { icon: 'bx-vertical-center', name: '夹具', color: "#FFA726" },
 ])
