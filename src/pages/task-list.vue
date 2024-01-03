@@ -241,7 +241,7 @@ onMounted(() => {
   <Modal ref="modal" />
 </template>
  
-<style lang="scss">
+<style lang="scss" scoped>
 .task-ghost {
   background: rgb(var(--v-theme-surface), 0.9);
 

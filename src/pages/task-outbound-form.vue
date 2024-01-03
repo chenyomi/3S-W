@@ -126,7 +126,7 @@ onUnmounted(() => {
   </VRow>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 canvas {
   background: none !important;
 }

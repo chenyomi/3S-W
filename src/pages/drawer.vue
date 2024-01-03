@@ -216,7 +216,7 @@ onUnmounted(() => {
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .pix {
   position: absolute;
   inset-block-start: 70px;

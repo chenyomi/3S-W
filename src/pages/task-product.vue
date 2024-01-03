@@ -431,7 +431,7 @@ onUnmounted(() => {
   </VCard>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .pix {
   position: absolute;
   inset-block-start: 60px;
