@@ -21,6 +21,7 @@ const {
 
 const changeTheme = () => {
   globalTheme.name.value = getNextThemeName()
+  localStorage.setItem('theme', globalTheme.name.value)
 }
 
 // Update icon if theme is changed from other sources
