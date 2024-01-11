@@ -69,7 +69,7 @@ export default {
   帮助中心: 'Help',
   退出登录: 'Login Out',
   拆分: 'Split',
-  物料: 'Material',
+  物料: 'Matter',
   夹具: 'Frock',
   下一步: 'Next',
   夹深: 'Deep',
@@ -78,4 +78,6 @@ export default {
   指宽: 'GripWidth',
   组: 'group',
   指数量: 'Number',
+  钳高: 'Height',
+  形状: 'Shape',
 }

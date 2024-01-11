@@ -40,7 +40,7 @@
               rounded="0"
               block
               height="50"
-              width="60"
+              width="70"
               style="padding: 0;"
               :to="item.meta.disabled? null : `${subMain}/${item.path}`"
               :color="route.path == `${subMain}/${item.path}` ? 'primary' : ''"
