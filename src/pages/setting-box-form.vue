@@ -1,15 +1,21 @@
 <script setup>
+import boxApi from '@/api/box'
+import { cloneDeep } from 'lodash'
+
 const propsData = defineProps({
   data: { type: Object },
 })
 
 const density = inject('density')
-const formData = ref(propsData.data)
+const formData = ref(cloneDeep(propsData.data))
 
 const submit = () => {
-  return new Promise(resolve => {
-    resolve()
+  return new Promise(resolve => { 
+    boxApi.boxEdit(formData.value).finally(() => {
+      resolve()
+    })
   })
+ 
 }
 
 defineExpose({
@@ -25,7 +31,7 @@ defineExpose({
         class="text-center"
       >
         <VTextField
-          v-model="formData.name"
+          v-model="formData.materialBoxName"
           label="料箱名称："
           :density="density"
         />
@@ -35,7 +41,7 @@ defineExpose({
         class="text-center"
       >
         <VTextField
-          v-model="formData.code"
+          v-model="formData.materialBoxCode"
           label="编号："
           :density="density"
         />
@@ -45,7 +51,7 @@ defineExpose({
         class="text-center"
       >
         <VTextField
-          v-model="formData.maxKg"
+          v-model="formData.materialBoxVolume"
           label="载重："
           :density="density"
         />
@@ -89,7 +95,7 @@ defineExpose({
       </VCol>
       <VCol cols="4">
         <VTextField
-          v-model="formData.exmx1"
+          v-model="formData.materialBoxLengthX"
           label="尺寸："
           :density="density"
           suffix="mm"
@@ -98,7 +104,7 @@ defineExpose({
       </VCol>
       <VCol cols="4">
         <VTextField
-          v-model="formData.exmy1"
+          v-model="formData.materialBoxLengthY"
           label="尺寸："
           :density="density"
           suffix="mm"
@@ -107,7 +113,7 @@ defineExpose({
       </VCol>
       <VCol cols="4">
         <VTextField
-          v-model="formData.exmz1"
+          v-model="formData.materialBoxLengthZ"
           label="尺寸："
           :density="density"
           suffix="mm"

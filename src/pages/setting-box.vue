@@ -1,100 +1,25 @@
 <script setup>
+import boxApi from '@/api/box'
 import { useLocale } from 'vuetify'
 import boxForm from './setting-box-form.vue'
 
 const { t } = useLocale()
-
+const serverItems = ref([])
+const loading = ref(true)
 const density = inject('density')
 const expanded = ref()
 let expandedArr = []
+setTimeout(() => {
+  loading.value = false
+}, 1000)
 
-let desserts = [
-  {
-    id: 1,
-    name: '料箱1号',
-    code: 2001,
-    exmx1: 600,
-    exmy1: 400,
-    exmz1: 150,
-    maxKg: 30,
-  },
-  {
-    id: 2,
-    name: '料箱2号',
-    code: 2002,
-    exmx1: 600,
-    exmy1: 400,
-    exmz1: 150,
-    maxKg: 30,
-  },
-  {
-    id: 3,
-    name: '料箱3号',
-    code: 2003,
-    exmx1: 600,
-    exmy1: 400,
-    exmz1: 150,
-    maxKg: 30,
-  },
-  {
-    id: 4,
-    name: '料箱4号',
-    code: 2003,
-    exmx1: 600,
-    exmy1: 400,
-    exmz1: 150,
-    maxKg: 30,
-  },
-  {
-    id: 5,
-    name: '料箱5号',
-    code: 2003,
-    exmx1: 600,
-    exmy1: 400,
-    exmz1: 150,
-    maxKg: 30,
-  },
-  {
-    id: 6,
-    name: '料箱6号',
-    code: 2003,
-    exmx1: 600,
-    exmy1: 400,
-    exmz1: 150,
-    maxKg: 30,
-  },
-  {
-    id: 7,
-    name: '料箱7号',
-    code: 2003,
-    exmx1: 600,
-    exmy1: 400,
-    exmz1: 150,
-    maxKg: 30,
-  },
-  {
-    id: 8,
-    name: '料箱8号',
-    code: 2003,
-    exmx1: 600,
-    exmy1: 400,
-    exmz1: 150,
-    maxKg: 30,
-  },
-]
+const loadItems = () => {
+  boxApi.boxList().then(res => {
+    serverItems.value = res.rows
 
-const FakeAPI = {
-  async fetch ({ page, itemsPerPage, sortBy }) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const items = desserts
-
-        const paginated = items
-
-        resolve({ items: paginated })
-      }, 500)
-    })
-  },
+    expanded.value = res.rows[0].id
+    btnList.value[1].slotData = res.rows[0]
+  })
 }
 
 const btnList = inject('btnList')
@@ -115,6 +40,7 @@ onMounted(() => {
         diaFormRef.submit().finally(() => {
           close()
           setTimeout(() => {
+            loadItems()
             closeLoading()
           }, 2000)
         })
@@ -123,7 +49,7 @@ onMounted(() => {
       name: '编辑',
       color: '#00ACC1',
       size: 'large',
-      width: 80,
+      width: 150,
       formWidth: 800,
       slot: shallowRef(boxForm), 
       fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
@@ -133,25 +59,10 @@ onMounted(() => {
         diaFormRef.submit().finally(() => {
           close()
           setTimeout(() => {
+            loadItems()
             closeLoading()
           }, 2000)
         })
-      },
-    }, {
-      name: '保存',
-      color: '#66BB6A',
-      icon: 'bx-cloud-upload',
-      size: 'large',
-      width: 220,
-      mark: '是否保存并上传更新数据？',
-      fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
-        openLoading({
-          text: '正在上传更新',
-        })
-        close()
-        setTimeout(() => {
-          closeLoading()
-        }, 2000)
       },
     }]
   })
@@ -164,32 +75,20 @@ const headers = ref([
     sortable: false,
     key: 'exclusive',
     fixed: true,
-    minWidth: 70,
+    width: 70,
   },
   {
     title: t('名称'),
     align: 'start',
     sortable: false,
-    key: 'name',
+    key: 'materialBoxName',
     minWidth: 90,
   },
-  { title: t('编号'), key: 'code', align: 'center', sortable: false, minWidth: 90 },
-  { title: t('载重'), key: 'maxKg', align: 'center', sortable: false, minWidth: 90 },
-  { title: t('尺寸') + '（X-Y-Z）', key: 'exmx1', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('编号'), key: 'materialBoxCode', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('载重'), key: 'materialBoxVolume', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('尺寸') + '（X-Y-Z）', key: 'materialBoxLengthX', align: 'center', sortable: false, minWidth: 90 },
   
 ])
-
-const serverItems = ref([])
-const loading = ref(true)
-function loadItems ({ page, itemsPerPage, sortBy }) {
-  loading.value = true
-  FakeAPI.fetch({ page, itemsPerPage, sortBy }).then(({ items, total }) => {
-    serverItems.value = items
-    loading.value = false
-    expanded.value = items[0].id
-    btnList.value[1].slotData = serverItems.value.filter(c => c.id == items[0].id)[0]
-  })
-}
 </script>
 
 <template>
@@ -226,8 +125,8 @@ function loadItems ({ page, itemsPerPage, sortBy }) {
         readonly
       />
     </template>
-    <template #item.exmx1="{ item }">
-      {{ item.exmx1 }}-{{ item.exmy1 }}-{{ item.exmz1 }}  
+    <template #item.materialBoxLengthX="{ item }">
+      {{ item.materialBoxLengthX }}-{{ item.materialBoxLengthY }}-{{ item.materialBoxLengthZ }}  
     </template>
     <template #loading />
   </VDataTableVirtual>

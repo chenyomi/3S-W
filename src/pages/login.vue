@@ -1,10 +1,18 @@
 <script setup>
+import loginApi from "@/api/login"
 import logo from '@images/logo.jpg'
+import { nextTick } from 'vue'
 
 const form = ref({
   email: '',
   password: '',
   remember: false,
+})
+
+onMounted(() => {
+  nextTick(() => {
+    console.log(loginApi.getResourceList)
+  })
 })
 
 const isPasswordVisible = ref(false)
@@ -46,7 +54,6 @@ const isPasswordVisible = ref(false)
             <VCol cols="12">
               <VTextField
                 v-model="form.email"
-                autofocus
                 label="账号"
               />
             </VCol>
@@ -87,4 +94,13 @@ const isPasswordVisible = ref(false)
 
 <style lang="scss">
 @use "@core/scss/template/pages/page-auth.scss";
+
+.auth-wrapper {
+  background-image: url("../assets/images/bg.png");
+  background-size: cover;
+}
+
+.auth-card {
+  background: rgba(43, 44, 64, 80%);
+}
 </style>

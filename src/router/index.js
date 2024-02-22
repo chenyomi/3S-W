@@ -180,6 +180,14 @@ export const router = createRouter({
               component: () => import('../pages/setting-pallet.vue'),
             },
             {
+              path: 'material',
+              meta: {
+                name: '物料',
+                childrenTabIcon: 'bx-stop',
+              },
+              component: () => import('../pages/setting-material.vue'),
+            },
+            {
               path: 'secure',
               meta: {
                 name: '安全',

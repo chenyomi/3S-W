@@ -1,16 +1,24 @@
 <script setup>
+import gripApi from '@/api/grip'
+import { getDict } from '@/utils/utils'
+import { cloneDeep } from 'lodash'
+
 const propsData = defineProps({
   data: { type: Object },
 })
 
 const density = inject('density')
 
-const formData = ref(propsData.data)
+const formData = ref(cloneDeep(propsData.data))
+const types = getDict('sss_hand_type')
 
 const submit = () => {
   return new Promise(resolve => {
-    resolve()
+    gripApi.handEdit(formData.value).finally(() => {
+      resolve()
+    })
   })
+  
 }
 
 defineExpose({
@@ -26,7 +34,7 @@ defineExpose({
         class="text-center"
       >
         <VTextField
-          v-model="formData.name"
+          v-model="formData.handName"
           label="名称："
           :density="density"
         />
@@ -36,7 +44,7 @@ defineExpose({
         class="text-center"
       >
         <VTextField
-          v-model="formData.code"
+          v-model="formData.handCode"
           label="编号："
           :density="density"
         />
@@ -45,10 +53,11 @@ defineExpose({
         cols="6"
         class="text-center"
       >
-        <VTextField
-          v-model="formData.type"
-          label="类型："
+        <VSelect
+          v-model="formData.handType"
           :density="density"
+          :items="types"
+          label="类型："
         />
       </VCol>
       <VCol
@@ -56,7 +65,7 @@ defineExpose({
         class="text-center"
       >
         <VTextField
-          v-model="formData.gnum"
+          v-model="formData.fingerNumber"
           label="指数量："
           :density="density"
         />
@@ -66,7 +75,7 @@ defineExpose({
         class="text-center"
       >
         <VTextField
-          v-model="formData.glength"
+          v-model="formData.fingerLength"
           label="指长："
           :density="density"
         />
@@ -77,7 +86,7 @@ defineExpose({
         class="text-center"
       >
         <VTextField
-          v-model="formData.gwidth"
+          v-model="formData.fingerWidth"
           label="指宽："
           :density="density"
         />
@@ -87,7 +96,7 @@ defineExpose({
         class="text-center"
       >
         <VTextField
-          v-model="formData.deep"
+          v-model="formData.fingerDepth"
           label="夹深："
           :density="density"
         />
@@ -121,14 +130,14 @@ defineExpose({
         
       <VCol cols="6">
         <VTextField
-          v-model="formData.exmx1"
+          v-model="formData.handSizeX"
           label="尺寸："
           :density="density"
           suffix="mm"
           class="mb-2"
         />
         <VTextField
-          v-model="formData.exmx2"
+          v-model="formData.handLocateX"
           label="定位："
           :density="density"
           suffix="mm"
@@ -137,14 +146,14 @@ defineExpose({
       </VCol>
       <VCol cols="6">
         <VTextField
-          v-model="formData.exmy1"
+          v-model="formData.handSizeY"
           label="尺寸："
           :density="density"
           suffix="mm"
           class="mb-2"
         />
         <VTextField
-          v-model="formData.exmy2"
+          v-model="formData.handLocateY"
           label="定位："
           :density="density"
           suffix="mm"

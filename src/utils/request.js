@@ -142,12 +142,11 @@ service.interceptors.response.use(
     if (error) {
       const status = 503
       const description = errorCodeMap[status]
-
       pinia.message.open({
         text: '请求错误：' + description,
       })
       
-      return Promise.reject(status)
+      return Promise.reject(error)
     }
   },
 )

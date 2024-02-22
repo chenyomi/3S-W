@@ -2,11 +2,7 @@
   <VerticalNavLayout>
     <!-- 👉 navbar -->
     <template #navbar="{ toggleVerticalOverlayNavActive }">
-      <Header
-        :fn="toggleVerticalOverlayNavActive"
-        :matched="matched"
-        :list="btnList"
-      />
+      <Header :fn="toggleVerticalOverlayNavActive" :matched="matched" :list="btnList" />
     </template>
 
     <template #vertical-nav-content>
@@ -18,43 +14,21 @@
       <LeftMenuBox />
     </template>
     <div class="d-flex gap-3 h-100 w-100 slot-box">
-      <div
-        class="h-100 w-100"
-        style="overflow: hidden;border-radius: 0.5rem;"
-      >
+      <div class="h-100 w-100" style="overflow: hidden;border-radius: 0.5rem;">
         <RouterView v-if="view" />
       </div>
 
 
       <VSlideXReverseTransition hide-on-leave>
-        <VCard
-          v-if="subNavList.length"
-          style="overflow-y: scroll;"
-        >
-          <div
-            v-for="(item, i) in subNavList"
-            :key="item"
-          >
-            <VBtn
-              variant="text"
-              rounded="0"
-              block
-              height="50"
-              width="70"
-              style="padding: 0;"
-              :to="item.meta.disabled? null : `${subMain}/${item.path}`"
-              :color="route.path == `${subMain}/${item.path}` ? 'primary' : ''"
-            >
+        <VCard v-if="subNavList.length" style="overflow-y: scroll;">
+          <div v-for="(item, i) in subNavList" :key="item">
+            <VBtn variant="text" rounded="0" block height="50" width="70" style="padding: 0;"
+              :to="item.meta.disabled ? null : `${subMain}/${item.path}`"
+              :color="route.path == `${subMain}/${item.path}` ? 'primary' : ''">
               {{ $t(item.meta.name) }}
             </VBtn>
-            <div
-              v-if="i < subNavList.length - 1"
-              style="text-align: center;"
-            >
-              <VIcon
-                :icon="item.meta.childrenTabIcon"
-                size="15"
-              />
+            <div v-if="i < subNavList.length - 1" style="text-align: center;">
+              <VIcon :icon="item.meta.childrenTabIcon" size="15" />
             </div>
           </div>
         </VCard>
@@ -76,18 +50,21 @@
 <script setup>
 import VerticalNavLayout from "@layouts/components/VerticalNavLayout.vue"
 
-
 // Components
+import dictApi from '@/api/dict'
 import Footer from "@/layouts/components/Footer.vue"
 import Header from "@/layouts/components/Header.vue"
 import LeftMenu from "@/layouts/components/LeftMenu.vue"
 import LeftMenuBox from "@/layouts/components/LeftMenuBox.vue"
 import Message from "@/layouts/components/Message.vue"
 import Setting from "@/layouts/components/Setting.vue"
-import { useStore } from "@/pinia"
+import { useStore } from "@/pinia/index"
+import { mq } from "@/utils/mq"
 import { computed, provide, ref } from "vue"
 import { useRoute } from "vue-router"
 import { useDisplay, useLocale } from 'vuetify'
+
+
 
 const store = useStore()
 const { view } = storeToRefs(store)
@@ -95,18 +72,18 @@ const { view } = storeToRefs(store)
 const { lgAndDown } = useDisplay()
 let route = useRoute()
 const btnList = ref([])
-const density = lgAndDown.value ? 'compact': 'comfortable'
+const density = lgAndDown.value ? 'compact' : 'comfortable'
 const message = ref()
 const { t } = useLocale()
 
 const matched = computed(() => {
   const b = []
 
-  
+
   route.matched.forEach((e, i) => {
     i !== 0 && b.push({ title: t(e.meta.name) })
   })
-  
+
   return b
 })
 
@@ -115,7 +92,7 @@ const subNavList = computed(() => {
 })
 
 const subMain = computed(() => {
-  
+
   return route.matched[1].path
 })
 
@@ -143,18 +120,26 @@ const next = computed(() => {
           intro: '是否完成创建？',
           loadtext: '正在创建中',
         }
-      } 
+      }
     }
   }
-  
+
   return str
 })
 
+const socket = new mq()
+const pinia = useStore()
+
+dictApi.dictList().then(res => {
+  localStorage.setItem('dict', JSON.stringify(res.data))
+})
+pinia.setMessage(message)
 provide('message', message)
 provide('subMain', subMain)
 provide('next', next)
 provide('density', density)
 provide('btnList', btnList)
+provide('socket', socket)
 </script>
 
 <style lang="scss" scoped>

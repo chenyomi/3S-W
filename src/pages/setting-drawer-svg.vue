@@ -8,6 +8,7 @@ const propsData = defineProps({
 
 const formData = ref(propsData.data)
 
+
 const svgEmbed = ref(null)
 
 onMounted(() => {
@@ -22,23 +23,20 @@ onMounted(() => {
       const baseOffsetY = 27
       const baseW = embed.clientWidth
 
-      const baseH = baseW / 2
-
       const mainData = Object.assign({
-        exmx1: 20,
-        exmx2: 10,
-        exmx3: 65,
-        exmx4: 10,
-        exmy1: 20,
-        exmy2: 5,
-        exmy3: 65,
-        exmy4: 10,
+        trawlBoardOffsetX: 20,
+        trawlBoardSiteX: 10,
+        trawlBoardSiteLengthX: 65,
+        trawlBoardSiteSpaceX: 10,
+        trawlBoardOffsetY: 20,
+        trawlBoardSiteY: 5,
+        trawlBoardSiteLengthY: 65,
+        trawlBoardSiteSpaceY: 10,
       }, formData.value)
 
 
       const svg = svgEmbed.value.getElementById('svg')
       const box = svgEmbed.value.getElementById('box')
-      const itemBox = svgEmbed.value.getElementById('itemBox')
 
       // if (theme.name.value == 'dark') {
       //   svg.style.background = 'rgb(43,44,64)'
@@ -46,37 +44,36 @@ onMounted(() => {
       //   svg.style.background = 'rgb(255,255,255)'
       // }
       const baseItemW = baseW - baseOffsetX*2 //工件宽度缩放后参考值  默认800 等比例缩放用于计算
-      
+      const baseItemH = baseItemW * mainData.trawlBoardLengthY / mainData.trawlBoardLengthX
 
       svg.setAttribute('width', baseW)
-      svg.setAttribute('height', 450)
+      svg.setAttribute('height', baseItemH + baseOffsetY * 2)
       box.setAttribute('width', baseItemW)
-      box.setAttribute('height', baseItemW / 2)
+      box.setAttribute('height', baseItemH)
 
-
-      const numX = new Array(mainData.exmx2).fill()
-      const numY = new Array(mainData.exmy2).fill()
-      if (mainData.type == 0) {
+      const numX = new Array(mainData.trawlBoardSiteX).fill()
+      const numY = new Array(mainData.trawlBoardSiteY).fill()
+      if (mainData.trawlBoardShape == 0) {
         numY.forEach((c, ny) => {
           numX.forEach((e, nx) => {
             let element = document.createElementNS("http://www.w3.org/2000/svg", "rect") // 这里以 rect 为例子
-            element.setAttribute('x', baseOffsetX + mainData.exmx1 + (mainData.exmx3 + mainData.exmx4)*nx)
-            element.setAttribute('y', baseOffsetY + mainData.exmy1 + (mainData.exmy3 + mainData.exmy4)*ny)
-            element.setAttribute('width', mainData.exmx3)
-            element.setAttribute('height', mainData.exmy3)
+            element.setAttribute('x', baseOffsetX + mainData.trawlBoardOffsetX + (mainData.trawlBoardSiteLengthX + mainData.trawlBoardSiteSpaceX)*nx)
+            element.setAttribute('y', baseOffsetY + mainData.trawlBoardOffsetY + (mainData.trawlBoardSiteLengthY + mainData.trawlBoardSiteSpaceY)*ny)
+            element.setAttribute('width', mainData.trawlBoardSiteLengthX)
+            element.setAttribute('height', mainData.trawlBoardSiteLengthY)
             element.style.fill = '#aaaaaa'
             svg.appendChild(element)
           })
         })
       }
-      if (mainData.type == 1) {
-        const r = mainData.exmx3 / 2
+      if (mainData.trawlBoardShape == 1) {
+        const r = mainData.trawlBoardSiteLengthX / 2
 
         numY.forEach((c, ny) => {
           numX.forEach((e, nx) => {
             let element = document.createElementNS("http://www.w3.org/2000/svg", "circle") // 这里以 rect 为例子
-            element.setAttribute('cx', baseOffsetX + mainData.exmx1 + r + (mainData.exmx3 + mainData.exmx4)*nx)
-            element.setAttribute('cy', baseOffsetY + mainData.exmy1 + r + (mainData.exmy3 + mainData.exmy4)*ny)
+            element.setAttribute('cx', baseOffsetX + mainData.trawlBoardOffsetX + r + (mainData.trawlBoardSiteLengthX + mainData.trawlBoardSiteSpaceX)*nx)
+            element.setAttribute('cy', baseOffsetY + mainData.trawlBoardOffsetY + r + (mainData.trawlBoardSiteLengthY + mainData.trawlBoardSiteSpaceY)*ny)
             element.setAttribute('r', r)
             element.style.fill = '#aaaaaa'
             svg.appendChild(element)
@@ -113,18 +110,18 @@ defineExpose({
     style="background: #000;color: #fff;font-size: 0.75rem;"
   >
     <div class="d-flex flex-wrap gap-x-10 justify-center">
-      <span>板（X）：{{ formData.exmx0 }}mm</span>
-      <span>原点偏移（X）：{{ formData.exmx1 }}mm</span>
-      <span>占位（X）：{{ formData.exmx2 }}个</span>
-      <span>单元尺寸（X）：{{ formData.exmx3 }}mm</span>
-      <span>间距（X）：{{ formData.exmx4 }}mm</span>
+      <span>板（X）：{{ formData.trawlBoardLengthX }}mm</span>
+      <span>原点偏移（X）：{{ formData.trawlBoardOffsetX }}mm</span>
+      <span>占位（X）：{{ formData.trawlBoardSiteX }}个</span>
+      <span>单元尺寸（X）：{{ formData.trawlBoardSiteLengthX }}mm</span>
+      <span>间距（X）：{{ formData.trawlBoardSiteSpaceX }}mm</span>
     </div>
     <div class="d-flex flex-wrap gap-x-10 justify-center">
-      <span>板（Y）：{{ formData.exmy0 }}mm</span>
-      <span>原点偏移（Y）：{{ formData.exmy1 }}mm</span>
-      <span>占位（Y）：{{ formData.exmy2 }}个</span>
-      <span>单元尺寸（Y）：{{ formData.exmy3 }}mm</span>
-      <span>间距（Y）：{{ formData.exmy4 }}mm</span>
+      <span>板（Y）：{{ formData.trawlBoardLengthY }}mm</span>
+      <span>原点偏移（Y）：{{ formData.trawlBoardOffsetY }}mm</span>
+      <span>占位（Y）：{{ formData.trawlBoardSiteY }}个</span>
+      <span>单元尺寸（Y）：{{ formData.trawlBoardSiteLengthY }}mm</span>
+      <span>间距（Y）：{{ formData.trawlBoardSiteSpaceY }}mm</span>
     </div>
   </div>
 </template>

@@ -1,4 +1,5 @@
 <script setup>
+import taskApi from '@/api/task';
 const propsData = defineProps({
   data: { type: Object },
 })
@@ -8,7 +9,13 @@ const formData = ref(propsData.data)
 
 const submit = () => {
   return new Promise(resolve => {
-    resolve()
+    taskApi.taskSplit({
+      groupId: formData.value.groupId,
+      number: formData.value.num
+    })
+      .then((res) => {
+        resolve(res)
+      })
   })
 }
 
@@ -22,11 +29,6 @@ defineExpose({
     <h4 class="mb-4">
       {{ $t('拆分') }}
     </h4>
-    <VTextField
-      v-model="formData.num"
-      :label="$t('数量')"
-      :density="density"
-      type="number"
-    />
+    <VTextField v-model="formData.num" :label="$t('数量')" :density="density" type="number" />
   </VContainer>
 </template>

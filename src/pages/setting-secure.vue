@@ -1,27 +1,35 @@
 <script setup>
+import safeApi from '@/api/safe'
+import { getDictStr } from '@/utils/utils'
 import { useLocale } from 'vuetify'
 
 const btnList = inject('btnList')
 
-const list = ['操作模式', '设置模式', '管理模式']
-const active = ref(0)
-const select = ref('0')
+const active = ref()
+const select = ref(0)
 const lang = localStorage.getItem('lang')
 if (lang == 'en') {
-  select.value = '1'
+  select.value = 1
 } else {
-  select.value = '0'
+  select.value = 0
 }
 
 const items = [
-  { title: '简体中文', value: '0' },
-  { title: 'English', value: '1' },
+  { title: '简体中文', value: 0 },
+  { title: 'English', value: 1 },
 ]
 
 const { current } = useLocale()
 
+const list = getDictStr('sss_system_model')
 
 onMounted(() => {
+  safeApi.safe().then(res => {
+    const index = list.findIndex(e => e.value == res.data[0].configValue)
+    if (index !== -1) {
+      active.value = index
+    }
+  })
   nextTick(() => {
     btnList.value =  [{
       name: '保存',
@@ -36,7 +44,7 @@ onMounted(() => {
         })
         close()
         setTimeout(() => {
-          if (select.value === '0') {
+          if (select.value === 0) {
             localStorage.setItem('lang', 'zh-Hans')
             current.value = 'zh-Hans'
           } else {
@@ -70,7 +78,7 @@ onMounted(() => {
             @click="active = i"
           >
             <div class="flex-grow-1 text-center">
-              {{ $t(n) }}
+              {{ $t(n.title) }}
             </div>
           </VCard>
         </VItem>

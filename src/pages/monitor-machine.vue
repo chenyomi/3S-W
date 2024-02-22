@@ -58,7 +58,7 @@ const chartConfig = computed(() => {
   return {
     chart: {
       parentHeightOffset: 0,
-      toolbar: { show: false },
+      toolbar: { show: true },
     },
     dataLabels: { enabled: false },
     stroke: {
