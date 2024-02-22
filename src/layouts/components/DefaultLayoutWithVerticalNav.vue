@@ -59,7 +59,7 @@ import LeftMenuBox from "@/layouts/components/LeftMenuBox.vue"
 import Message from "@/layouts/components/Message.vue"
 import Setting from "@/layouts/components/Setting.vue"
 import { useStore } from "@/pinia/index"
-import { mq } from "@/utils/mq"
+// import { mq } from "@/utils/mq"
 import { computed, provide, ref } from "vue"
 import { useRoute } from "vue-router"
 import { useDisplay, useLocale } from 'vuetify'
@@ -127,7 +127,7 @@ const next = computed(() => {
   return str
 })
 
-const socket = new mq()
+// const socket = new mq()
 const pinia = useStore()
 
 dictApi.dictList().then(res => {
@@ -139,7 +139,7 @@ provide('subMain', subMain)
 provide('next', next)
 provide('density', density)
 provide('btnList', btnList)
-provide('socket', socket)
+// provide('socket', socket)
 </script>
 
 <style lang="scss" scoped>
