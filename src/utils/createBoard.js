@@ -62,6 +62,8 @@ export class createBoard {
     this.scene.clear()
   }
   updata(options) {
+    this.theme = localStorage.getItem('theme')
+
     const axesHelper = new THREE.AxesHelper(200)
 
     this.scene.add(axesHelper)
@@ -73,18 +75,18 @@ export class createBoard {
     this.options = Object.assign(this.options, options)
     
 
-    const light1 = new THREE.DirectionalLight(0xeeeeee, 1)
+    const light1 = new THREE.DirectionalLight(0xeeeeee, this.theme == 'light' ? 2 : 1)
 
     light1.position.set(this.options.L1X, this.options.L1Y, this.options.L1Z)
     this.scene.add(light1)
 
-    const light2 = new THREE.DirectionalLight(0xeeeeee, 1)
+    const light2 = new THREE.DirectionalLight(0xeeeeee, this.theme == 'light' ? 2 : 1)
 
     light2.position.set(this.options.L2X, this.options.L2Y, this.options.L2Z)
 
     this.scene.add(light2)
   
-    const ambientLight = new THREE.AmbientLight(0xaaaaaa, 2)
+    const ambientLight = new THREE.AmbientLight(0xaaaaaa, this.theme == 'light' ? 3 : 2)
 
     this.scene.add(ambientLight)
 

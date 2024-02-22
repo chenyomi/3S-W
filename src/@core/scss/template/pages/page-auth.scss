@@ -1,5 +1,7 @@
 .layout-blank {
   .auth-wrapper {
+    background-image: url("/src/assets/images/bg.png");
+    background-size: cover;
     min-block-size: calc(var(--vh, 1vh) * 100);
   }
 

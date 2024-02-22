@@ -47,6 +47,7 @@ export class createMaterial {
     this.controls = null
   }
   updata(options) {
+    this.theme = localStorage.getItem('theme')
     this.options = Object.assign(this.options, options)
     this.cardBox = document.querySelector(this.options.container)
     this.renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -74,20 +75,21 @@ export class createMaterial {
     )
     this.camera.position.set(0, 1.2*this.options.clientZ, 1.2*this.options.clientZ)
 
-    const light1 = new THREE.DirectionalLight(0xeeeeee, 1)
+    const light1 = new THREE.DirectionalLight(0xeeeeee, this.theme == 'light' ? 2 : 1)
 
     light1.position.set(this.options.L1X, this.options.L1Y, this.options.L1Z)
     this.scene.add(light1)
 
-    const light2 = new THREE.DirectionalLight(0xeeeeee, 1)
+    const light2 = new THREE.DirectionalLight(0xeeeeee, this.theme == 'light' ? 2 : 1)
 
     light2.position.set(this.options.L2X, this.options.L2Y, this.options.L2Z)
 
     this.scene.add(light2)
   
-    const ambientLight = new THREE.AmbientLight(0xaaaaaa, 2)
+    const ambientLight = new THREE.AmbientLight(0xaaaaaa, this.theme == 'light' ? 3 : 2)
 
     this.scene.add(ambientLight)
+
 
     // 渲染工件
     let job = null
