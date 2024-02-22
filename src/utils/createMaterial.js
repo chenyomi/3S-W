@@ -4,15 +4,15 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 
+
 export class createMaterial {
   constructor(options) {
     this.options = {
       container: '#box',   //容器id
-      pro: '0', //0立方体1圆柱
-      clientX: 100, //立方体X
-      clientY: 100, //立方体Y
-      clientZ: 100, //立方体Z /圆柱高Z
-      clientR: 10, //圆柱半径
+      materialTemplateShape: 0, //0立方体1圆柱
+      materialTemplateLengthX: 100, //立方体X
+      materialTemplateLengthY: 100, //立方体Y
+      materialTemplateLengthZ: 100, //立方体Z /圆柱高Z
       L1X: 500,
       L1Y: 400,
       L1Z: -300,
@@ -61,9 +61,9 @@ export class createMaterial {
     const axesHelper = new THREE.AxesHelper(200)
 
     this.scene.add(axesHelper)
-    axesHelper.position.x = -this.options.clientX / 2 - 10
-    axesHelper.position.z = -this.options.clientZ / 2 - 10
-    axesHelper.position.y = -this.options.clientY / 2 - 10
+    axesHelper.position.x = -this.options.materialTemplateLengthX / 2 - 10
+    axesHelper.position.z = -this.options.materialTemplateLengthZ / 2 - 10
+    axesHelper.position.y = -this.options.materialTemplateLengthY / 2 - 10
 
     
     this.v2 = new THREE.Vector2(this.cardBox.clientWidth, this.cardBox.clientHeight)
@@ -73,7 +73,7 @@ export class createMaterial {
       0.1,
       1000,
     )
-    this.camera.position.set(0, 1.2*this.options.clientZ, 1.2*this.options.clientZ)
+    this.camera.position.set(0, 1.2*this.options.materialTemplateLengthZ, 1.2*this.options.materialTemplateLengthZ)
 
     const light1 = new THREE.DirectionalLight(0xeeeeee, this.theme == 'light' ? 2 : 1)
 
@@ -90,19 +90,18 @@ export class createMaterial {
 
     this.scene.add(ambientLight)
 
-
     // 渲染工件
     let job = null
-    if (this.options.pro == '0') {
+    if (this.options.materialTemplateShape == 0) {
       job = new THREE.Mesh(
-        new THREE.BoxGeometry(this.options.clientX, this.options.clientZ, this.options.clientY),
+        new THREE.BoxGeometry(this.options.materialTemplateLengthX, this.options.materialTemplateLengthZ, this.options.materialTemplateLengthY),
         new THREE.MeshLambertMaterial({
           color: 0x9ed2ff,
         }),
       )
     } else {
       job = new THREE.Mesh(
-        new THREE.CylinderGeometry(this.options.clientR, this.options.clientR, this.options.clientZ),
+        new THREE.CylinderGeometry(this.options.materialTemplateLengthX / 2, this.options.materialTemplateLengthX / 2, this.options.materialTemplateLengthZ),
         new THREE.MeshLambertMaterial({
           color: 0x9ed2ff,
         }),

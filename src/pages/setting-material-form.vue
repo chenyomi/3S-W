@@ -1,5 +1,5 @@
 <script setup>
-import fixtureApi from '@/api/fixture'
+import materialApi from '@/api/material'
 import { getDict } from '@/utils/utils'
 import { cloneDeep } from 'lodash'
 
@@ -9,17 +9,17 @@ const propsData = defineProps({
 
 const density = inject('density')
 const formData = ref(cloneDeep(propsData.data))
+const types = getDict('sss_material_template_shape')
+
 
 const submit = () => {
   return new Promise(resolve => { 
-    fixtureApi.fixtureEdit(formData.value).finally(() => {
+    materialApi.materialEdit(formData.value).finally(() => {
       resolve()
     })
   })
+ 
 }
-
-
-const type = getDict('sss_fixture_type')
 
 defineExpose({
   submit,
@@ -34,58 +34,25 @@ defineExpose({
         class="text-center"
       >
         <VTextField
-          v-model="formData.fixtureName"
-          label="夹具名称："
+          v-model="formData.materialTemplateName"
+          label="名称："
           :density="density"
         />
       </VCol>
-      <VCol
-        cols="6"
-        class="text-center"
-      >
-        <VTextField
-          v-model="formData.fixtureCode"
-          label="编号："
-          :density="density"
-        />
-      </VCol>
+     
       <VCol
         cols="6"
         class="text-center"
       >
         <VSelect
-          v-model="formData.fixtureType"
+          v-model="formData.materialTemplateShape"
           :density="density"
-          :items="type"
-          label="类型："
+          :items="types"
+          label="形状："
         />
       </VCol>
       <VCol
-        cols="6"
-        class="text-center"
-      >
-        <VTextField
-          v-model="formData.fixtureTongsHeight"
-          label="钳高："
-          :density="density"
-        />
-      </VCol>
-      <VCol
-        cols="6"
-        class="text-center"
-      >
-        <VTextField
-          v-model="formData.fixtureDepth"
-          label="夹深："
-          :density="density"
-        />
-      </VCol>
-      <VCol
-        cols="6"
-        class="text-center"
-      />
-      <VCol
-        cols="6"
+        cols="4"
         class="text-center"
       >
         <VChip
@@ -96,7 +63,7 @@ defineExpose({
         </VChip>
       </VCol>
       <VCol
-        cols="6"
+        cols="4"
         class="text-center"
       >
         <VChip
@@ -106,34 +73,39 @@ defineExpose({
           Y轴方向
         </VChip>
       </VCol>
-        
-      <VCol cols="6">
+      <VCol
+        cols="4"
+        class="text-center"
+      >
+        <VChip
+          class="ma-1"
+          color="#4CAF50"
+        >
+          Z轴方向
+        </VChip>
+      </VCol>
+      <VCol cols="4">
         <VTextField
-          v-model="formData.fixtureSizeX"
+          v-model="formData.materialTemplateLengthX"
           label="尺寸："
-          :density="density"
-          suffix="mm"
-          class="mb-2"
-        />
-        <VTextField
-          v-model="formData.fixtureLocateX"
-          label="定位："
           :density="density"
           suffix="mm"
           class="mb-2"
         />
       </VCol>
-      <VCol cols="6">
+      <VCol cols="4">
         <VTextField
-          v-model="formData.fixtureSizeY"
+          v-model="formData.materialTemplateLengthY"
           label="尺寸："
           :density="density"
           suffix="mm"
           class="mb-2"
         />
+      </VCol>
+      <VCol cols="4">
         <VTextField
-          v-model="formData.fixtureLocateY"
-          label="定位："
+          v-model="formData.materialTemplateLengthZ"
+          label="尺寸："
           :density="density"
           suffix="mm"
           class="mb-2"

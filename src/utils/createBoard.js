@@ -1,27 +1,31 @@
 import * as THREE from "three"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
+
 export class createBoard {
   constructor(options) {
     this.options = {
       container: '#box',   //容器id
-      name: '800*400 1004796 料盘6号',
-      status: true,
-      type: 0, //0立方体 1圆柱
-      exmx0: 800,
-      exmy0: 400,
-      exmx1: 20,
-      exmx2: 10,
-      exmx3: 65,
-      exmx4: 10,
-      exmy1: 20,
-      exmy2: 5,
-      exmy3: 65,
-      exmy4: 10,
-      raster: 3,
-      tuobanx: 800,
-      tuobany: 400,
-      tuobanz: 5,
+      upper: {
+        trawlBoardLengthX: 800,
+        trawlBoardLengthY: 400,
+        trawlBoardOffsetX: 20,
+        trawlBoardOffsetY: 20,
+        trawlBoardSiteSpaceX: 10,
+        trawlBoardSiteSpaceY: 10,
+        trawlBoardSiteLengthX: 83,
+        trawlBoardSiteLengthY: 83,
+        trawlBoardSiteX: 8,
+        trawlBoardSiteY: 4,
+        trawlBoardShape: 1,
+        trawlBoardThickness: 3,
+      },
+      materials: [],
+      lower: {
+        layerBoardLengthX: 800,
+        layerBoardLengthY: 400,
+        layerBoardThickness: 5,
+      },
       L1X: 500,
       L1Y: 400,
       L1Z: -300,
@@ -37,6 +41,7 @@ export class createBoard {
     this.controls = null
     this.renderer = null
     this.geos = []
+    this.selectMesh = []
     this.init()
     this.updata(options)
   }
@@ -49,6 +54,27 @@ export class createBoard {
       0.1,
       1000,
     )
+    this.cardBox.addEventListener('click', (event) => {
+      event.preventDefault()
+      var intersects = this.getIntersects(event.layerX, event.layerY)
+      if (intersects.length > 0) {
+        var res = intersects.filter(function (res) {
+          return res && res.object
+        })[0]
+        if (res && res.object && res.object.userData.id) {
+          // 更改选中模型颜色
+          const index = this.selectMesh.findIndex(item => item === res.object.userData.id)
+          if (index == -1) {
+            this.selectMesh.push(res.object.userData.id)
+            res.object.material.color.set("#fde308")
+          } else {
+            this.selectMesh.splice(index, 1)
+            res.object.material.color.set("#97b2c8")
+          }
+          console.log(this.selectMesh)
+        }
+      }
+    }, false)
   }
   disWebGl() {
     cancelAnimationFrame(this.animation)
@@ -59,21 +85,42 @@ export class createBoard {
     this.renderer.dispose()
     this.renderer = null
     this.geos = []
+    this.selectMesh = []
     this.scene.clear()
   }
+  getIntersects(x, y) {
+    // x/y 是鼠标点击点距页面左/上距离 
+    var raycaster = new THREE.Raycaster()
+    var mouseVector = new THREE.Vector2()
+
+    let dom = document.getElementById('box')
+    let width = dom.clientWidth;
+    let height = dom.clientHeight;
+    // 当前容器距页面上/左的距离
+    let offsetTop = dom.offsetTop
+    let offsetLeft = dom.offsetLeft
+    x = ((x - offsetLeft) / width) * 2 - 1
+    y = -((y - offsetTop) / height) * 2 + 1
+    mouseVector.set(x, y);
+
+    raycaster.setFromCamera(mouseVector, this.camera);
+
+    return raycaster.intersectObjects(this.scene.children, true)
+  }
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   updata(options) {
     this.theme = localStorage.getItem('theme')
 
     const axesHelper = new THREE.AxesHelper(200)
 
     this.scene.add(axesHelper)
-    axesHelper.position.x = -this.options.exmx0 / 2 - 10
-    axesHelper.position.z = -this.options.exmy0 / 2 - 10
-    axesHelper.position.y = this.options.raster
+    axesHelper.position.x = -this.options.upper.trawlBoardLengthX / 2 - 10
+    axesHelper.position.z = -this.options.upper.trawlBoardLengthY / 2 - 10
+    axesHelper.position.y = this.options.upper.trawlBoardThickness
 
 
     this.options = Object.assign(this.options, options)
-    
+
 
     const light1 = new THREE.DirectionalLight(0xeeeeee, this.theme == 'light' ? 2 : 1)
 
@@ -85,7 +132,7 @@ export class createBoard {
     light2.position.set(this.options.L2X, this.options.L2Y, this.options.L2Z)
 
     this.scene.add(light2)
-  
+
     const ambientLight = new THREE.AmbientLight(0xaaaaaa, this.theme == 'light' ? 3 : 2)
 
     this.scene.add(ambientLight)
@@ -96,142 +143,114 @@ export class createBoard {
     this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.shadowMap.enabled = true
 
-    this.camera.position.set(0, this.options.exmy0, this.options.exmy0)
+    this.camera.position.set(0, this.options.upper.trawlBoardLengthY, this.options.upper.trawlBoardLengthY)
 
     const cube = new THREE.Mesh(
-      new THREE.BoxGeometry(this.options.exmx0, this.options.raster, this.options.exmy0),
+      new THREE.BoxGeometry(this.options.upper.trawlBoardLengthX, this.options.upper.trawlBoardThickness, this.options.upper.trawlBoardLengthY),
       new THREE.MeshStandardMaterial({
         color: 0xc3d6d3,
         roughness: 0.3, // 设置粗糙度为0.3，使其表面具有一些纹理
       }),
     )
 
-    cube.position.y = this.options.raster / 2
+    cube.position.y = this.options.upper.trawlBoardThickness / 2
 
     const cube_ = new THREE.Mesh(
-      new THREE.BoxGeometry(this.options.tuobanx, this.options.tuobanz, this.options.tuobany),
+      new THREE.BoxGeometry(this.options.lower.layerBoardLengthX, this.options.lower.layerBoardThickness, this.options.lower.layerBoardLengthY),
       new THREE.MeshLambertMaterial({
         color: 0xccdbdd,
       }),
     )
 
-    cube_.position.y = -this.options.tuobanz/2
+    cube_.position.y = -this.options.lower.layerBoardThickness / 2
 
     this.scene.add(cube_)
 
     const squareShape = new THREE.Shape()
-      .moveTo( 0, 0 )
-      .lineTo( 0, this.options.exmy0 )
-      .lineTo( this.options.exmx0, this.options.exmy0 )
-      .lineTo( this.options.exmx0, 0 )
+      .moveTo(0, 0)
+      .lineTo(0, this.options.upper.trawlBoardLengthY)
+      .lineTo(this.options.upper.trawlBoardLengthX, this.options.upper.trawlBoardLengthY)
+      .lineTo(this.options.upper.trawlBoardLengthX, 0)
       .lineTo(0, 0)
 
-    for (let colIndex = 0; colIndex < this.options.exmy2; colIndex++) {
-      for (let rowIndex = 0; rowIndex < this.options.exmx2; rowIndex++) {
-        const row_ = this.options.exmx1 + (this.options.exmx3 + this.options.exmx4) * rowIndex  + this.options.exmx3 / 2
-        const col_ = this.options.exmy1 + (this.options.exmy3 + this.options.exmy4) * colIndex  + this.options.exmy3 / 2
+    for (let colIndex = 0; colIndex < this.options.upper.trawlBoardSiteY; colIndex++) {
+      for (let rowIndex = 0; rowIndex < this.options.upper.trawlBoardSiteX; rowIndex++) {
+        const row_ = this.options.upper.trawlBoardOffsetX + (this.options.upper.trawlBoardSiteLengthX + this.options.upper.trawlBoardSiteSpaceX) * rowIndex + this.options.upper.trawlBoardSiteLengthX / 2
+        const col_ = this.options.upper.trawlBoardOffsetY + (this.options.upper.trawlBoardSiteLengthY + this.options.upper.trawlBoardSiteSpaceY) * colIndex + this.options.upper.trawlBoardSiteLengthY / 2
 
         const path = new THREE.Path()
-        if (this.options.type == 0) {
-          path.moveTo(row_ - this.options.exmx3 / 2, col_ - this.options.exmy3 / 2)
-          path.lineTo(row_ + this.options.exmx3 / 2, col_ - this.options.exmy3 / 2)
-          path.lineTo(row_ + this.options.exmx3 / 2, col_ + this.options.exmy3 / 2)
-          path.lineTo(row_ - this.options.exmx3 / 2, col_ + this.options.exmy3 / 2)
+        if (this.options.upper.trawlBoardShape == 0) {
+          path.moveTo(row_ - this.options.upper.trawlBoardSiteLengthX / 2, col_ - this.options.upper.trawlBoardSiteLengthY / 2)
+          path.lineTo(row_ + this.options.upper.trawlBoardSiteLengthX / 2, col_ - this.options.upper.trawlBoardSiteLengthY / 2)
+          path.lineTo(row_ + this.options.upper.trawlBoardSiteLengthX / 2, col_ + this.options.upper.trawlBoardSiteLengthY / 2)
+          path.lineTo(row_ - this.options.upper.trawlBoardSiteLengthX / 2, col_ + this.options.upper.trawlBoardSiteLengthY / 2)
           squareShape.holes.push(path)
         } else {
-          
 
-          path.absarc(row_, col_, this.options.exmx3 / 2, 0, Math.PI * 2, false)
+
+          path.absarc(row_, col_, this.options.upper.trawlBoardSiteLengthX / 2, 0, Math.PI * 2, false)
           squareShape.holes.push(path)
         }
-       
-       
+
+
       }
     }
 
 
-    let geometry = new THREE.ExtrudeGeometry( squareShape, { depth: this.options.raster, bevelEnabled: false, curveSegments: 50 } )
+    let geometry = new THREE.ExtrudeGeometry(squareShape, { depth: this.options.upper.trawlBoardThickness, bevelEnabled: false, curveSegments: 50 })
 
-    let mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial({
+    let mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({
       color: 0xc3d6d3,
       roughness: 0.3, // 设置粗糙度为0.3，使其表面具有一些纹理
-    }) )
-    mesh.position.set( -this.options.exmx0 / 2, this.options.raster, -this.options.exmy0 / 2)
-    mesh.rotation.set(Math.PI/2, 0, 0)
-    this.scene.add( mesh )
+    }))
+    mesh.position.set(-this.options.upper.trawlBoardLengthX / 2, this.options.upper.trawlBoardThickness, -this.options.upper.trawlBoardLengthY / 2)
+    mesh.rotation.set(Math.PI / 2, 0, 0)
+    this.scene.add(mesh)
 
     // 渲染工件
     let job = null
 
     // 静态数据 立方体
-    if (this.options.type == 0) {
-      const data = [
-        {
-          geo: [10, 20, 60],
-          pos: [this.options.exmx1 + 5 - this.options.exmx0 / 2, 10, this.options.exmy1 + 30 - this.options.exmy0 / 2],
-        },
-        {
-          geo: [10, 20, 60],
-          pos: [this.options.exmx1 + 25 - this.options.exmx0 / 2, 10, this.options.exmy1 + 30 - this.options.exmy0 / 2],
-        },
-        {
-          geo: [10, 20, 60],
-          pos: [this.options.exmx1 + 45 - this.options.exmx0 / 2, 10, this.options.exmy1 + 30 - this.options.exmy0 / 2],
-        },
+    this.options.materials.forEach(e => {
+      if (e.materialShape == 0) {
+        e.geo = [e.materialLengthX, e.materialLengthZ, e.materialLengthY]
+      } else if (e.materialShape == 1) {
+        e.geo = [e.materialLengthX / 2, e.materialLengthY / 2, e.materialLengthZ]
+      }
 
-      ]
-
-      data.forEach(item => {
+      e.pos = [e.centerPointX - this.options.upper.trawlBoardLengthX / 2, (e.materialLengthZ / 2), e.centerPointY - this.options.upper.trawlBoardLengthY / 2]
+    })
+    this.options.materials.forEach(e => {
+      if (e.materialShape == 0) {
         job = new THREE.Mesh(
-          new THREE.BoxGeometry(...item.geo),
+          new THREE.BoxGeometry(...e.geo),
           new THREE.MeshLambertMaterial({
             color: 0x97b2c8,
           }),
         )
-
-        job.position.set(...item.pos)
-
-        this.scene.add(job)
-      })
-     
-    } else {
-      const data = [
-        {
-          geo: [20, 20, 50],
-          pos: [this.options.exmx1 + this.options.exmx3 / 2 - this.options.exmx0 / 2, 25, this.options.exmy1  + this.options.exmy3 / 2 - this.options.exmy0 / 2],
-        },
-        {
-          geo: [20, 20, 50],
-          pos: [this.options.exmx1 + this.options.exmx3 / 2 - this.options.exmx0 / 2, 25, this.options.exmy1  + this.options.exmy3 / 2 - this.options.exmy0 / 2 + (this.options.exmy3 + this.options.exmy4)],
-        },
-        {
-          geo: [20, 20, 50],
-          pos: [this.options.exmx1 + this.options.exmx3 / 2 - this.options.exmx0 / 2, 25, this.options.exmy1  + this.options.exmy3 / 2 - this.options.exmy0 / 2 + (this.options.exmy3 + this.options.exmy4) * 2],
-        },
-
-      ]
-
-      data.forEach(item => {
+      }
+      else if (e.materialShape == 1) {
         job = new THREE.Mesh(
-          new THREE.CylinderGeometry(...item.geo),
+          new THREE.CylinderGeometry(...e.geo),
           new THREE.MeshLambertMaterial({
             color: 0x97b2c8,
           }),
         )
+      }
+      job.userData = {
+        id: e.id
+      }
+      job.position.set(...e.pos)
 
-        job.position.set(...item.pos)
-        this.scene.add(job)
-      })
-    }
-
-   
+      this.scene.add(job)
+    })
 
     const animate = () => {
       this.animation = requestAnimationFrame(animate) //向浏览器发起一个执行某函数的请求， 什么时候会执行由浏览器决定，一般默认保持60FPS的频率
       this.renderer.render(this.scene, this.camera) //每次渲染出一幅图像
     }
 
-    
+
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
 
     //domElement canvas对象

@@ -1,4 +1,6 @@
 <script setup>
+import layerboardApi from '@/api/layerboard'
+
 const propsData = defineProps({
   data: { type: Object },
 })
@@ -8,8 +10,11 @@ const formData = ref(propsData.data)
 
 const submit = () => {
   return new Promise(resolve => {
-    resolve()
+    layerboardApi.layerboardEdit(formData.value).finally(() => {
+      resolve()
+    })
   })
+  
 }
 
 defineExpose({
@@ -25,7 +30,7 @@ defineExpose({
         class="text-center"
       >
         <VTextField
-          v-model="formData.name"
+          v-model="formData.layerBoardName"
           label="托板名称："
           :density="density"
         />
@@ -35,7 +40,7 @@ defineExpose({
         class="text-center"
       >
         <VTextField
-          v-model="formData.code"
+          v-model="formData.layerBoardCode"
           label="编号："
           :density="density"
         />
@@ -45,7 +50,7 @@ defineExpose({
         class="text-center"
       >
         <VTextField
-          v-model="formData.deep"
+          v-model="formData.layerBoardThickness"
           label="厚度："
           :density="density"
         />
@@ -79,7 +84,7 @@ defineExpose({
         
       <VCol cols="6">
         <VTextField
-          v-model="formData.exmx1"
+          v-model="formData.layerBoardLengthX"
           label="尺寸："
           :density="density"
           suffix="mm"
@@ -88,7 +93,7 @@ defineExpose({
       </VCol>
       <VCol cols="6">
         <VTextField
-          v-model="formData.exmy1"
+          v-model="formData.layerBoardLengthY"
           label="尺寸："
           :density="density"
           suffix="mm"

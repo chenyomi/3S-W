@@ -1,71 +1,25 @@
 <script setup>
+import palletsApi from '@/api/pallets'
 import { useLocale } from 'vuetify'
 
 const { t } = useLocale()
 const density = inject('density')
 const expanded = ref()
 let expandedArr = []
-
-let desserts = [
-  {
-    id: 1,
-    name: '夹具1号',
-    code: 2001,
-    exmx1: 600,
-    exmy1: 400,
-    exmz1: 150,
-    maxKg: 30,
-    group: '夹具-1 + 托板G',
-  },
-  {
-    id: 2,
-    name: '夹具2号',
-    code: 2002,
-    exmx1: 600,
-    exmy1: 400,
-    exmz1: 150,
-    maxKg: 30,
-    group: '夹具-2 + 托板H',
-  },
-  {
-    id: 3,
-    name: '夹具3号',
-    code: 2003,
-    exmx1: 600,
-    exmy1: 400,
-    exmz1: 150,
-    maxKg: 30,
-    group: '夹具-3 + 托板I',
-  },
-  {
-    id: 4,
-    name: '夹具4号',
-    code: 2003,
-    exmx1: 600,
-    exmy1: 400,
-    exmz1: 150,
-    maxKg: 30,
-    group: '-',
-  },
-]
-
-const FakeAPI = {
-  async fetch ({ page, itemsPerPage, sortBy }) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const items = desserts
-
-        const paginated = items
-
-        resolve({ items: paginated })
-      }, 500)
-    })
-  },
-}
+const serverItems = ref([])
+const loading = ref(true)
 
 onMounted(() => {
 })
 
+const loadItems = () => {
+  setTimeout(() => {
+    loading.value = false
+  }, 1000)
+  palletsApi.palletsListFIXTURE().then(res => {
+    serverItems.value = res.rows.filter(e => e.upper)
+  })
+}
 
 const headers = ref([
   // {
@@ -73,29 +27,19 @@ const headers = ref([
   //   sortable: false,
   //   key: 'exclusive',
   //   fixed: true,
-  //   minWidth: 70,
+  //   width: 70,
   // },
   {
     title: t('名称'),
     align: 'center',
     sortable: false,
-    key: 'name',
+    key: 'palletName',
     minWidth: 90,
   },
-  { title: t('组'), key: 'group', align: 'center', sortable: false, minWidth: 100 },
+  { title: t('组'), key: 'upper', align: 'center', sortable: false, minWidth: 100 },
   
 ])
 
-const serverItems = ref([])
-const loading = ref(true)
-function loadItems ({ page, itemsPerPage, sortBy }) {
-  loading.value = true
-  FakeAPI.fetch({ page, itemsPerPage, sortBy }).then(({ items, total }) => {
-    serverItems.value = items
-    loading.value = false
-    expanded.value = items[0].id
-  })
-}
 
 const submit = () => {
   return new Promise(resolve => {
@@ -134,14 +78,8 @@ defineExpose({
       expandedArr = newVal
     }"
   >
-    <template #item.exclusive="{ item }">
-      <VCheckbox
-        :model-value="item.id == expanded"
-        readonly
-      />
-    </template>
-    <template #item.exmx1="{ item }">
-      {{ item.exmx1 }}-{{ item.exmy1 }}-{{ item.exmz1 }}  
+    <template #item.upper="{ item }">
+      {{ item.upper?.name }} + {{ item.lower?.name }}
     </template>
     <template #loading />
   </VDataTableVirtual>

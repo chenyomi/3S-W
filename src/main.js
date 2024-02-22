@@ -10,13 +10,12 @@ import { createApp } from 'vue'
 
 //icon https://boxicons.com 
 
-
 const pinia = createPinia()
 
 const app = createApp(App)
 
+app.use(pinia)
 app.use(vuetify)
 app.use(i18n)
-app.use(pinia)
 app.use(router)
 app.mount('#app')

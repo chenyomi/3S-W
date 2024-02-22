@@ -1,4 +1,5 @@
 <script setup>
+import drawerApi from '@/api/drawer'
 import Modal from '@/layouts/components/modal.vue'
 import { inject, nextTick, ref } from 'vue'
 import { useLocale } from 'vuetify'
@@ -14,129 +15,17 @@ const expanded = ref()
 let expandedArr = []
 const modal = ref()
 
-let desserts = [
-  {
-    id: 1,
-    distans: 8,
-    name: '800*400 1004792',
-    status: true,
-    type: 0,
-    exmx0: 800,
-    exmy0: 400,
-    exmx1: 20,
-    exmx2: 8,
-    exmx3: 83,
-    exmx4: 10,
-    exmy1: 20,
-    exmy2: 4,
-    exmy3: 83,
-    exmy4: 10,
-    raster: 3,
-  },
-  {
-    id: 2,
-    distans: 8,
-    name: '800*400 1004792',
-    status: true,
-    type: 0,
-    exmx0: 800,
-    exmy0: 400,
-    exmx1: 20,
-    exmx2: 10,
-    exmx3: 65,
-    exmx4: 10,
-    exmy1: 20,
-    exmy2: 5,
-    exmy3: 65,
-    exmy4: 10,
-    raster: 3,
-  },
-  {
-    id: 3,
-    distans: 8,
-    name: '800*400 1004792',
-    status: true,
-    type: 1,
-    exmx0: 800,
-    exmy0: 400,
-    exmx1: 20,
-    exmx2: 10,
-    exmx3: 65,
-    exmx4: 10,
-    exmy1: 20,
-    exmy2: 5,
-    exmy3: 65,
-    exmy4: 10,
-    raster: 3,
-  },
-  {
-    id: 4,
-    distans: 8,
-    name: '800*400 1004792',
-    status: true,
-    type: 1,
-    exmx0: 800,
-    exmy0: 400,
-    exmx1: 20,
-    exmx2: 8,
-    exmx3: 83,
-    exmx4: 10,
-    exmy1: 20,
-    exmy2: 4,
-    exmy3: 83,
-    exmy4: 10,
-    raster: 3,
-  },
-  {
-    id: 5,
-    distans: 8,
-    name: '800*400 1004792',
-    status: true,
-    type: 0,
-    exmx0: 800,
-    exmy0: 400,
-    exmx1: 20,
-    exmx2: 10,
-    exmx3: 65,
-    exmx4: 10,
-    exmy1: 20,
-    exmy2: 5,
-    exmy3: 65,
-    exmy4: 10,
-    raster: 3,
-  },
-  {
-    id: 6,
-    distans: 8,
-    name: '800*400 1004792',
-    status: true,
-    type: 0,
-    exmx0: 800,
-    exmy0: 400,
-    exmx1: 20,
-    exmx2: 10,
-    exmx3: 65,
-    exmx4: 10,
-    exmy1: 20,
-    exmy2: 5,
-    exmy3: 65,
-    exmy4: 10,
-    raster: 3,
-  },
-]
+setTimeout(() => {
+  loading.value = false
+}, 1000)
 
-const FakeAPI = {
-  async fetch ({ page, itemsPerPage, sortBy }) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const items = desserts
+const loadItems = () => {
+  drawerApi.drawerList().then(res => {
+    serverItems.value = res.rows
 
-        const paginated = items
-
-        resolve({ items: paginated })
-      }, 500)
-    })
-  },
+    expanded.value = res.rows[0].id
+    btnList.value[1].slotData = res.rows[0]
+  })
 }
 
 const btnList = inject('btnList')
@@ -157,6 +46,7 @@ onMounted(() => {
         diaFormRef.submit().finally(() => {
           close()
           setTimeout(() => {
+            loadItems()  
             closeLoading()
           }, 2000)
         })
@@ -165,10 +55,9 @@ onMounted(() => {
       name: '编辑',
       color: '#00ACC1',
       size: 'large',
-      width: 80,
+      width: 150,
       formWidth: 800,
       slot: shallowRef(drawerForm), 
-      slotData: serverItems.value.filter(c => c.id == expanded.value)[0], 
       fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
@@ -176,25 +65,10 @@ onMounted(() => {
         diaFormRef.submit().finally(() => {
           close()
           setTimeout(() => {
+            loadItems()
             closeLoading()
           }, 2000)
         })
-      },
-    }, {
-      name: '保存',
-      color: '#66BB6A',
-      icon: 'bx-cloud-upload',
-      size: 'large',
-      width: 220,
-      mark: '是否保存并上传更新数据？',
-      fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
-        openLoading({
-          text: '正在上传更新',
-        })
-        close()
-        setTimeout(() => {
-          closeLoading()
-        }, 2000)
       },
     }]
   })
@@ -206,35 +80,24 @@ const headers = ref([
     sortable: false,
     key: 'exclusive',
     fixed: true,
+    width: 70,
     minWidth: 70,
   },
   {
     title: t('名称'),
     align: 'start',
     sortable: false,
-    key: 'name',
+    key: 'trawlBoardName',
     minWidth: 180,
   },
-  { title: t('安全距离'), key: 'distans', align: 'center', sortable: false, minWidth: 90 },
-  { title: t('厚度'), key: 'raster', align: 'center', sortable: false, minWidth: 60 },
-  { title: t('板') + '（X-Y）', key: 'exmx0', align: 'center', sortable: false, minWidth: 90 },
-  { title: t('原点偏移') + '（X-Y）', key: 'exmx1', align: 'center', sortable: false, minWidth: 130 },
-  { title: t('占位') + '（X-Y）', key: 'exmx2', align: 'center', sortable: false, minWidth: 110 },
-  { title: t('占位单元尺寸') + '（X-Y）', key: 'exmx3', align: 'center', sortable: false, minWidth: 160 },
-  { title: t('占位单元间距') + '（X-Y）', key: 'exmx4', align: 'center', sortable: false, minWidth: 160 },
+  { title: t('安全距离'), key: 'trawlBoardSafeDistance', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('厚度'), key: 'trawlBoardThickness', align: 'center', sortable: false, minWidth: 60 },
+  { title: t('板') + '（X-Y）', key: 'trawlBoardLengthX', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('原点偏移') + '（X-Y）', key: 'trawlBoardOffsetX', align: 'center', sortable: false, minWidth: 130 },
+  { title: t('占位') + '（X-Y）', key: 'trawlBoardSiteX', align: 'center', sortable: false, minWidth: 110 },
+  { title: t('占位单元尺寸') + '（X-Y）', key: 'trawlBoardSiteLengthX', align: 'center', sortable: false, minWidth: 160 },
+  { title: t('占位单元间距') + '（X-Y）', key: 'trawlBoardSiteSpaceX', align: 'center', sortable: false, minWidth: 160 },
 ])
-
-
-function loadItems ({ page, itemsPerPage, sortBy }) {
-  loading.value = true
-  FakeAPI.fetch({ page, itemsPerPage, sortBy }).then(({ items, total }) => {
-    serverItems.value = items
-    loading.value = false
-    expanded.value = items[0].id
-    btnList.value[1].slotData = serverItems.value.filter(c => c.id == items[0].id)[0]
-  })
-}
-
 
 const openModal = () => {
   modal.value.open({
@@ -293,20 +156,20 @@ const openModal = () => {
         readonly
       />
     </template>
-    <template #item.exmx0="{ item }">
-      {{ item.exmx0 }}-{{ item.exmy0 }}
+    <template #item.trawlBoardLengthX="{ item }">
+      {{ item.trawlBoardLengthX }}-{{ item.trawlBoardLengthY }}
     </template>
-    <template #item.exmx1="{ item }">
-      {{ item.exmx1 }}-{{ item.exmy1 }}
+    <template #item.trawlBoardOffsetX="{ item }">
+      {{ item.trawlBoardOffsetX }}-{{ item.trawlBoardOffsetY }}
     </template>
-    <template #item.exmx2="{ item }">
-      {{ item.exmx2 }}-{{ item.exmy2 }}
+    <template #item.trawlBoardSiteX="{ item }">
+      {{ item.trawlBoardSiteX }}-{{ item.trawlBoardSiteY }}
     </template>
-    <template #item.exmx3="{ item }">
-      {{ item.exmx3 }}-{{ item.exmy3 }}
+    <template #item.trawlBoardSiteLengthX="{ item }">
+      {{ item.trawlBoardSiteLengthX }}-{{ item.trawlBoardSiteLengthY }}
     </template>
-    <template #item.exmx4="{ item }">
-      {{ item.exmx4 }}-{{ item.exmy4 }}
+    <template #item.trawlBoardSiteSpaceX="{ item }">
+      {{ item.trawlBoardSiteSpaceX }}-{{ item.trawlBoardSiteSpaceY }}
     </template>
     <template #loading />
     <template #bottom>

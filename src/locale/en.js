@@ -80,4 +80,6 @@ export default {
   指数量: 'Number',
   钳高: 'Height',
   形状: 'Shape',
+  暂无数据: 'No Data',
+  终止: 'STOP',
 }
