@@ -3,7 +3,7 @@ name: 3s-w
 on:
   push:
     branches:
-      - main
+      - chenyomi-1.0
  
 jobs:
   build-and-deploy:
