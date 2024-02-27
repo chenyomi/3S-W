@@ -28,4 +28,7 @@ export default {
   taskDelete(data) {
     return baseRequest(`/sss/task`, data, 'delete')
   },
+  taskLog(data) {
+    return baseRequest(`/sss/task/log/list`, data, 'get')
+  },
 }

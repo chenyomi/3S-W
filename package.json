@@ -3,13 +3,16 @@
   "author": "chenyomi",
   "version": "1.0.0",
   "private": true,
+  "main": "./main.js",
   "scripts": {
     "dev": "vite --mode development",
     "build": "vite build --mode production",
     "preview": "vite preview --port 5050",
     "lint": "eslint . -c .eslintrc.js --fix --ext .ts,.js,.vue,.tsx,.jsx",
     "build:icons": "node src/@iconify/build-icons.js",
-    "postinstall": "npm run build:icons"
+    "postinstall": "npm run build:icons",
+    "electron:dev": "electron main.js",
+    "electron:build": "electron-builder --win"
   },
   "dependencies": {
     "@casl/ability": "^6.2.0",
@@ -60,6 +63,8 @@
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitejs/plugin-vue-jsx": "^3.0.0",
     "boxicons": "^2.1.4",
+    "electron": "^29.0.1",
+    "electron-builder": "^24.12.0",
     "eslint": "^8.41.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
@@ -84,5 +89,20 @@
   "packageManager": "yarn@1.22.18",
   "resolutions": {
     "postcss": "8"
+  },
+  "build": {
+    "productName": "3S-W",
+    "asar": true,
+    "directories": {
+      "output": "app"
+    },
+    "win": {
+      "icon": "./public/logo.ico",
+      "target": [
+        "nsis",
+        "zip",
+        "portable"
+      ]
+    }
   }
 }

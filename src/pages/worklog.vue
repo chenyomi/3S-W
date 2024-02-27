@@ -1,175 +1,34 @@
 <script setup>
+import taskApi from '@/api/task';
+import { useLocale } from 'vuetify';
 const density = inject('density')
 const expanded = ref()
 let expandedArr = []
-import { useLocale } from 'vuetify'
 
 const { t } = useLocale()
-let desserts = [
-  {
-    id: 1,
-    content: '[加工] [2/5] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 1 (执行中)',
-    type: '加工',
-    status: '执行中',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 2,
-    content: '[加工] [1/5] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 1 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 3,
-    content: '[加工] [5/5] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 2 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 4,
-    content: '[加工] [4/5] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 2 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 5,
-    content: '[加工] [3/5] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 2 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 6,
-    content: '[加工] [2/5] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 2 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 7,
-    content: '[加工] [1/5] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 2 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 8,
-    content: '[异常] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 3',
-    type: '加工',
-    status: '异常',
-    color: '#EF5350',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 8,
-    content: '[警告] 遇到问题请稍后再试',
-    type: '校准',
-    status: '警告',
-    color: '#FFA726',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 9,
-    content: '[加工] [10/10] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 3 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 10,
-    content: '[加工] [9/10] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 3 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 11,
-    content: '[加工] [8/10] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 3 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 12,
-    content: '[加工] [7/10] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 3 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 13,
-    content: '[加工] [6/10] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 3 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 14,
-    content: '[加工] [5/10] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 3 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 15,
-    content: '[加工] [4/10] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 3 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 16,
-    content: '[加工] [3/10] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 3 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 17,
-    content: '[加工] [2/10] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 3 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-  {
-    id: 18,
-    content: '[加工] [1/10] WELLLIH 3S-W | 90*90*90 - PL01 - J02 - 3 (完成)',
-    type: '加工',
-    status: '完成',
-    color: '#689F38',
-    time: '2023-12-25 15:00:00',
-  },
-]
-
+const colors = {
+  'STOP': '#EF5350',
+  'RUN': '#689F38',
+  'STEPS': '#FFA726'
+}
+const itemsPerPage = ref(30)
+const params = ref({
+  pageNum: 1,
+  pageSize: 30,
+})
 const FakeAPI = {
-  async fetch ({ page, itemsPerPage, sortBy }) {
+  async fetch({ page, itemsPerPage, sortBy }) {
     return new Promise(resolve => {
-      setTimeout(() => {
-        const items = desserts
+      taskApi.taskLog({
+        pageNum: page,
+        pageSize: itemsPerPage
+      }).then(res => {
+        const items = res.data.list
 
         const paginated = items
 
-        resolve({ items: paginated })
-      }, 500)
+        resolve({ items: paginated, total: res.data.total })
+      })
     })
   },
 }
@@ -179,57 +38,50 @@ const btnList = inject('btnList')
 
 onMounted(() => {
   nextTick(() => {
-
-    //warehousing
     btnList.value = []
   })
 })
 
 
 const headers = ref([
-  // {
-  //   align: 'start',
-  //   sortable: false,
-  //   key: 'exclusive',
-  //   fixed: true,
-  //   width: 70,
-  // },
   {
     title: t('状态'),
     align: 'center',
     sortable: false,
-    key: 'status',
+    key: 'logType',
     width: 100,
   },
-  
+
   {
     title: t('内容'),
     align: 'start',
     sortable: false,
-    key: 'content',
+    key: 'logInfo',
   },
   {
     title: t('类型'),
     align: 'center',
     sortable: false,
-    key: 'type',
+    key: 'taskType',
     width: 100,
   },
   {
     title: t('时间'),
     align: 'end',
     sortable: false,
-    key: 'time',
+    key: 'createTime',
     width: 200,
   },
 ])
 
 const serverItems = ref([])
+const totalItems = ref(0)
 const loading = ref(true)
-function loadItems ({ page, itemsPerPage, sortBy }) {
+function loadItems({ page, itemsPerPage, sortBy }) {
   loading.value = true
   FakeAPI.fetch({ page, itemsPerPage, sortBy }).then(({ items, total }) => {
     serverItems.value = items
+    totalItems.value = total
     loading.value = false
     expanded.value = items[0].id
   })
@@ -237,45 +89,14 @@ function loadItems ({ page, itemsPerPage, sortBy }) {
 </script>
 
 <template>
-  <VDataTableVirtual
-    fixed-header
-    :headers="headers"
-    :items="serverItems"
-    :loading="loading"
-    loading-text=""
-    hover
-    height="calc(100vh - 175px)"
-    expand-on-click
-    :density="density"
-    @update:options="loadItems"
-    @update:expanded="(newVal) => {
-      newVal.map(e => {
-        if(!expandedArr.includes(e)) {
-          expanded = e
-        }
-      })
-      expandedArr.map(e => {
-        if(!newVal.includes(e)) {
-          expanded = e 
-        }
-      })
-      expandedArr = newVal
-    }"
-  >
-    <template #item.exclusive="{ item }">
-      <VCheckbox
-        :model-value="item.id == expanded"
-        readonly
-      />
-    </template>
-    <template #item.status="{ item }">
-      <VChip
-        label
-        :color="item.color"
-      >
-        {{ item.status }}
+  <v-data-table-server v-model:items-per-page="itemsPerPage" fixed-header :headers="headers" :items="serverItems"
+    :items-length="totalItems" :loading="loading" loading-text="" hover height="calc(100vh - 245px)" :density="density"
+    @update:options="loadItems">
+    <template #item.logType="{ item }">
+      <VChip label :color="colors[item.logType]">
+        {{ item.logType }}
       </VChip>
     </template>
     <template #loading />
-  </VDataTableVirtual>
+  </v-data-table-server>
 </template>

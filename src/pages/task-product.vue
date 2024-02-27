@@ -64,7 +64,7 @@ watch(() => [formData.value.clientX, formData.value.clientY, formData.value.clie
       webGL.updata(formData.value)
     }, 0)
   }
-  
+
 })
 watch(() => dialog.value, newVal => {
   nextTick(() => {
@@ -74,12 +74,12 @@ watch(() => dialog.value, newVal => {
       } else {
         webGL = new createMaterial(formData.value)
       }
-      
-     
+
+
     } else {
       webGL.disWebGl()
     }
-    
+
   })
 })
 
@@ -162,77 +162,37 @@ onMounted(() => {
   }, 0)
 })
 onUnmounted(() => {
-  webGL.disWebGl()
+  if (!mdAndDown.value) {
+    webGL.disWebGl()
+  }
 })
 </script>
 
 <template>
-  <VCard
-    class="h-100 px-3"
-    style="overflow-y: scroll;"
-  >
-    <div
-      class="d-flex gap-3 align-center w-75"
-      :style="!mdAndDown?'position:absolute;top: 1rem;left: 0.75rem;':'margin-top:1.25rem' "
-    >
-      <VSelect
-        v-model="select"
-        :items="items"
-        :density="density"
-        class="flex-none"
-        label="当前物料"
-      />
-      <VTextField
-        v-model="formData.num"
-        label="数量"
-        :density="density"
-      />
-      <VTextField
-        v-model="formData.finallyName"
-        label="成品名称："
-        :density="density"
-      />
-      <VDialog
-        v-if="mdAndDown"
-        v-model="dialog"
-        width="500"
-      >
+  <VCard class="h-100 px-3" style="overflow-y: scroll;">
+    <div class="d-flex gap-3 align-center w-75"
+      :style="!mdAndDown ? 'position:absolute;top: 1rem;left: 0.75rem;' : 'margin-top:1.25rem'">
+      <VSelect v-model="select" :items="items" :density="density" class="flex-none" label="当前物料" />
+      <VTextField v-model="formData.num" label="数量" :density="density" />
+      <VTextField v-model="formData.finallyName" label="成品名称：" :density="density" />
+      <VDialog v-if="mdAndDown" v-model="dialog" width="500">
         <template #activator="{ props }">
-          <VBtn
-            color="primary"
-            v-bind="props"
-            variant="tonal"
-          >
+          <VBtn color="primary" v-bind="props" variant="tonal">
             <VIcon icon="bxs-cube-alt" />
           </VBtn>
         </template>
         <VCard>
           <VCardText>
-            <div
-              id="box"
-              class="w-100"
-              style="height: 300px;"
-            />
+            <div id="box" class="w-100" style="height: 300px;" />
           </VCardText>
         </VCard>
       </VDialog>
     </div>
 
-    <div
-      v-if="!mdAndDown"
-      class="d-flex"
-      style="height: calc(100% / 2 - 30px);"
-    >
+    <div v-if="!mdAndDown" class="d-flex" style="height: calc(100% / 2 - 30px);">
       <div style="flex: 1;" />
-      <div
-        id="box"
-        class="h-100"
-        style="flex: 1;"
-      >
-        <div
-          v-if="!mdAndDown"
-          class="pix"
-        >
+      <div id="box" class="h-100" style="flex: 1;">
+        <div v-if="!mdAndDown" class="pix">
           <div>
             <span style="background: #ffa726;" />
             <span>X</span>
@@ -249,73 +209,27 @@ onUnmounted(() => {
       </div>
     </div>
     <VRow>
-      <VCol
-        cols="4"
-        class="text-center pb-0"
-      >
-        <VChip
-          class="mt-3 mb-1"
-          color="#00897B"
-        >
+      <VCol cols="4" class="text-center pb-0">
+        <VChip class="mt-3 mb-1" color="#00897B">
           物料
         </VChip>
       </VCol>
-      <VCol
-        cols="4"
-        class="text-center pb-0"
-      >
-        <VChip
-          class="mt-3 mb-1"
-          color="#00897B"
-        >
+      <VCol cols="4" class="text-center pb-0">
+        <VChip class="mt-3 mb-1" color="#00897B">
           装载
         </VChip>
       </VCol>
-      <VCol
-        cols="4"
-        class="text-center pb-0"
-      >
-        <VChip
-          class="mt-3 mb-1"
-          color="#00897B"
-        >
+      <VCol cols="4" class="text-center pb-0">
+        <VChip class="mt-3 mb-1" color="#00897B">
           卸载
         </VChip>
       </VCol>
       <VCol cols="4">
-        <VSelect
-          v-model="pro"
-          :items="proType"
-          :density="density"
-          disabled
-          class="mb-2"
-          label="物料形状"
-        />
-        <VTextField
-          v-model="formData.clientX"
-          label="X轴长度："
-          :density="density"
-          disabled
-          class="mb-2"
-          suffix="mm"
-        />
-        <VTextField
-          v-model="formData.clientY"
-          label="Y轴长度："
-          :density="density"
-          disabled
-          class="mb-2"
-          suffix="mm"
-        />
-          
-        <VTextField
-          v-model="formData.clientZ"
-          label="Z轴长度："
-          :density="density"
-          disabled
-          suffix="mm"
-          class="mb-2"
-        />
+        <VSelect v-model="pro" :items="proType" :density="density" disabled class="mb-2" label="物料形状" />
+        <VTextField v-model="formData.clientX" label="X轴长度：" :density="density" disabled class="mb-2" suffix="mm" />
+        <VTextField v-model="formData.clientY" label="Y轴长度：" :density="density" disabled class="mb-2" suffix="mm" />
+
+        <VTextField v-model="formData.clientZ" label="Z轴长度：" :density="density" disabled suffix="mm" class="mb-2" />
         <!--
           <VSwitch
           v-model="formData.status"
@@ -325,107 +239,21 @@ onUnmounted(() => {
           /> 
         -->
       </VCol>
-      <VCol
-        cols="4"
-        :style="!mdAndDown ? 'height: calc(50vh - 130px); overflow-y: scroll;' : ''"
-      >
-        <VSelect
-          v-model="formData.jia1"
-          :items="tools"
-          :density="density"
-          label="手爪"
-          class="mb-2"
-        />
-        <VTextField
-          v-model="formData.exmx1"
-          label="夹指长度："
-          :density="density"
-          suffix="mm"
-          class="mb-2"
-          disabled
-        />
-        <VTextField
-          v-model="formData.exmx2"
-          label="夹深："
-          :density="density"
-          class="mb-2"
-          disabled
-        />
-        <VTextField
-          v-model="formData.exmx3"
-          label="指宽："
-          :density="density"
-          suffix="mm"
-          class="mb-2"
-          disabled
-        />
-        <VTextField
-          v-model="formData.exmx4"
-          label="X轴长度："
-          :density="density"
-          suffix="mm"
-          class="mb-2"
-          disabled
-        />
-        <VTextField
-          v-model="formData.exmx5"
-          label="Y轴长度："
-          :density="density"
-          suffix="mm"
-          class="mb-2"
-          disabled
-        />
+      <VCol cols="4" :style="!mdAndDown ? 'height: calc(50vh - 130px); overflow-y: scroll;' : ''">
+        <VSelect v-model="formData.jia1" :items="tools" :density="density" label="手爪" class="mb-2" />
+        <VTextField v-model="formData.exmx1" label="夹指长度：" :density="density" suffix="mm" class="mb-2" disabled />
+        <VTextField v-model="formData.exmx2" label="夹深：" :density="density" class="mb-2" disabled />
+        <VTextField v-model="formData.exmx3" label="指宽：" :density="density" suffix="mm" class="mb-2" disabled />
+        <VTextField v-model="formData.exmx4" label="X轴长度：" :density="density" suffix="mm" class="mb-2" disabled />
+        <VTextField v-model="formData.exmx5" label="Y轴长度：" :density="density" suffix="mm" class="mb-2" disabled />
       </VCol>
-      <VCol
-        cols="4"
-        :style="!mdAndDown ? 'height: calc(50vh - 130px); overflow-y: scroll;' : ''"
-      >
-        <VSelect
-          v-model="formData.jia2"
-          :items="tools"
-          :density="density"
-          label="手爪"
-          class="mb-2"
-        />
-        <VTextField
-          v-model="formData.exmy1"
-          label="夹指长度："
-          :density="density"
-          suffix="mm"
-          class="mb-2"
-          disabled
-        />
-        <VTextField
-          v-model="formData.exmy2"
-          label="夹深："
-          :density="density"
-          class="mb-2"
-          disabled
-        />
-        <VTextField
-          v-model="formData.exmy3"
-          label="指宽："
-          :density="density"
-          suffix="mm"
-          class="mb-2"
-          disabled
-        />
-        <VTextField
-          v-model="formData.exmy4"
-          label="X轴长度："
-          :density="density"
-          suffix="mm"
-          class="mb-2"
-          disabled
-        />
-        <VTextField
-          v-model="formData.exmy5"
-          label="Y轴长度："
-          :density="density"
-          suffix="mm"
-          class="mb-2"
-          disabled
-        />
+      <VCol cols="4" :style="!mdAndDown ? 'height: calc(50vh - 130px); overflow-y: scroll;' : ''">
+        <VSelect v-model="formData.jia2" :items="tools" :density="density" label="手爪" class="mb-2" />
+        <VTextField v-model="formData.exmy1" label="夹指长度：" :density="density" suffix="mm" class="mb-2" disabled />
+        <VTextField v-model="formData.exmy2" label="夹深：" :density="density" class="mb-2" disabled />
+        <VTextField v-model="formData.exmy3" label="指宽：" :density="density" suffix="mm" class="mb-2" disabled />
+        <VTextField v-model="formData.exmy4" label="X轴长度：" :density="density" suffix="mm" class="mb-2" disabled />
+        <VTextField v-model="formData.exmy5" label="Y轴长度：" :density="density" suffix="mm" class="mb-2" disabled />
       </VCol>
     </VRow>
   </VCard>
