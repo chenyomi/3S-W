@@ -82,4 +82,5 @@ export default {
   形状: 'Shape',
   暂无数据: 'No Data',
   终止: 'STOP',
+  速度: 'SPEED',
 }
