@@ -1,36 +1,46 @@
 <script setup>
-import loginApi from "@/api/login"
-import logo from '@images/logo.jpg'
-import { nextTick } from 'vue'
-
+import loginApi from "@/api/login";
+import Message from "@/layouts/components/Message.vue";
+import { useStore } from "@/pinia/index";
+import logo from '@images/logo.jpg';
+import { nextTick } from 'vue';
+import { useRouter } from 'vue-router';
+const store = useStore()
+const message = ref()
+const router = useRouter()
 const form = ref({
-  email: '',
+  username: 'admin',
   password: '',
   remember: false,
 })
-
+const roles = ref([
+  { title: '管理员', value: 'admin' },
+  { title: '访客', value: 'common' },
+])
 onMounted(() => {
   nextTick(() => {
-    console.log(loginApi.getResourceList)
+    store.setMessage(message)
   })
 })
-
+const onLogin = () => {
+  loginApi.login(form.value).then(res => {
+    localStorage.setItem("token", res.token);
+    const theme = localStorage.getItem('theme')
+    if (!theme) {
+      localStorage.setItem('theme', 'light')
+    }
+    router.push('/')
+  })
+}
 const isPasswordVisible = ref(false)
 </script>
 
 <template>
   <div class="auth-wrapper d-flex align-center justify-center pa-4">
-    <VCard
-      class="auth-card pa-4 pt-7"
-      max-width="448"
-      min-width="370"
-    >
+    <VCard class="auth-card pa-4 pt-7" max-width="448" min-width="370">
       <VCardItem class="justify-center">
         <template #prepend>
-          <VImg
-            :src="logo"
-            style="width: 2rem;height: 2rem;border-radius: 3px;"
-          />
+          <VImg :src="logo" style="width: 2rem;height: 2rem;border-radius: 3px;" />
         </template>
 
         <VCardTitle class="text-2xl font-weight-bold">
@@ -48,40 +58,27 @@ const isPasswordVisible = ref(false)
       </VCardText>
 
       <VCardText>
-        <VForm @submit.prevent="$router.push('/')">
+        <VForm @submit.prevent="onLogin">
           <VRow>
             <!-- email -->
             <VCol cols="12">
-              <VTextField
-                v-model="form.email"
-                label="账号"
-              />
+              <VSelect v-model="form.username" :items="roles" label="角色" />
             </VCol>
 
             <!-- password -->
             <VCol cols="12">
-              <VTextField
-                v-model="form.password"
-                label="密码"
-                placeholder="············"
-                :type="isPasswordVisible ? 'text' : 'password'"
+              <VTextField v-model="form.password" label="密码" placeholder="············"
+                :type="isPasswordVisible ? 'text' : 'password'" autocomplete
                 :append-inner-icon="isPasswordVisible ? 'bx-hide' : 'bx-show'"
-                @click:append-inner="isPasswordVisible = !isPasswordVisible"
-              />
+                @click:append-inner="isPasswordVisible = !isPasswordVisible" />
 
               <!-- remember me checkbox -->
               <div class="d-flex align-center justify-space-between flex-wrap mt-1 mb-4">
-                <VCheckbox
-                  v-model="form.remember"
-                  label="记住密码"
-                />
+                <VCheckbox v-model="form.remember" label="记住密码" />
               </div>
 
               <!-- login button -->
-              <VBtn
-                block
-                type="submit"
-              >
+              <VBtn block type="submit">
                 登录
               </VBtn>
             </VCol>
@@ -90,6 +87,7 @@ const isPasswordVisible = ref(false)
       </VCardText>
     </VCard>
   </div>
+  <Message ref="message" />
 </template>
 
 <style lang="scss">
@@ -98,9 +96,5 @@ const isPasswordVisible = ref(false)
 .auth-wrapper {
   background-image: url("../assets/images/bg.png");
   background-size: cover;
-}
-
-.auth-card {
-  background: rgba(43, 44, 64, 80%);
 }
 </style>

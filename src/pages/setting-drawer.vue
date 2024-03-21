@@ -38,7 +38,7 @@ onMounted(() => {
       size: 'large',
       width: 80,
       formWidth: 800,
-      slot: shallowRef(drawerForm),  
+      slot: shallowRef(drawerForm),
       fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
@@ -46,7 +46,7 @@ onMounted(() => {
         diaFormRef.submit().finally(() => {
           close()
           setTimeout(() => {
-            loadItems()  
+            loadItems()
             closeLoading()
           }, 2000)
         })
@@ -57,7 +57,7 @@ onMounted(() => {
       size: 'large',
       width: 150,
       formWidth: 800,
-      slot: shallowRef(drawerForm), 
+      slot: shallowRef(drawerForm),
       fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
@@ -88,13 +88,13 @@ const headers = ref([
     align: 'start',
     sortable: false,
     key: 'trawlBoardName',
-    minWidth: 180,
+    minWidth: 120,
   },
   { title: t('安全距离'), key: 'trawlBoardSafeDistance', align: 'center', sortable: false, minWidth: 90 },
   { title: t('厚度'), key: 'trawlBoardThickness', align: 'center', sortable: false, minWidth: 60 },
-  { title: t('板') + '（X-Y）', key: 'trawlBoardLengthX', align: 'center', sortable: false, minWidth: 90 },
+  { title: t('板') + '（X-Y）', key: 'trawlBoardLengthX', align: 'center', sortable: false, minWidth: 100 },
   { title: t('原点偏移') + '（X-Y）', key: 'trawlBoardOffsetX', align: 'center', sortable: false, minWidth: 130 },
-  { title: t('占位') + '（X-Y）', key: 'trawlBoardSiteX', align: 'center', sortable: false, minWidth: 110 },
+  { title: t('占位') + '（X-Y）', key: 'trawlBoardSiteX', align: 'center', sortable: false, minWidth: 120 },
   { title: t('占位单元尺寸') + '（X-Y）', key: 'trawlBoardSiteLengthX', align: 'center', sortable: false, minWidth: 160 },
   { title: t('占位单元间距') + '（X-Y）', key: 'trawlBoardSiteSpaceX', align: 'center', sortable: false, minWidth: 160 },
 ])
@@ -105,8 +105,8 @@ const openModal = () => {
     hideDiaName: true,
     hideDiaOk: true,
     hideDiaCancel: true,
-    slot: shallowRef(drawerSvg), 
-    slotData: serverItems.value.filter(c => c.id == expanded.value)[0], 
+    slot: shallowRef(drawerSvg),
+    slotData: serverItems.value.filter(c => c.id == expanded.value)[0],
     fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
       openLoading({
         text: '正在上传更新',
@@ -123,38 +123,24 @@ const openModal = () => {
 </script>
 
 <template>
-  <VDataTableVirtual
-    fixed-header
-    :headers="headers"
-    :items="serverItems"
-    :loading="loading"
-    loading-text=""
-    hover
-    height="calc(100vh - 230px)"
-    expand-on-click
-    :density="density"
-    @update:options="loadItems"
-    @update:expanded="(newVal) => {
+  <VDataTableVirtual fixed-header :headers="headers" :items="serverItems" :loading="loading" loading-text="" hover
+    height="calc(100vh - 230px)" expand-on-click :density="density" @update:options="loadItems" @update:expanded="(newVal) => {
       newVal.map(e => {
-        if(!expandedArr.includes(e)) {
+        if (!expandedArr.includes(e)) {
           expanded = e
           btnList[1].slotData = serverItems.filter(c => c.id == e)[0]
         }
       })
       expandedArr.map(e => {
-        if(!newVal.includes(e)) {
-          expanded = e 
+        if (!newVal.includes(e)) {
+          expanded = e
           btnList[1].slotData = serverItems.filter(c => c.id == e)[0]
         }
       })
       expandedArr = newVal
-    }"
-  >
+    }">
     <template #item.exclusive="{ item }">
-      <VCheckbox
-        :model-value="item.id == expanded"
-        readonly
-      />
+      <VCheckbox :model-value="item.id == expanded" readonly />
     </template>
     <template #item.trawlBoardLengthX="{ item }">
       {{ item.trawlBoardLengthX }}-{{ item.trawlBoardLengthY }}
@@ -174,10 +160,7 @@ const openModal = () => {
     <template #loading />
     <template #bottom>
       <div style="text-align: end;">
-        <VBtn
-          class="ma-2 w-25"
-          @click="openModal"
-        >
+        <VBtn class="ma-2 w-25" @click="openModal">
           {{ $t('预览') }}
         </VBtn>
       </div>

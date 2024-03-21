@@ -55,7 +55,6 @@ export class createMaterial {
     this.renderer.setClearColor(0x000000, 0)
     this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.shadowMap.enabled = true
-    
     this.scene = new THREE.Scene()
 
     const axesHelper = new THREE.AxesHelper(200)
@@ -65,7 +64,7 @@ export class createMaterial {
     axesHelper.position.z = -this.options.materialTemplateLengthZ / 2 - 10
     axesHelper.position.y = -this.options.materialTemplateLengthY / 2 - 10
 
-    
+
     this.v2 = new THREE.Vector2(this.cardBox.clientWidth, this.cardBox.clientHeight)
     this.camera = new THREE.PerspectiveCamera(
       75,
@@ -73,7 +72,7 @@ export class createMaterial {
       0.1,
       1000,
     )
-    this.camera.position.set(0, 1.2*this.options.materialTemplateLengthZ, 1.2*this.options.materialTemplateLengthZ)
+    this.camera.position.set(0, 1.2 * this.options.materialTemplateLengthZ, 1.2 * this.options.materialTemplateLengthZ)
 
     const light1 = new THREE.DirectionalLight(0xeeeeee, this.theme == 'light' ? 2 : 1)
 
@@ -85,7 +84,7 @@ export class createMaterial {
     light2.position.set(this.options.L2X, this.options.L2Y, this.options.L2Z)
 
     this.scene.add(light2)
-  
+
     const ambientLight = new THREE.AmbientLight(0xaaaaaa, this.theme == 'light' ? 3 : 2)
 
     this.scene.add(ambientLight)
@@ -124,8 +123,8 @@ export class createMaterial {
 
     const animate = () => {
       this.composer.render()
-      this.animation =  requestAnimationFrame(animate) //向浏览器发起一个执行某函数的请求， 什么时候会执行由浏览器决定，一般默认保持60FPS的频率
-    
+      this.animation = requestAnimationFrame(animate) //向浏览器发起一个执行某函数的请求， 什么时候会执行由浏览器决定，一般默认保持60FPS的频率
+
     }
 
     animate()

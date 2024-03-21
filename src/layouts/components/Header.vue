@@ -1,55 +1,37 @@
 <template>
   <div class="d-flex h-100 align-center justify-space-between">
-    <IconBtn
-      class="ms-n3 d-md-none"
-      @click="propsData.fn(true)"
-    >
+    <IconBtn class="ms-n3 d-md-none" @click="propsData.fn(true)">
       <VIcon icon="bx-menu" />
     </IconBtn>
-    
-    
-    <div
-      class="d-flex align-center justify-space-between"
-      style="flex: 1;"
-    >
-      <VBreadcrumbs
-        class="d-none d-sm-block"
-        :items="matched"
-      >
+
+
+    <div class="d-flex align-center justify-space-between" style="flex: 1;">
+      <VBreadcrumbs class="d-none d-sm-block" :items="matched">
         <template #divider>
           <VIcon icon="mdi-chevron-right" />
         </template>
-      </VBreadcrumbs> 
+      </VBreadcrumbs>
       <div class="d-flex justify-end gap-2">
-        <VBtn
-          v-for="item in propsData.list"
-          :key="item"
-          :width="item.width"
-          :color="item.color"
-          :size="item.size"
-          @click="openModal(item)"
-        >
-          <VIcon
-            v-if="item.icon"
-            :icon="item.icon"
-          />
+        <VBtn v-for="item in propsData.list" :key="item" :width="item.width" :color="item.color" :size="item.size"
+          :hidden="item.hidden" @click="openModal(item)">
+          <VIcon v-if="item.icon" :icon="item.icon" />
           <span class="d-none d-sm-block">{{ $t(item.name) }}</span>
         </VBtn>
       </div>
     </div>
-   
+
     <Modal ref="modal" />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import Modal from './modal.vue'
+import { ref } from 'vue';
+import Modal from './modal.vue';
 
 const propsData = defineProps({
   fn: {
     type: Function,
-    default: () => {},
+    default: () => { },
   },
   matched: {
     type: Array,

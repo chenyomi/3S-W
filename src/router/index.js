@@ -1,6 +1,6 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router';
 
-export const constRouter =  [
+export const constRouter = [
   {
     path: '/monitor',
     meta: {
@@ -86,8 +86,7 @@ export const router = createRouter({
               path: 'drawer',
               meta: {
                 name: '料盘',
-
-                // disabled: true,
+                disabled: true,
                 childrenTabIcon: 'bxs-downvote',
               },
               component: () => import('../pages/task-drawer.vue'),
@@ -96,8 +95,7 @@ export const router = createRouter({
               path: 'product',
               meta: {
                 name: '物料',
-
-                // disabled: true,
+                disabled: true,
                 childrenTabIcon: 'bxs-downvote',
               },
               component: () => import('../pages/task-product.vue'),
@@ -106,8 +104,7 @@ export const router = createRouter({
               path: 'eqpt',
               meta: {
                 name: '设备',
-
-                // disabled: true,
+                disabled: true,
                 childrenTabIcon: 'bxs-downvote',
               },
               component: () => import('../pages/task-eqpt.vue'),
@@ -116,13 +113,12 @@ export const router = createRouter({
               path: 'frock',
               meta: {
                 name: '夹具',
-
-                // disabled: true,
+                disabled: true,
                 childrenTabIcon: 'bxs-downvote',
               },
               component: () => import('../pages/task-frock.vue'),
             },
-           
+
           ],
         },
         {
@@ -215,9 +211,17 @@ export const router = createRouter({
           path: 'register',
           component: () => import('../pages/register.vue'),
         },
-       
+
       ],
     },
   ],
 })
 
+router.beforeEach((to, from, next) => {
+  let token = localStorage.getItem("token");
+  if (token || to.path === '/login') {
+    next();
+  } else {
+    next("/login");
+  }
+})

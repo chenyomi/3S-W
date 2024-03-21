@@ -1,71 +1,54 @@
 <script setup>
-import { createMaterial } from '@/utils/createMaterial'
-import { cloneDeep } from 'lodash'
-import { nextTick, onMounted, onUnmounted, ref, watch } from "vue"
-import { useRouter } from 'vue-router'
-import { useDisplay } from 'vuetify'
+import taskApi from '@/api/task';
+import { useStore } from "@/pinia/index";
+import { createMaterial } from '@/utils/createMaterial';
+import { nextTick, onMounted, onUnmounted, ref, watch } from "vue";
+import { useRouter } from 'vue-router';
+import { useDisplay } from 'vuetify';
 
+const store = useStore()
 const density = inject('density')
 const btnList = inject('btnList')
 const router = useRouter()
 const next = inject('next')
+const message = inject('message')
 
 const { mdAndDown } = useDisplay()
 const dialog = ref(false)
 
-const mainData = {
-  clientX: 200,
-  clientY: 80,
-  clientZ: 80,
-  exmx1: 70,
-  exmx2: 70,
-  exmx3: 90,
-  exmx4: 0,
-  exmx5: 0,
-  exmy1: 70,
-  exmy2: 70,
-  exmy3: 90,
-  exmy4: 0,
-  exmy5: 0,
-  shift: 118,
-  num: 1,
-  jia1: '0',
-  jia2: '1',
-}
-
-const items = ref([
-  { title: '物料-1', value: '0', data: cloneDeep(mainData) },
-])
-
-const tools = [
-  { title: '手爪-1', value: '0' },
-  { title: '手爪-2', value: '1' },
-  { title: '手爪-3', value: '2' },
-  { title: '手爪-4', value: '3' },
-]
+const tools = ref([])
 
 const proType = [
-  { title: '立方体', value: '0' },
-  { title: '圆柱体', value: '1' },
+  { title: '立方体', value: 0 },
+  { title: '圆柱体', value: 1 },
 ]
 
-const select = ref('0')
-const pro = ref({ title: '长方体', value: '0' })
+const selectorRow = ref([
+  {
+    fingerLength: 0, fingerDepth: 0, fingerWidth: 0, handLocateX: 0, handLocateY: 0
+  }, {
+    fingerLength: 0, fingerDepth: 0, fingerWidth: 0, handLocateX: 0, handLocateY: 0
+  }])
+
 const formData = ref({})
 
-watch(select, newVal => {
-  formData.value = items.value[newVal].data
-}, { immediate: true })
+// watch(() => [formData.value.clientX, formData.value.clientY, formData.value.clientZ], () => {
+//   if (!mdAndDown.value) {
+//     webGL.disWebGl()
+//     setTimeout(() => {
+//       webGL.updata(formData.value)
+//     }, 0)
+//   }
 
-watch(() => [formData.value.clientX, formData.value.clientY, formData.value.clientZ], () => {
-  if (!mdAndDown.value) {
-    webGL.disWebGl()
-    setTimeout(() => {
-      webGL.updata(formData.value)
-    }, 0)
-  }
-
+// })
+watch(() => [formData.value.materialFinishName, formData.value.loadHandId, formData.value.unloadHandId], (newVal) => {
+  store.setProcess({
+    materialFinishName: newVal[0],
+    loadHandId: newVal[1],
+    unloadHandId: newVal[2]
+  })
 })
+
 watch(() => dialog.value, newVal => {
   nextTick(() => {
     if (newVal) {
@@ -74,10 +57,8 @@ watch(() => dialog.value, newVal => {
       } else {
         webGL = new createMaterial(formData.value)
       }
-
-
     } else {
-      webGL.disWebGl()
+      webGL && webGL.disWebGl()
     }
 
   })
@@ -85,96 +66,132 @@ watch(() => dialog.value, newVal => {
 
 
 let webGL = null
+const getSelector = () => {
+  taskApi.taskProcessSelector().then(res => {
+    tools.value = res.data.handList
+  })
+}
+const getMD = () => {
+  const { process } = storeToRefs(store)
+  process.value.storagePalletId && taskApi.taskProcessMaterial({
+    storagePalletId: process.value.storagePalletId
+  }).then(res => {
+    formData.value = res.data
+    const { process } = storeToRefs(store)
+    if (process.value) {
+      formData.value.materialFinishName = process.value.materialFinishName
+      formData.value.loadHandId = process.value.loadHandId
+      formData.value.unloadHandId = process.value.unloadHandId
+    }
+    setTimeout(() => {
+      if (!mdAndDown.value) {
+        webGL = new createMaterial({
+          materialTemplateShape: formData.value.materialShape, //0立方体1圆柱
+          materialTemplateLengthX: formData.value.materialLengthX, //立方体X
+          materialTemplateLengthY: formData.value.materialLengthY, //立方体Y
+          materialTemplateLengthZ: formData.value.materialLengthZ, //立方体Z /圆柱高Z
+        })
+      }
+    }, 0);
+  })
+}
+
+const onChange = (e, a) => {
+  const index = tools.value.findIndex(c => c.id == formData.value[e])
+  selectorRow.value[a] = tools.value[index]
+}
 
 onMounted(() => {
+  getSelector()
+  getMD()
   nextTick(() => {
-    btnList.value = [{
-      name: '新增',
-      color: '#42A5F5',
-      size: 'large',
-      width: 120,
-      mark: '是否新增一个物料',
-      fn: ({ close, openLoading, closeLoading }) => {
-        close()
-        setTimeout(() => {
-          items.value.push({
-            title: '物料-5',
-            value: '4',
-            data: {
-              clientX: 0,
-              clientY: 0,
-              clientZ: 0,
-              exmx1: 0,
-              exmx2: 0,
-              exmx3: 0,
-              exmx4: 0,
-              exmx5: 0,
-              exmy1: 0,
-              exmy2: 0,
-              exmy3: 0,
-              exmy4: 0,
-              exmy5: 0,
-              shift: 0,
-              num: 1,
-            },
+    btnList.value = [
+      //   {
+      //   name: '新增',
+      //   color: '#42A5F5',
+      //   size: 'large',
+      //   width: 120,
+      //   mark: '是否新增一个物料',
+      //   fn: ({ close, openLoading, closeLoading }) => {
+      //     close()
+      //     setTimeout(() => {
+      //     }, 1000)
+      //   },
+      // }, {
+      //   name: '删除',
+      //   color: '#EF5350',
+      //   size: 'large',
+      //   width: 120,
+      //   mark: '是否删除当前选择的物料',
+      //   fn: ({ close, openLoading, closeLoading }) => {
+      //     close()
+      //     setTimeout(() => {
+      //       select.value = ['0']
+      //     }, 1000)
+      //   },
+      //   },
+      {
+        name: '上一步',
+        color: '#90A4AE',
+        size: 'large',
+        width: 120,
+        mark: '是否返回上一步',
+        fn: ({ close, openLoading, closeLoading }) => {
+          close()
+          router.push({ path: '/process/drawer' })
+        },
+      }, {
+        name: next.value.name,
+        color: '#D32F2F',
+        size: 'large',
+        width: 220,
+        mark: next.value.intro,
+        fn: ({ close, openLoading, closeLoading }) => {
+          openLoading({
+            text: next.value.loadtext,
           })
-          select.value = ['4']
-        }, 1000)
-      },
-    }, {
-      name: '删除',
-      color: '#EF5350',
-      size: 'large',
-      width: 120,
-      mark: '是否删除当前选择的物料',
-      fn: ({ close, openLoading, closeLoading }) => {
-        close()
-        setTimeout(() => {
-          select.value = ['0']
-        }, 1000)
-      },
-    }, {
-      name: next.value.name,
-      color: '#D32F2F',
-      size: 'large',
-      width: 220,
-      mark: next.value.intro,
-      fn: ({ close, openLoading, closeLoading }) => {
-        openLoading({
-          text: next.value.loadtext,
-        })
-        close()
-        setTimeout(() => {
-          closeLoading()
-          if (next.value.type == 'next') {
-            router.push({ path: next.value.nextPath })
-          } else if (next.value.type == 'last') {
-            router.push({ path: '/tasklist' })
+          close()
+          setTimeout(() => {
+            closeLoading()
+            if (next.value.type == 'next') {
+              router.push({ path: next.value.nextPath })
+            } else if (next.value.type == 'last') {
+              router.push({ path: '/tasklist' })
+            }
+          }, 1000)
+        },
+        before: ({ dialog, openLoading, close, dialogLoading, closeLoading, dialogLoadingText }) => {
+          if (!formData.value.materialFinishName || formData.value.materialFinishName == '') {
+            message.value.open({
+              text: '请输入成品名称',
+            })
+          } else if (!formData.value.loadHandId) {
+            message.value.open({
+              text: '请选择装载手爪',
+            })
+          } else if (!formData.value.unloadHandId) {
+            message.value.open({
+              text: '请选择卸载手爪',
+            })
+          } else {
+            dialog.value = true
           }
-        }, 1000)
-      },
-    }]
+        },
+      }]
   })
-  setTimeout(() => {
-    if (!mdAndDown.value) {
-      webGL = new createMaterial()
-    }
-  }, 0)
 })
 onUnmounted(() => {
   if (!mdAndDown.value) {
-    webGL.disWebGl()
+    webGL && webGL.disWebGl()
   }
 })
 </script>
 
 <template>
   <VCard class="h-100 px-3" style="overflow-y: scroll;">
-    <div class="d-flex gap-3 align-center w-75"
+    <div class="d-flex gap-3 align-center w-50"
       :style="!mdAndDown ? 'position:absolute;top: 1rem;left: 0.75rem;' : 'margin-top:1.25rem'">
-      <VSelect v-model="select" :items="items" :density="density" class="flex-none" label="当前物料" />
-      <VTextField v-model="formData.num" label="数量" :density="density" />
-      <VTextField v-model="formData.finallyName" label="成品名称：" :density="density" />
+      <VTextField v-model="formData.materialFinishName" label="成品名称：" :density="density" />
       <VDialog v-if="mdAndDown" v-model="dialog" width="500">
         <template #activator="{ props }">
           <VBtn color="primary" v-bind="props" variant="tonal">
@@ -225,11 +242,15 @@ onUnmounted(() => {
         </VChip>
       </VCol>
       <VCol cols="4">
-        <VSelect v-model="pro" :items="proType" :density="density" disabled class="mb-2" label="物料形状" />
-        <VTextField v-model="formData.clientX" label="X轴长度：" :density="density" disabled class="mb-2" suffix="mm" />
-        <VTextField v-model="formData.clientY" label="Y轴长度：" :density="density" disabled class="mb-2" suffix="mm" />
+        <VSelect v-model="formData.materialShape" :items="proType" :density="density" disabled class="mb-2"
+          label="物料形状" />
+        <VTextField v-model="formData.materialLengthX" label="X轴长度：" :density="density" disabled class="mb-2"
+          suffix="mm" />
+        <VTextField v-model="formData.materialLengthY" label="Y轴长度：" :density="density" disabled class="mb-2"
+          suffix="mm" />
 
-        <VTextField v-model="formData.clientZ" label="Z轴长度：" :density="density" disabled suffix="mm" class="mb-2" />
+        <VTextField v-model="formData.materialLengthZ" label="Z轴长度：" :density="density" disabled suffix="mm"
+          class="mb-2" />
         <!--
           <VSwitch
           v-model="formData.status"
@@ -240,20 +261,30 @@ onUnmounted(() => {
         -->
       </VCol>
       <VCol cols="4" :style="!mdAndDown ? 'height: calc(50vh - 130px); overflow-y: scroll;' : ''">
-        <VSelect v-model="formData.jia1" :items="tools" :density="density" label="手爪" class="mb-2" />
-        <VTextField v-model="formData.exmx1" label="夹指长度：" :density="density" suffix="mm" class="mb-2" disabled />
-        <VTextField v-model="formData.exmx2" label="夹深：" :density="density" class="mb-2" disabled />
-        <VTextField v-model="formData.exmx3" label="指宽：" :density="density" suffix="mm" class="mb-2" disabled />
-        <VTextField v-model="formData.exmx4" label="X轴长度：" :density="density" suffix="mm" class="mb-2" disabled />
-        <VTextField v-model="formData.exmx5" label="Y轴长度：" :density="density" suffix="mm" class="mb-2" disabled />
+        <VSelect v-model="formData.loadHandId" :items="tools" :density="density" label="手爪" class="mb-2"
+          item-title="label" item-value="id" @update:model-value="onChange('loadHandId', 0)" />
+        <VTextField v-model="selectorRow[0].fingerLength" label="夹指长度：" :density="density" suffix="mm" class="mb-2"
+          disabled />
+        <VTextField v-model="selectorRow[0].fingerDepth" label="夹深：" :density="density" class="mb-2" disabled />
+        <VTextField v-model="selectorRow[0].fingerWidth" label="指宽：" :density="density" suffix="mm" class="mb-2"
+          disabled />
+        <VTextField v-model="selectorRow[0].handLocateX" label="X轴长度：" :density="density" suffix="mm" class="mb-2"
+          disabled />
+        <VTextField v-model="selectorRow[0].handLocateY" label="Y轴长度：" :density="density" suffix="mm" class="mb-2"
+          disabled />
       </VCol>
       <VCol cols="4" :style="!mdAndDown ? 'height: calc(50vh - 130px); overflow-y: scroll;' : ''">
-        <VSelect v-model="formData.jia2" :items="tools" :density="density" label="手爪" class="mb-2" />
-        <VTextField v-model="formData.exmy1" label="夹指长度：" :density="density" suffix="mm" class="mb-2" disabled />
-        <VTextField v-model="formData.exmy2" label="夹深：" :density="density" class="mb-2" disabled />
-        <VTextField v-model="formData.exmy3" label="指宽：" :density="density" suffix="mm" class="mb-2" disabled />
-        <VTextField v-model="formData.exmy4" label="X轴长度：" :density="density" suffix="mm" class="mb-2" disabled />
-        <VTextField v-model="formData.exmy5" label="Y轴长度：" :density="density" suffix="mm" class="mb-2" disabled />
+        <VSelect v-model="formData.unloadHandId" :items="tools" :density="density" label="手爪" class="mb-2"
+          item-title="label" item-value="id" @update:model-value="onChange('unloadHandId', 1)" />
+        <VTextField v-model="selectorRow[1].fingerLength" label="夹指长度：" :density="density" suffix="mm" class="mb-2"
+          disabled />
+        <VTextField v-model="selectorRow[1].fingerDepth" label="夹深：" :density="density" class="mb-2" disabled />
+        <VTextField v-model="selectorRow[1].fingerWidth" label="指宽：" :density="density" suffix="mm" class="mb-2"
+          disabled />
+        <VTextField v-model="selectorRow[1].handLocateX" label="X轴长度：" :density="density" suffix="mm" class="mb-2"
+          disabled />
+        <VTextField v-model="selectorRow[1].handLocateY" label="Y轴长度：" :density="density" suffix="mm" class="mb-2"
+          disabled />
       </VCol>
     </VRow>
   </VCard>

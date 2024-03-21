@@ -65,7 +65,6 @@ import { useRoute } from "vue-router"
 import { useDisplay, useLocale } from 'vuetify'
 
 
-
 const store = useStore()
 const { view } = storeToRefs(store)
 

@@ -49,10 +49,10 @@ const service = axioss.create({
 // HTTP request 拦截器
 service.interceptors.request.use(
   config => {
-    // const token = tool.data.get('TOKEN')
-    // if (token) {
-    //   config.headers[sysConfig.TOKEN_NAME] = sysConfig.TOKEN_PREFIX + token
-    // }
+    const token = localStorage.getItem("token")
+    if (token) {
+      config.headers['Authorization'] = token
+    }
     // if (!sysConfig.REQUEST_CACHE && config.method === 'get') {
     //   config.params = config.params || {}
     //   config.params._ = new Date().getTime()
@@ -61,7 +61,7 @@ service.interceptors.request.use(
     // // 格式化get请求的参数
     // if (config.method === 'get') config.paramsSerializer = { indexes: null }
     // Object.assign(config.headers, sysConfig.HEADERS)
-    
+
     return config
   },
   error => {
@@ -76,19 +76,19 @@ const error = () => {
     text: '登录已失效， 请重新登录',
   })
 
-//   Modal.error({
-//     title: '提示：',
-//     okText: '重新登录',
-//     content: '登录已失效， 请重新登录',
-//     onOk: () => {
-//       loginBack.value = false
-//       tool.data.remove('TOKEN')
-//       tool.data.remove('USER_INFO')
-//       tool.data.remove('MENU')
-//       tool.data.remove('PERMISSIONS')
-//       window.location.reload()
-//     },
-//   })
+  //   Modal.error({
+  //     title: '提示：',
+  //     okText: '重新登录',
+  //     content: '登录已失效， 请重新登录',
+  //     onOk: () => {
+  //       loginBack.value = false
+  //       tool.data.remove('TOKEN')
+  //       tool.data.remove('USER_INFO')
+  //       tool.data.remove('MENU')
+  //       tool.data.remove('PERMISSIONS')
+  //       window.location.reload()
+  //     },
+  //   })
 }
 
 // HTTP response 拦截器
@@ -102,7 +102,7 @@ service.interceptors.response.use(
         pinia.message.open({
           text: '登录已失效， 文件下载失败或此文件不存在',
         })
-        
+
         return
       }
     }
@@ -113,29 +113,22 @@ service.interceptors.response.use(
       if (!loginBack.value) {
         error()
       }
-      
+
       return
     }
     if (code !== 200) {
-      const customErrorMessage = response.config.customErrorMessage
+      if (errorCodeMap[code]) {
+        pinia.message.open({
+          text: response.data.msg,
+        })
+      }
+      return Promise.reject()
 
-      // message.error(customErrorMessage || data.msg)
-      
-      return Promise.reject(data)
-
-      // 自定义错误提示，覆盖后端返回的message
-      // 使用示例：
-      // export function customerList (data) {
-      //   return request('list', data, 'get', {
-      //     customErrorMessage: '自定义错误消息提示'
-      //   });
-      // }
     } else {
       // 统一成功提示
-      const responseUrl = response.config.url
-
+      // const responseUrl = response.config.url
     }
-    
+
     return Promise.resolve(data)
   },
   error => {
@@ -145,7 +138,7 @@ service.interceptors.response.use(
       pinia.message.open({
         text: '请求错误：' + description,
       })
-      
+
       return Promise.reject(error)
     }
   },
@@ -173,7 +166,7 @@ export const baseRequest = (url, value = {}, method = 'post', options = {}, amou
             ret += `${encodeURIComponent(it)}=${encodeURIComponent(data[it])}&`
           }
           ret = ret.substring(0, ret.length - 1)
-          
+
           return ret
         },
       ],

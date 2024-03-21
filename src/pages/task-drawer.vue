@@ -1,20 +1,7 @@
 <template>
-  <VCard
-    id="card-box"
-    class="h-100"
-    style="flex: 1;"
-  >
-    <VSelect
-      v-model="select"
-      class="w-25"
-      style="position: absolute;top: 1rem;left: 0.75rem;"
-      :items="desserts"
-      :density="density"
-      label="当前料盘"
-      item-title="name"
-      item-value="id"
-      @update:model-value="onChange"
-    />
+  <VCard id="card-box" class="h-100" style="flex: 1;">
+    <VSelect v-model="select" class="w-25" style="position: absolute;top: 1rem;left: 0.75rem;" :items="desserts"
+      :density="density" :label="t('料盘')" item-title="label" item-value="value" @update:model-value="onChange" />
     <div class="pix">
       <div>
         <span style="background: #ffa726;" />
@@ -29,170 +16,74 @@
         <span>Z</span>
       </div>
     </div>
-    <div
-      id="box"
-      class="h-100"
-    />
+    <div id="box" class="h-100" />
   </VCard>
 </template>
 
 <script setup>
-import { createBoard } from '@/utils/createBoard'
-import { onMounted, ref } from "vue"
-
-import { useRouter } from 'vue-router'
-
+import storageApi from '@/api/storage';
+import { useStore } from "@/pinia/index";
+import { createBoard } from '@/utils/createBoard';
+import { onMounted, ref } from "vue";
+import { useRouter } from 'vue-router';
+import { useLocale } from 'vuetify';
+import drawerForm from './task-drawer-form.vue';
+const { t } = useLocale()
 const router = useRouter()
-const next = inject('next')
-
 const density = inject('density')
 const btnList = inject('btnList')
-const select = ref(1)
-
+const next = inject('next')
+const message = inject('message')
+const select = ref()
 const modalData = ref()
 
+
+const store = useStore()
+
 const onChange = () => {
-  setTimeout(() => {
-    modalData.value =  desserts.filter(e => e.id ==select.value)[0]
-    webGL.disWebGl()
-    webGL.updata(modalData.value)
-  }, 500)
+  store.setProcess({
+    storagePalletId: select.value
+  })
+  modalData.value = desserts.value.filter(e => e.value == select.value)[0]
+  webGL.disWebGl()
+  webGL.updata({
+    ...modalData.value.storagePallet,
+    materialList: []
+  })
 }
 
-
-let desserts = [
-  {
-    id: 1,
-    distans: 8,
-    name: '800*400 1004791 料盘1号',
-    status: true,
-    type: 0,
-    exmx0: 800,
-    exmy0: 400,
-    exmx1: 20,
-    exmx2: 8,
-    exmx3: 83,
-    exmx4: 10,
-    exmy1: 20,
-    exmy2: 4,
-    exmy3: 83,
-    exmy4: 10,
-    raster: 3,
-    tuobanx: 800,
-    tuobany: 400,
-    tuobanz: 5,
-  },
-  {
-    id: 2,
-    distans: 8,
-    name: '800*400 1004792 料盘2号',
-    status: true,
-    type: 0,
-    exmx0: 800,
-    exmy0: 400,
-    exmx1: 20,
-    exmx2: 10,
-    exmx3: 65,
-    exmx4: 10,
-    exmy1: 20,
-    exmy2: 5,
-    exmy3: 65,
-    exmy4: 10,
-    raster: 3,
-    tuobanx: 800,
-    tuobany: 400,
-    tuobanz: 5,
-  },
-  {
-    id: 3,
-    distans: 8,
-    name: '800*400 1004793 料盘3号',
-    status: true,
-    type: 1,
-    exmx0: 800,
-    exmy0: 400,
-    exmx1: 20,
-    exmx2: 10,
-    exmx3: 65,
-    exmx4: 10,
-    exmy1: 20,
-    exmy2: 5,
-    exmy3: 65,
-    exmy4: 10,
-    raster: 3,
-    tuobanx: 800,
-    tuobany: 400,
-    tuobanz: 5,
-  },
-  {
-    id: 4,
-    distans: 8,
-    name: '800*400 1004794 料盘4号',
-    status: true,
-    type: 1,
-    exmx0: 800,
-    exmy0: 400,
-    exmx1: 20,
-    exmx2: 8,
-    exmx3: 83,
-    exmx4: 10,
-    exmy1: 20,
-    exmy2: 4,
-    exmy3: 83,
-    exmy4: 10,
-    raster: 3,
-    tuobanx: 800,
-    tuobany: 400,
-    tuobanz: 5,
-  },
-  {
-    id: 5,
-    distans: 8,
-    name: '800*400 1004795 料盘5号',
-    status: true,
-    type: 0,
-    exmx0: 800,
-    exmy0: 400,
-    exmx1: 20,
-    exmx2: 10,
-    exmx3: 65,
-    exmx4: 10,
-    exmy1: 20,
-    exmy2: 5,
-    exmy3: 65,
-    exmy4: 10,
-    raster: 3,
-    tuobanx: 800,
-    tuobany: 400,
-    tuobanz: 5,
-  },
-  {
-    id: 6,
-    distans: 8,
-    name: '800*400 1004796 料盘6号',
-    status: true,
-    type: 0,
-    exmx0: 800,
-    exmy0: 400,
-    exmx1: 20,
-    exmx2: 10,
-    exmx3: 65,
-    exmx4: 10,
-    exmy1: 20,
-    exmy2: 5,
-    exmy3: 65,
-    exmy4: 10,
-    raster: 3,
-    tuobanx: 800,
-    tuobany: 400,
-    tuobanz: 5,
-  },
-]
+let desserts = ref([])
 
 let webGL = null
+
 onMounted(() => {
   nextTick(() => {
     btnList.value = [{
+      name: '新增物料',
+      color: '#7986CB',
+      size: 'large',
+      width: 150,
+      formWidth: 400,
+      hideDiaName: true,
+      slot: shallowRef(drawerForm),
+      slotData: {},
+      fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
+        openLoading({
+          text: '正在上传更新',
+        })
+        diaFormRef.submit().then(e => {
+          e.storagePalletId = select.value
+          storageApi.getStorageMaterial(e).then(res => {
+            modalData.value.storagePallet = res.data
+            webGL.disWebGl()
+            webGL.updata(modalData.value.storagePallet)
+          })
+        }).finally(() => {
+          close()
+          closeLoading()
+        })
+      },
+    }, {
       name: next.value.name,
       color: '#D32F2F',
       size: 'large',
@@ -212,20 +103,56 @@ onMounted(() => {
           }
         }, 1000)
       },
+      before: ({ dialog, openLoading, close, dialogLoading, closeLoading, dialogLoadingText }) => {
+        if (modalData.value.storagePallet.materialList && modalData.value.storagePallet.materialList.length) {
+          storageApi.getStorageMaterialCheck({ materialList: modalData.value.storagePallet.materialList }).then(res => {
+            dialog.value = true
+          }).catch(res => {
+            message.value.open({
+              text: '必须选择同一种物料',
+            })
+          })
+
+        } else {
+          message.value.open({
+            text: '请选择物料',
+          })
+        }
+
+      },
     }]
-    
+    const { process } = storeToRefs(store)
+    storageApi.getStorage().then(res => {
+      desserts.value = res.data
+      // 更新当前页面select 默认
+      select.value = process.value.storagePalletId ? process.value.storagePalletId : res.data[0].value
+      // 更新需要提交的数据pinia结构中的select 值
+      store.setProcess({
+        storagePalletId: select.value
+      })
+      // 第一次进入默认选中的料盘的完整数据
+      modalData.value = desserts.value.filter(e => e.value == select.value)[0]
+      // 再次渲染如果存在选择的物料就传入 默认
+      modalData.value.storagePallet.materialList = process.value.materialList || []
+      webGL = new createBoard(modalData.value.storagePallet)
+      // 监听数据的变化
+      webGL.onModalChange = (data) => {
+        // 选择以后更新选择的物料就传入 默认
+        modalData.value.storagePallet.materialList = data
+        store.setProcess({
+          materialList: data
+        })
+      }
+    })
+
   })
-  setTimeout(() => {
-    modalData.value =  desserts.filter(e => e.id ==select.value)[0]
-    webGL = new createBoard(modalData.value)
-  }, 0)
+
 })
 
 onUnmounted(() => {
   webGL.disWebGl()
 })
 </script>
-
 
 <style lang="scss" scoped>
 .pix {
@@ -251,3 +178,4 @@ onUnmounted(() => {
   }
 }
 </style>
+

@@ -30,19 +30,19 @@ export class mq {
     })
     this.old = {}
     this.mqtt.on('message', (topic, message) => {
-      
+
       if (this.old[topic]) {
         if (this.old[topic] !== message.toString()) {
           const msg = JSON.parse(message.toString())
-          this.onChange(topic, msg)
-          this.onChangeData(topic, msg)
+          this.onChange && this.onChange(topic, msg)
+          this.onChangeData && this.onChangeData(topic, msg)
         }
-       
+
       } else {
         const msg = JSON.parse(message.toString())
 
-        this.onChange(topic, msg)
-        this.onChangeData(topic, msg)
+        this.onChange && this.onChange(topic, msg)
+        this.onChangeData && this.onChangeData(topic, msg)
       }
       this.old[topic] = message.toString()
     })
@@ -63,7 +63,7 @@ export class mq {
         }
       }
     }
-    
+
     return target
   }
 

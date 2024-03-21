@@ -1,7 +1,7 @@
 <script setup>
-import layerboardApi from '@/api/layerboard'
-import { useLocale } from 'vuetify'
-import palletForm from './setting-pallet-form.vue'
+import layerboardApi from '@/api/layerboard';
+import { useLocale } from 'vuetify';
+import palletForm from './setting-pallet-form.vue';
 
 const density = inject('density')
 const expanded = ref()
@@ -31,7 +31,7 @@ onMounted(() => {
       size: 'large',
       width: 80,
       formWidth: 800,
-      slot: shallowRef(palletForm),  
+      slot: shallowRef(palletForm),
       fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
@@ -50,7 +50,7 @@ onMounted(() => {
       size: 'large',
       width: 150,
       formWidth: 800,
-      slot: shallowRef(palletForm), 
+      slot: shallowRef(palletForm),
       fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
@@ -75,6 +75,7 @@ const headers = ref([
     sortable: false,
     key: 'exclusive',
     fixed: true,
+    minWidth: 70,
     width: 70,
   },
   {
@@ -87,46 +88,32 @@ const headers = ref([
   { title: t('编号'), key: 'layerBoardCode', align: 'center', sortable: false, minWidth: 90 },
   { title: t('厚度'), key: 'layerBoardThickness', align: 'center', sortable: false, minWidth: 90 },
   { title: t('尺寸') + '（X-Y）', key: 'layerBoardLengthX', align: 'center', sortable: false, minWidth: 90 },
-  
+
 ])
 </script>
 
 <template>
-  <VDataTableVirtual
-    fixed-header
-    :headers="headers"
-    :items="serverItems"
-    :loading="loading"
-    loading-text=""
-    hover
-    height="calc(100vh - 175px)"
-    expand-on-click
-    :density="density"
-    @update:options="loadItems"
-    @update:expanded="(newVal) => {
+  <VDataTableVirtual fixed-header :headers="headers" :items="serverItems" :loading="loading" loading-text="" hover
+    height="calc(100vh - 175px)" expand-on-click :density="density" @update:options="loadItems" @update:expanded="(newVal) => {
       newVal.map(e => {
-        if(!expandedArr.includes(e)) {
+        if (!expandedArr.includes(e)) {
           expanded = e
           btnList[1].slotData = serverItems.filter(c => c.id == e)[0]
         }
       })
       expandedArr.map(e => {
-        if(!newVal.includes(e)) {
-          expanded = e 
+        if (!newVal.includes(e)) {
+          expanded = e
           btnList[1].slotData = serverItems.filter(c => c.id == e)[0]
         }
       })
       expandedArr = newVal
-    }"
-  >
+    }">
     <template #item.exclusive="{ item }">
-      <VCheckbox
-        :model-value="item.id == expanded"
-        readonly
-      />
+      <VCheckbox :model-value="item.id == expanded" readonly />
     </template>
     <template #item.layerBoardLengthX="{ item }">
-      {{ item.layerBoardLengthX }}-{{ item.layerBoardLengthY }}  
+      {{ item.layerBoardLengthX }}-{{ item.layerBoardLengthY }}
     </template>
     <template #loading />
   </VDataTableVirtual>

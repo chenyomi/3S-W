@@ -5,11 +5,15 @@ export const useStore = defineStore('store', {
     return {
       view: true,
       message: null,
+      process: {}
     }
   },
   actions: {
     setMessage(msg) {
       this.message = msg
+    },
+    setProcess(msg) {
+      this.process = Object.assign(this.process, msg)
     },
   },
 })

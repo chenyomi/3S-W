@@ -1,7 +1,7 @@
 <script setup>
-import boxApi from '@/api/box'
-import { useLocale } from 'vuetify'
-import boxForm from './setting-box-form.vue'
+import boxApi from '@/api/box';
+import { useLocale } from 'vuetify';
+import boxForm from './setting-box-form.vue';
 
 const { t } = useLocale()
 const serverItems = ref([])
@@ -32,7 +32,7 @@ onMounted(() => {
       size: 'large',
       width: 80,
       formWidth: 800,
-      slot: shallowRef(boxForm),  
+      slot: shallowRef(boxForm),
       fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
@@ -51,7 +51,7 @@ onMounted(() => {
       size: 'large',
       width: 150,
       formWidth: 800,
-      slot: shallowRef(boxForm), 
+      slot: shallowRef(boxForm),
       fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
@@ -76,6 +76,7 @@ const headers = ref([
     key: 'exclusive',
     fixed: true,
     width: 70,
+    minWidth: 70,
   },
   {
     title: t('名称'),
@@ -87,46 +88,32 @@ const headers = ref([
   { title: t('编号'), key: 'materialBoxCode', align: 'center', sortable: false, minWidth: 90 },
   { title: t('载重'), key: 'materialBoxVolume', align: 'center', sortable: false, minWidth: 90 },
   { title: t('尺寸') + '（X-Y-Z）', key: 'materialBoxLengthX', align: 'center', sortable: false, minWidth: 90 },
-  
+
 ])
 </script>
 
 <template>
-  <VDataTableVirtual
-    fixed-header
-    :headers="headers"
-    :items="serverItems"
-    :loading="loading"
-    loading-text=""
-    hover
-    height="calc(100vh - 175px)"
-    expand-on-click
-    :density="density"
-    @update:options="loadItems"
-    @update:expanded="(newVal) => {
+  <VDataTableVirtual fixed-header :headers="headers" :items="serverItems" :loading="loading" loading-text="" hover
+    height="calc(100vh - 175px)" expand-on-click :density="density" @update:options="loadItems" @update:expanded="(newVal) => {
       newVal.map(e => {
-        if(!expandedArr.includes(e)) {
+        if (!expandedArr.includes(e)) {
           expanded = e
           btnList[1].slotData = serverItems.filter(c => c.id == e)[0]
         }
       })
       expandedArr.map(e => {
-        if(!newVal.includes(e)) {
-          expanded = e 
+        if (!newVal.includes(e)) {
+          expanded = e
           btnList[1].slotData = serverItems.filter(c => c.id == e)[0]
         }
       })
       expandedArr = newVal
-    }"
-  >
+    }">
     <template #item.exclusive="{ item }">
-      <VCheckbox
-        :model-value="item.id == expanded"
-        readonly
-      />
+      <VCheckbox :model-value="item.id == expanded" readonly />
     </template>
     <template #item.materialBoxLengthX="{ item }">
-      {{ item.materialBoxLengthX }}-{{ item.materialBoxLengthY }}-{{ item.materialBoxLengthZ }}  
+      {{ item.materialBoxLengthX }}-{{ item.materialBoxLengthY }}-{{ item.materialBoxLengthZ }}
     </template>
     <template #loading />
   </VDataTableVirtual>

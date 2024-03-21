@@ -1,8 +1,10 @@
 <script setup>
 import taskApi from '@/api/task'
+import Modal from '@/layouts/components/modal.vue'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useDisplay } from 'vuetify'
+import drawerSvg from './setting-drawer-svg.vue'
 import OutboundForm from './task-outbound-form.vue'
 const { mdAndDown } = useDisplay()
 const message = inject('message')
@@ -10,31 +12,13 @@ const route = useRoute()
 const router = useRouter()
 const box = ref()
 const form = ref()
+const modal = ref()
 taskApi.taskStorage({
   id: route.query.id,
   type: `${route.query.type}_${route.query.process}`,
 }).then(res => {
   box.value = res.data
 })
-const color = {
-  0: {
-    color: '#435b63',
-    name: '空',
-  },
-  1: {
-    color: '#00796B',
-    name: '少量',
-  },
-  2: {
-    color: '#FF8F00',
-    name: '快满',
-  },
-  3: {
-    color: '#B71C1C',
-    name: '已满',
-  },
-}
-
 
 const btnList = inject('btnList')
 const snackbar = ref(false)
@@ -44,6 +28,29 @@ watch(() => select.value, newVal => {
   const item = box.value.filter(e => e.id == newVal)[0]
   snackbarData.value = item
 })
+
+const viewGrid = () => {
+  modal.value.open({
+    formWidth: 854,
+    hideDiaName: true,
+    hideDiaOk: true,
+    hideDiaCancel: true,
+    slot: shallowRef(drawerSvg),
+    slotData: box.value.filter(e => e.id == select.value)[0].upper,
+    before: ({ dialog, openLoading, close, dialogLoading, closeLoading, dialogLoadingText }) => {
+      if (!select.value) {
+        message.value.open({
+          text: '请选择料盘',
+        })
+      } else {
+        dialog.value = true
+      }
+
+    },
+    // slotData: serverItems.value.filter(c => c.id == expanded.value)[0],
+  })
+}
+
 onMounted(() => {
   nextTick(() => {
     btnList.value = [{
@@ -55,15 +62,14 @@ onMounted(() => {
       mark: '是否创建',
       before: ({ dialog, openLoading, close, dialogLoading, closeLoading, dialogLoadingText }) => {
         if (!select.value) {
+          console.log(11)
           message.value.open({
             text: '请选择一项',
           })
-        } else if (route.query.process === "IN") {
-          if (!form.value.formData.materialNumber) {
-            message.value.open({
-              text: '请输入数量',
-            })
-          }
+        } else if (route.query.process === "IN" && !form.value.formData.materialNumber) {
+          message.value.open({
+            text: '请输入数量',
+          })
         } else {
           dialog.value = true
         }
@@ -115,14 +121,10 @@ onMounted(() => {
             {{ snackbarData.palletName || '未选择' }}
           </VChip>
         </div>
-        <div class="d-flex align-center">
-          <template v-for="[key, e] of Object.entries(color)" :key="key">
-            <div
-              :style="`width: 1.2rem;height: 1.2rem;background: ${e.color};border-radius: 0.1875rem;margin-left: 1.25rem;margin-right: 0.5rem`" />
-            <div style="font-size: 0.75rem;">
-              {{ e.name }}
-            </div>
-          </template>
+        <div v-if="route.query.type !== 'BOX'" class="d-flex align-center">
+          <VBtn color="blue-darken-1" variant="tonal" @click="viewGrid">
+            {{ $t('查看料盘网格') }}
+          </VBtn>
         </div>
         <VDialog v-if="mdAndDown && route.query.process === 'IN'" width="800">
           <template #activator="{ props }">
@@ -139,12 +141,13 @@ onMounted(() => {
       </h4>
       <VDivider />
       <div class="d-flex px-4 pt-5 pb-4 flex-wrap gap-3 text-center" style="flex: 1;overflow-y: scroll;">
-        <div v-for="(item, index) in box" :key="item"
+        <div v-for="( item, index ) in  box " :key="item"
           style="position: relative;overflow: hidden;width: 70px;height: 70px;border-radius: 6px;color: #fff;font-size: 12px;"
           :style="{
             background: '#435b63',
             border: select == item.id ? '2px solid #FF80AB' : '2px solid rgb(var(--v-theme-surface))'
-          }" @click="() => select = item.id">
+          }
+            " @click="() => select = item.id">
           <VIcon :icon="route.query.type == 'BOX' ? 'bx-archive' : 'bx-selection'" color="#bdbdbd" size="30"
             class="mt-3" />
           <div class="position-absolute text-center w-100" style="bottom: 0;left: 0;background: rgba(33, 33, 33, 70%);">
@@ -164,5 +167,6 @@ onMounted(() => {
       </div>
     </VCard>
   </div>
+  <Modal ref="modal" />
 </template>
 

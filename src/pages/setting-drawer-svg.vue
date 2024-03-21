@@ -1,6 +1,6 @@
 <script setup>
-import pos from '@images/svg/pos.svg'
-import { onMounted } from 'vue'
+import pos from '@images/svg/pos.svg';
+import { onMounted } from 'vue';
 
 const propsData = defineProps({
   data: { type: Object },
@@ -43,7 +43,7 @@ onMounted(() => {
       // } else {
       //   svg.style.background = 'rgb(255,255,255)'
       // }
-      const baseItemW = baseW - baseOffsetX*2 //工件宽度缩放后参考值  默认800 等比例缩放用于计算
+      const baseItemW = baseW - baseOffsetX * 2 //工件宽度缩放后参考值  默认800 等比例缩放用于计算
       const baseItemH = baseItemW * mainData.trawlBoardLengthY / mainData.trawlBoardLengthX
 
       svg.setAttribute('width', baseW)
@@ -57,8 +57,8 @@ onMounted(() => {
         numY.forEach((c, ny) => {
           numX.forEach((e, nx) => {
             let element = document.createElementNS("http://www.w3.org/2000/svg", "rect") // 这里以 rect 为例子
-            element.setAttribute('x', baseOffsetX + mainData.trawlBoardOffsetX + (mainData.trawlBoardSiteLengthX + mainData.trawlBoardSiteSpaceX)*nx)
-            element.setAttribute('y', baseOffsetY + mainData.trawlBoardOffsetY + (mainData.trawlBoardSiteLengthY + mainData.trawlBoardSiteSpaceY)*ny)
+            element.setAttribute('x', baseOffsetX + mainData.trawlBoardOffsetX + (mainData.trawlBoardSiteLengthX + mainData.trawlBoardSiteSpaceX) * nx)
+            element.setAttribute('y', baseOffsetY + mainData.trawlBoardOffsetY + (mainData.trawlBoardSiteLengthY + mainData.trawlBoardSiteSpaceY) * ny)
             element.setAttribute('width', mainData.trawlBoardSiteLengthX)
             element.setAttribute('height', mainData.trawlBoardSiteLengthY)
             element.style.fill = '#aaaaaa'
@@ -72,8 +72,8 @@ onMounted(() => {
         numY.forEach((c, ny) => {
           numX.forEach((e, nx) => {
             let element = document.createElementNS("http://www.w3.org/2000/svg", "circle") // 这里以 rect 为例子
-            element.setAttribute('cx', baseOffsetX + mainData.trawlBoardOffsetX + r + (mainData.trawlBoardSiteLengthX + mainData.trawlBoardSiteSpaceX)*nx)
-            element.setAttribute('cy', baseOffsetY + mainData.trawlBoardOffsetY + r + (mainData.trawlBoardSiteLengthY + mainData.trawlBoardSiteSpaceY)*ny)
+            element.setAttribute('cx', baseOffsetX + mainData.trawlBoardOffsetX + r + (mainData.trawlBoardSiteLengthX + mainData.trawlBoardSiteSpaceX) * nx)
+            element.setAttribute('cy', baseOffsetY + mainData.trawlBoardOffsetY + r + (mainData.trawlBoardSiteLengthY + mainData.trawlBoardSiteSpaceY) * ny)
             element.setAttribute('r', r)
             element.style.fill = '#aaaaaa'
             svg.appendChild(element)
@@ -81,7 +81,7 @@ onMounted(() => {
         })
       }
     }
-   
+
   }, 500)
 
 })
@@ -98,17 +98,8 @@ defineExpose({
 </script>
 
 <template>
-  <embed
-    id="embed"
-    :src="pos"
-    width="100%"
-    height="auto"
-    type="image/svg+xml"
-  >
-  <div
-    class="w-100 pa-1"
-    style="background: #000;color: #fff;font-size: 0.75rem;"
-  >
+  <embed id="embed" :src="pos" width="100%" height="auto" type="image/svg+xml">
+  <div class="w-100 pa-1" style="background: #000;color: #fff;font-size: 0.75rem;">
     <div class="d-flex flex-wrap gap-x-10 justify-center">
       <span>板（X）：{{ formData.trawlBoardLengthX }}mm</span>
       <span>原点偏移（X）：{{ formData.trawlBoardOffsetX }}mm</span>

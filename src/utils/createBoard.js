@@ -32,6 +32,7 @@ export class createBoard {
       L2X: -500,
       L2Y: 400,
       L2Z: -300,
+      materialList: []
     }
     this.animation = null
     this.domBox = null
@@ -41,7 +42,6 @@ export class createBoard {
     this.controls = null
     this.renderer = null
     this.geos = []
-    this.selectMesh = []
     this.init()
     this.updata(options)
   }
@@ -63,15 +63,15 @@ export class createBoard {
         })[0]
         if (res && res.object && res.object.userData.id) {
           // 更改选中模型颜色
-          const index = this.selectMesh.findIndex(item => item === res.object.userData.id)
+          const index = this.options.materialList.findIndex(item => item === res.object.userData.id)
           if (index == -1) {
-            this.selectMesh.push(res.object.userData.id)
+            this.options.materialList.push(res.object.userData.id)
             res.object.material.color.set("#fde308")
           } else {
-            this.selectMesh.splice(index, 1)
+            this.options.materialList.splice(index, 1)
             res.object.material.color.set("#97b2c8")
           }
-          console.log(this.selectMesh)
+          this.onModalChange(this.options.materialList)
         }
       }
     }, false)
@@ -85,7 +85,7 @@ export class createBoard {
     this.renderer.dispose()
     this.renderer = null
     this.geos = []
-    this.selectMesh = []
+    this.options.materialList = []
     this.scene.clear()
   }
   getIntersects(x, y) {
@@ -221,11 +221,12 @@ export class createBoard {
       e.pos = [e.centerPointX - this.options.upper.trawlBoardLengthX / 2, (e.materialLengthZ / 2), e.centerPointY - this.options.upper.trawlBoardLengthY / 2]
     })
     this.options.materials.forEach(e => {
+      const isSelect = this.options.materialList.some(c => c == e.id)
       if (e.materialShape == 0) {
         job = new THREE.Mesh(
           new THREE.BoxGeometry(...e.geo),
           new THREE.MeshLambertMaterial({
-            color: 0x97b2c8,
+            color: isSelect ? 0xfde308 : 0x97b2c8,
           }),
         )
       }
@@ -233,7 +234,7 @@ export class createBoard {
         job = new THREE.Mesh(
           new THREE.CylinderGeometry(...e.geo),
           new THREE.MeshLambertMaterial({
-            color: 0x97b2c8,
+            color: isSelect ? 0xfde308 : 0x97b2c8,
           }),
         )
       }

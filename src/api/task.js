@@ -22,6 +22,9 @@ export default {
   taskStorageIn(data) {
     return baseRequest(`/sss/task/storage/in`, data, 'post')
   },
+  taskStorageOut(data) {
+    return baseRequest(`/sss/task/storage/out`, data, 'post')
+  },
   taskStop(data) {
     return baseRequest(`/sss/task/stop`, data, 'post')
   },
@@ -30,5 +33,14 @@ export default {
   },
   taskLog(data) {
     return baseRequest(`/sss/task/log/list`, data, 'get')
+  },
+  taskProcessMaterial(data) {
+    return baseRequest(`/sss/task/process/material`, data, 'get')
+  },
+  taskProcessSelector(data) {
+    return baseRequest(`/sss/task/process/selector`, data, 'get')
+  },
+  taskProcess(data) {
+    return baseRequest(`/sss/task/process`, data, 'post')
   },
 }

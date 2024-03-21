@@ -21,6 +21,29 @@ let parmas = ref({
   nextPage: 0,
 })
 
+watch(checked, () => {
+  const status = items.value.filter(e => e.id == checked.value)[0].groupState
+  if (status == "PAUSE") {
+    btnList.value[1].hidden = true
+    btnList.value[2].hidden = false
+    btnList.value[3].hidden = true
+    btnList.value[4].hidden = false
+  }
+  if (status == "RUN") {
+    btnList.value[1].hidden = true
+    btnList.value[2].hidden = false
+    btnList.value[3].hidden = false
+    btnList.value[4].hidden = true
+  }
+  if (status == "FINISH") {
+    btnList.value[1].hidden = true
+    btnList.value[2].hidden = false
+    btnList.value[3].hidden = true
+    btnList.value[4].hidden = true
+  }
+})
+
+
 const getData = done => {
   taskApi.taskList(parmas.value).then(res => {
     done && done('loading')
@@ -96,23 +119,22 @@ onMounted(() => {
   nextTick(() => {
     btnList.value = [
       {
-        name: '新建',
-        color: '#42A5F5',
+        name: '新建任务',
+        color: '#7986CB',
         size: 'large',
-        width: 80,
+        width: 150,
         mark: '是否新建任务？',
-        fn: ({ close, openLoading, closeLoading }) => {
-          close()
-          router.push({ path: '/task' })
-        },
+        before: ({ dialog, openLoading, close, dialogLoading, closeLoading, dialogLoadingText, selectRow }) => {
+          router.push('/task')
+        }
       },
-
       {
         name: '编辑',
         color: '#00ACC1',
         size: 'large',
         width: 80,
         mark: '是否编辑选中任务？',
+        hidden: true,
         fn: ({ close, openLoading, closeLoading }) => {
           close()
           router.push({ path: '/task' })
@@ -124,6 +146,7 @@ onMounted(() => {
         size: 'large',
         width: 80,
         mark: '是否删除选中任务？',
+        hidden: true,
         before: ({ dialog, openLoading, close, dialogLoading, closeLoading, dialogLoadingText }) => {
           if (!checked.value) {
             message.value.open({
@@ -166,8 +189,9 @@ onMounted(() => {
         name: '终止',
         color: '#EF5350',
         size: 'large',
-        width: 80,
+        width: 220,
         mark: '是否终止选中任务？',
+        hidden: true,
         before: ({ dialog, openLoading, close, dialogLoading, closeLoading, dialogLoadingText }) => {
           if (!checked.value) {
             message.value.open({
@@ -200,6 +224,10 @@ onMounted(() => {
           }).then(res => {
             const index = items.value.findIndex(e => e.groupId === checked.value)
             items.value[index].groupState = 'PAUSE'
+            btnList.value[1].hidden = true
+            btnList.value[2].hidden = false
+            btnList.value[3].hidden = true
+            btnList.value[4].hidden = false
           }).finally(e => {
             closeLoading()
           }).catch(err => {
@@ -214,8 +242,9 @@ onMounted(() => {
         color: '#D32F2F',
         icon: 'bxs-zap',
         size: 'large',
-        width: 120,
+        width: 220,
         mark: '是否开启任务？',
+        hidden: true,
         before: ({ dialog, openLoading, close, dialogLoading, closeLoading, dialogLoadingText }) => {
           if (!checked.value) {
             message.value.open({
@@ -247,6 +276,10 @@ onMounted(() => {
           }).then(res => {
             const index = items.value.findIndex(e => e.groupId === checked.value)
             items.value.unshift(items.value.splice(index, 1)[0])
+            btnList.value[1].hidden = true
+            btnList.value[2].hidden = false
+            btnList.value[3].hidden = false
+            btnList.value[4].hidden = true
           }).finally(e => {
             closeLoading()
           }).catch(err => {

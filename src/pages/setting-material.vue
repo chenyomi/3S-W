@@ -40,7 +40,7 @@ onMounted(() => {
       size: 'large',
       width: 80,
       formWidth: 800,
-      slot: shallowRef(materialForm),  
+      slot: shallowRef(materialForm),
       fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
@@ -59,7 +59,7 @@ onMounted(() => {
       size: 'large',
       width: 150,
       formWidth: 800,
-      slot: shallowRef(materialForm), 
+      slot: shallowRef(materialForm),
       fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
         openLoading({
           text: '正在上传更新',
@@ -83,6 +83,7 @@ const headers = ref([
     sortable: false,
     key: 'exclusive',
     fixed: true,
+    minWidth: 70,
     width: 70,
   },
   {
@@ -94,7 +95,7 @@ const headers = ref([
   },
   { title: t('形状'), key: 'materialTemplateShape', align: 'center', sortable: false, minWidth: 90 },
   { title: t('尺寸') + '（X-Y-Z）', key: 'materialTemplateLengthX', align: 'center', sortable: false, minWidth: 90 },
-  
+
 ])
 
 const openModal = () => {
@@ -103,62 +104,45 @@ const openModal = () => {
     hideDiaName: true,
     hideDiaOk: true,
     hideDiaCancel: true,
-    slot: shallowRef(material3d), 
-    slotData: serverItems.value.filter(c => c.id == expanded.value)[0], 
+    slot: shallowRef(material3d),
+    slotData: serverItems.value.filter(c => c.id == expanded.value)[0],
     fn: ({ close, openLoading, closeLoading, diaFormRef }) => {
-     
+
     },
   })
 }
 </script>
 
 <template>
-  <VDataTableVirtual
-    fixed-header
-    :headers="headers"
-    :items="serverItems"
-    :loading="loading"
-    loading-text=""
-    hover
-    height="calc(100vh - 230px)"
-    expand-on-click
-    :density="density"
-    @update:options="loadItems"
-    @update:expanded="(newVal) => {
+  <VDataTableVirtual fixed-header :headers="headers" :items="serverItems" :loading="loading" loading-text="" hover
+    height="calc(100vh - 230px)" expand-on-click :density="density" @update:options="loadItems" @update:expanded="(newVal) => {
       newVal.map(e => {
-        if(!expandedArr.includes(e)) {
+        if (!expandedArr.includes(e)) {
           expanded = e
           btnList[1].slotData = serverItems.filter(c => c.id == e)[0]
         }
       })
       expandedArr.map(e => {
-        if(!newVal.includes(e)) {
-          expanded = e 
+        if (!newVal.includes(e)) {
+          expanded = e
           btnList[1].slotData = serverItems.filter(c => c.id == e)[0]
         }
       })
       expandedArr = newVal
-    }"
-  >
+    }">
     <template #item.exclusive="{ item }">
-      <VCheckbox
-        :model-value="item.id == expanded"
-        readonly
-      />
+      <VCheckbox :model-value="item.id == expanded" readonly />
     </template>
     <template #item.materialTemplateShape="{ item }">
-      {{ type[item.materialTemplateShape] }} 
+      {{ type[item.materialTemplateShape] }}
     </template>
     <template #item.materialTemplateLengthX="{ item }">
-      {{ item.materialTemplateLengthX }}-{{ item.materialTemplateLengthY }}-{{ item.materialTemplateLengthZ }}  
+      {{ item.materialTemplateLengthX }}-{{ item.materialTemplateLengthY }}-{{ item.materialTemplateLengthZ }}
     </template>
     <template #loading />
     <template #bottom>
       <div style="text-align: end;">
-        <VBtn
-          class="ma-2 w-25"
-          @click="openModal"
-        >
+        <VBtn class="ma-2 w-25" @click="openModal">
           {{ $t('预览') }}
         </VBtn>
       </div>
