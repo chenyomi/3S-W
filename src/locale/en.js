@@ -103,4 +103,5 @@ export default {
   当前托盘: 'Current pallet',
   当前手爪: 'Current paw',
   手爪编号: 'Claw number',
+  新建任务: 'Created',
 }
