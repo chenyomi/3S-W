@@ -91,7 +91,7 @@ const handleNavScroll = evt => {
 @use "@configured-variables" as variables;
 @use "@layouts/styles/mixins";
 
-// 👉 Vertical 1
+// 👉 Vertical2
 .layout-vertical-nav {
   position: fixed;
   z-index: variables.$layout-vertical-nav-z-index;
