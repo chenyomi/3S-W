@@ -50,7 +50,7 @@ const isPasswordVisible = ref(false)
 
       <VCardText class="pt-2">
         <h5 class="text-h5 mb-1">
-          欢迎访问!! 👋🏻
+          欢迎访问!!! 👋🏻
         </h5>
         <p class="mb-0">
           请登录您的账号！
