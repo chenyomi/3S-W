@@ -26,7 +26,7 @@ const logOut = () => {
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              WELLLIH
+              Chen
             </VListItemTitle>
             <VListItemSubtitle>Admin</VListItemSubtitle>
           </VListItem>

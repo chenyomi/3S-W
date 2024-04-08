@@ -44,13 +44,13 @@ const isPasswordVisible = ref(false)
         </template>
 
         <VCardTitle class="text-2xl font-weight-bold">
-          伟立3s-w
+          3s-w
         </VCardTitle>
       </VCardItem>
 
       <VCardText class="pt-2">
         <h5 class="text-h5 mb-1">
-          欢迎来到伟立! 👋🏻
+          欢迎访问! 👋🏻
         </h5>
         <p class="mb-0">
           请登录您的账号！
