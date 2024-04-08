@@ -44,7 +44,7 @@ const isPasswordVisible = ref(false)
         </template>
 
         <VCardTitle class="text-2xl font-weight-bold">
-          3s-w
+          Yoomi
         </VCardTitle>
       </VCardItem>
 

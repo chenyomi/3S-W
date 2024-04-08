@@ -1,6 +1,6 @@
 <script setup>
-import logo from '@images/logo.jpg'
-import { useDisplay } from 'vuetify'
+import logo from '@images/logo.jpg';
+import { useDisplay } from 'vuetify';
 
 const props = defineProps({
   tag: {
@@ -63,7 +63,7 @@ const handleNavScroll = evt => {
             :src="logo"
           >
           <h1 class="leading-normal">
-            3S-W
+            Yoomi
           </h1>
         </RouterLink>
       </slot>
