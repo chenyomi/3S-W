@@ -91,7 +91,7 @@
     "postcss": "8"
   },
   "build": {
-    "productName": "Yoomi",
+    "productName": "YooMi",
     "asar": true,
     "directories": {
       "output": "app"

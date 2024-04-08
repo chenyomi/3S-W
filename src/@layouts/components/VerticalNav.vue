@@ -63,7 +63,7 @@ const handleNavScroll = evt => {
             :src="logo"
           >
           <h1 class="leading-normal">
-            Yoomi
+            YooMi
           </h1>
         </RouterLink>
       </slot>

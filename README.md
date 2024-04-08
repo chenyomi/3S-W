@@ -1,5 +1,5 @@
 ### 预览🚀
-https://chenyomi.github.io/yoomi
+https://chenyomi.github.io/YooMi
 
 ### 安装
 
