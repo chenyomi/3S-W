@@ -52,7 +52,7 @@ export default defineConfig({
     },
   },
   build: {
-    chunkSizeWarningLimit: 5000,
+    outDir: 'docs',
   },
   optimizeDeps: {
     exclude: ['vuetify'],
